@@ -15,9 +15,9 @@ read_sector:
     mov dh, 0 ; read with first head
     mov dl, 0x80 ; set the disk to readv (0x80 is first disk)
 
+    mov bx, 0x0000  ; no need for extra because the memory where we want to load can be represented in 16 bits
+    mov es, bx
     mov bx, 0x8000 ; safe place to put data
-    ;mov ax, 0x0000  ; no need for extra because the memory where we want to load can be represented in 16 bits
-    ;mov es, ax
 
     int 0x13
 
@@ -26,18 +26,23 @@ read_sector:
     mov si, loading_kernel
     call print_str
 
+    ; change video mode
+    mov ah, 0x00
+    mov al, 0x03
+    int 0x10
+
     call load_kernel
+
 
     ; if kernel dosent load then we display an error msg and make an infinite loop
     mov si, failed_load_kernel
     call print_str
 
-
 hang:
     jmp hang
 
 load_kernel:
-    jmp 0x8000 ; jmp to kernel address
+    jmp 0x0000:0x8000 ; jmp to kernel address
 
 disk_error:
     mov si, error_reading_disk
