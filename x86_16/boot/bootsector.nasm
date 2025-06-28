@@ -1,13 +1,8 @@
 BITS 16 ; tell nasm to use 16 bits
 
 start:
-    mov ax, 07C0h ; put this value into ax aka the starting address
-    add ax, 288 ; dont really know why
-    mov ss, ax ; copy content ax into the stack segment register
-    mov sp, 4096 ; set stack pointer to 4096
-
-    mov ax, 07C0h ; set the current data segment
-    mov ds, ax
+    mov ax, 07C0h 
+    mov ds, ax ; set the current data segment
 
     mov si, string ; put the pointer of the string into register SI so that the print string can know what to print
     call print_str ; call print_str
@@ -31,5 +26,5 @@ print_str:
     ret
 
 
-times 510-($-$$) db 0 ; 510 - current address - address of begining of section and put a 0
+times 510-($-$$) db 0 ; times repeat instruction db a number of times. 510 because the two last bytes are the signature
 dw 0xAA55 ; boot signature so it knowns that it is a boot loader

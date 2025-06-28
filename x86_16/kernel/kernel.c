@@ -1,6 +1,6 @@
-void kmain()
+void kmain(void)
 {
-    for (;;) {
-
-    }
+    *(char *)0xb8000 = 'N';
+    for(;;){}
+    return;
 }
