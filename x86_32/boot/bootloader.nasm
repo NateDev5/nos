@@ -6,7 +6,7 @@ DATASEG equ data_descriptor - GDT_start
 
 read_disk:
     mov ah, 0x02 ; the mode
-    mov al, 1 ; number of sectors to read
+    mov al, 10 ; number of sectors to read
     mov ch, 0 ; track/cylinder number 
     mov cl, 2 ; start at two because our bootsector is in the first sector and is already read
     mov dh, 0 ; read with first head
@@ -93,6 +93,17 @@ GDT_descriptor:
 
 BITS 32
 start_protected_mode:
+    ; set all register to start of data segment
+    mov eax, DATASEG
+	mov ds, eax
+	mov ss, eax
+	mov es, eax
+	mov fs, eax
+	mov gs, eax
+
+    ;mov ebp, 0x90000		; 32 bit stack base pointer
+	;mov esp, ebp           ; set stack ptr to base ptr
+
     jmp 0x8000 ; jump to where kernel is located
     jmp $
 
