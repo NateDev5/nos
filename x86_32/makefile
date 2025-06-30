@@ -30,7 +30,8 @@ $(BOOTLOADER_X32_BIN): $(BOOTLOADER_X32_SRC)
 	nasm -f bin -o $@ $<
 
 $(KERNEL_X32_OBJ): $(KERNEL_X32_SRC)
-	$(GCC) -m32 -ffreestanding -fno-pic -fno-pie -fno-exceptions -fno-rtti -c $< -o $@ 
+# -fno-rtti
+	$(GCC) -m32 -ffreestanding -fno-pic -fno-pie -fno-exceptions -Werror -c $< -o $@ 
 
 $(KERNEL_X32_BIN): $(KERNEL_X32_OBJ)
 	$(LD) -melf_i386 -Ttext 0x8000 -nostdlib --oformat binary $< -o $@ 
