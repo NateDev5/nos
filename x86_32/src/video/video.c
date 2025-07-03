@@ -1,7 +1,7 @@
 #include "video.h"
 #include "../memory/mem.h"
 
-uint32 currentOffset = 0;
+static uint32 currentOffset = 0;
 
 void print(const cstr msg, uint8 format) {
     uint8* videoMem = (uint8*)BASE_VID_MEM;
