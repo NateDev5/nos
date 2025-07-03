@@ -1,4 +1,5 @@
 #include "../video/video.h"
+#include "../memory/mem.h"
 
 void kmain()
 {

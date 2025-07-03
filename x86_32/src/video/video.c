@@ -1,4 +1,5 @@
 #include "video.h"
+#include "../memory/mem.h"
 
 uint32 currentOffset = 0;
 
@@ -39,7 +40,7 @@ void setBackgroundColor (uint8 color) {
 void setForegroundColor (uint8 color) {
     uint8* videoMem = (uint8*)BASE_VID_MEM;
     for(int32 i = 0; i <= SCRN_SIZE; i++) {
-         // 0x0F is a mask for 11110000 so applying a logical AND will get only the four bytes
+        // 0x0F is a mask for 11110000 so applying a logical AND will get only the four bytes
         int32 curBackColor = videoMem[i * 2 + 1] & 0xF0;
         videoMem[i * 2 + 1] = curBackColor | color;
     }
@@ -47,10 +48,11 @@ void setForegroundColor (uint8 color) {
 
 void clearScreen () {
     uint8* videoMem = (uint8*)BASE_VID_MEM;
-    for(int32 i = 0; i <= SCRN_SIZE; i++) {
+    /*for(int32 i = 0; i <= SCRN_SIZE; i++) {
         videoMem[i * 2] = 0x0;
         videoMem[i * 2 + 1] = 0x0;
-    }
+    }*/
+    memset((uint32*)BASE_VID_MEM, 0x0, SCRN_SIZE);
     currentOffset = 0;
 } 
 
