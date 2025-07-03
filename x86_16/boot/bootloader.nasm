@@ -33,7 +33,6 @@ read_sector:
 
     call load_kernel
 
-
     ; if kernel dosent load then we display an error msg and make an infinite loop
     mov si, failed_load_kernel
     call print_str
