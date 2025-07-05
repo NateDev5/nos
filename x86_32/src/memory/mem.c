@@ -1,11 +1,16 @@
 #include "mem.h"
 
-void memset (uint32* address, int32 data, int32 size) {
-    for(int32 i = 0; i <= size; i++) 
-        address[i] = data;
+void memset (IN PTRMEM address, IN uint8 data, IN uint32 size) {
+    if(address == NULL) return;
+
+    for(uint32 ui = 0; ui < size; ui++)
+        address[ui] = data;
 }
 
-void memcpy (uint32* baseAddress, uint32* targetAddress, int32 size) {
-    for(int32 i = 0; i <= size; i++)
-        targetAddress[i] = baseAddress[i];
+void memcpy (IN PTRMEM baseAddress, IN PTRMEM targetAddress, IN uint32 size) {
+    if(baseAddress == NULL) return;
+    if(targetAddress == NULL) return;
+
+    for(uint32 ui = 0; ui <= size; ui++)
+        targetAddress[ui] = baseAddress[ui];
 }

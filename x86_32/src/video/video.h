@@ -28,8 +28,9 @@
 #define BWHITE      0xF
 
 void test();
-void print(const cstr msg, uint8 format);
-void println(const cstr msg, uint8 format);
-void setBackgroundColor (uint8 color);
-void setForegroundColor (uint8 color);
+void printchar (IN int8 _char, IN uint8 format);
+void print(IN const cstr msg, IN uint8 format);
+void println(IN const cstr msg, IN uint8 format);
+void setBackgroundColor (IN uint8 color);
+void setForegroundColor (IN uint8 color);
 void clearScreen ();

@@ -1,8 +1,15 @@
 #pragma once
 
+#define NULL  0
+#define IN
+#define OUT
+#define IN_OUT
+
 #define true  1
 #define false 0
 
+typedef char*           PTRMEM;
+typedef const char*     PTRMEM_CONST;
 
 typedef char            int8;
 typedef unsigned char   uint8;

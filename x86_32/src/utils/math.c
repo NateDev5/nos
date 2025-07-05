@@ -2,7 +2,7 @@
 #include "../video/video.h"
 
 // from https://wiki.osdev.org/Printing_To_Screen
-cstr itoa(int32 value, cstr str, int32 base) {
+cstr itoa(IN int32 value, OUT cstr str, IN int32 base) {
     cstr rc;
     cstr ptr;
     cstr low;
