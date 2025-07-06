@@ -10,6 +10,7 @@
 
 typedef char*           PTRMEM;
 typedef const char*     PTRMEM_CONST;
+typedef void*           PTR;
 
 typedef char            int8;
 typedef unsigned char   uint8;
@@ -20,6 +21,8 @@ typedef unsigned short  uint16;
 
 typedef int             int32;
 typedef unsigned int    uint32;
+
+typedef uint32*         INTPTR;
 
 typedef long            int64;
 typedef unsigned int    uint64;

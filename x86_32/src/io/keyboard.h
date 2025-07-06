@@ -19,7 +19,7 @@ static const char scanCodes[128] = {
 bool initPS2Controller();
 int8 readKey();
 
-typedef struct KeypressInfo
+typedef struct
 {
-    
+
 } KEYPRESS_INFO;

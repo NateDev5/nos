@@ -101,8 +101,8 @@ start_protected_mode:
 	mov fs, eax
 	mov gs, eax
 
-    ;mov ebp, 0x90000		; 32 bit stack base pointer
-	;mov esp, ebp           ; set stack ptr to base ptr
+    mov ebp, 0x90000		; 32 bit stack base pointer
+	mov esp, ebp           ; set stack ptr to base ptr
 
     jmp 0x8000 ; jump to where kernel is located
     jmp $

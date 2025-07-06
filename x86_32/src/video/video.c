@@ -1,5 +1,6 @@
 #include "video.h"
 #include "../memory/mem.h"
+#include "../utils/math.h"
 
 static uint32 currentOffset = 0;
 
@@ -7,7 +8,7 @@ void printchar(IN int8 _char, IN uint8 format)
 {
     if (_char == NULL)
         return;
-        
+
     if (currentOffset >= SCRN_SIZE)
         return;
 
@@ -48,6 +49,12 @@ void println(IN const cstr msg, IN uint8 format)
     print("\n", format);
 }
 
+void printuint32 (IN uint32 value, IN int32 base) {
+    char str[256];
+    itoa(value, str, base);
+    println(str, BWHITE);
+}
+
 void setBackgroundColor(IN uint8 color)
 {
     uint8 *videoMem = (uint8 *)BASE_VID_MEM;
@@ -71,10 +78,17 @@ void setForegroundColor(IN uint8 color)
     }
 }
 
+void errorScreen (IN const cstr msg) {
+    clearScreen();
+    print("ERROR: ", BLACK);
+    println(msg, BLACK);
+    setBackgroundColor(LRED);
+}
+
 void clearScreen()
 {
     uint8 *videoMem = (uint8 *)BASE_VID_MEM;
-    memset((PTRMEM)BASE_VID_MEM, 0x0, SCRN_SIZE);
+    memset((PTRMEM)BASE_VID_MEM, 0x0, SCRN_SIZE * 2);
     currentOffset = 0;
 }
 

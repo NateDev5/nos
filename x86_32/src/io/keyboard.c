@@ -1,7 +1,7 @@
 #include "keyboard.h"
 #include "../video/video.h"
 #include "../utils/math.h"
-#include "io.h"
+#include "../utils/asm.h"
 
 bool initPS2Controller()
 {
@@ -21,7 +21,7 @@ int8 readKey()
     {
         ps2Status = inb(PS2_STATUS_REGISTER);
     } while (ps2Status == 0x1c);
-    
+
     uint8 data = inb(PS2_DATA_PORT);
 
     if (data < 0x81)
