@@ -34,5 +34,12 @@ static IDTR idtr;
 void setupIDT();
 void setIDTEntry (IN uint8 vector, IN PTR handler, IN uint8 attributes);
 
-
 void handleException (IN uint32 vector, IN uint32 errorCode);
+
+typedef struct InterruptFrame {
+    uint32 ip;
+    uint32 cs;
+    uint32 flags;
+    uint32 sp;
+    uint32 ss;
+} InterruptFrame;

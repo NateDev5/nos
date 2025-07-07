@@ -4,7 +4,7 @@
 #include "../video/video.h"
 #include "../interrupts/pic.h"
 
-static uint32 count;
+static uint16 count;
 
 // power hungry
 void sleepFor50000NOP(IN uint16 numberOfCycles)
