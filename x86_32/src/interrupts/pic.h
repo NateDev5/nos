@@ -28,3 +28,4 @@
 #define PIC_EOI      0x20
 
 void initPIC ();
+void sendEOI ();

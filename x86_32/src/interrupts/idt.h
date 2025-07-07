@@ -1,4 +1,5 @@
 //https://github.com/dreamportdev/Osdev-Notes/blob/master/02_Architecture/05_InterruptHandling.md
+//https://pdos.csail.mit.edu/6.828/2005/lec/lec8-slides.pdf
 
 #pragma once
 
@@ -10,7 +11,7 @@
 
 // packed attribute used to ensure there are no extra bits
 
-// idt entry
+// IDT entry
 typedef struct IDT_ENTRY
 {
     uint16 isrAddLow;
@@ -30,12 +31,16 @@ typedef struct IDTR
 static IDT_ENTRY idt[256]; // the actual idt;
 static IDTR idtr;
 
-void setupIDT();
-void setIDTEntry (IN uint8 vector, IN PTR handler, IN uint8 attributes);
-
-typedef struct InterruptFrame
-{
-    uint32 code;
+typedef struct InterruptFrame {
+    /*
+    uint32 edi;
+    uint32 esi;
+    uint32 ebp;
+    uint32 temp;
+    uint32 ebx;
+    uint32 edx;
+    uint32 ecx;*/
+    uint32 eax;
 
     uint32 ip;
     uint32 cs;
@@ -43,5 +48,8 @@ typedef struct InterruptFrame
     uint32 sp;
     uint32 ss;
 } InterruptFrame;
+
+void setupIDT();
+void setIDTEntry (IN uint8 vector, IN PTR handler, IN uint8 attributes);
 
 void handleException (IN InterruptFrame* frame);

@@ -2,10 +2,11 @@
 #include "../utils/asm.h"
 #include "../utils/math.h"
 #include "../video/video.h"
+#include "../utils/timer.h"
 #include "pic.h"
 
 extern PTR stubTable[];
-
+extern PTR timerHandler;
 
 void setupIDT()
 {
@@ -20,10 +21,11 @@ void setupIDT()
         setIDTEntry(vector, stubTable[vector], INTERRUPT_GATE);
     }
 
+    setIDTEntry(32, timerHandler, INTERRUPT_GATE);
+
     // load the idt
     __asm__ volatile("lidt %0" : : "m"(idtr));
     sti();
-    
 }
 
 void setIDTEntry (IN uint8 vector, IN PTR handler, IN uint8 attributes) 
@@ -37,17 +39,15 @@ void setIDTEntry (IN uint8 vector, IN PTR handler, IN uint8 attributes)
     descriptor->zero = 0;
     descriptor->attributes = attributes;
 
-    descriptor->isrAddHigh = ((uint32)handler) >> 16; // take the last 16 bits
+    descriptor->isrAddHigh = ((uint32)handler >> 16) & 0xFFFF; // take the last 16 bits
 }
 
 void handleException (IN InterruptFrame* frame) {
     errorScreen("Error");
-    printuint32(frame->code, 16);
-
-
+    printuint32(frame->eax, 16);
     printuint32(frame->ip, 16);
     printuint32(frame->cs, 16);
-    printuint32(frame->flags, 2);
+    printuint32(frame->flags, 16);
     printuint32(frame->sp, 16);
     printuint32(frame->ss, 16);
     cli();

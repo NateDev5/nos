@@ -11,8 +11,12 @@ LD					=  /usr/bin/ld
 
 # for using __attribute__((interrupt)):
 # -mgeneral-regs-only 
-GCC_FLAGS			=  -m32 -ffreestanding -fno-pic -fno-pie -fno-exceptions -Werror
+# -Werror
+GCC_FLAGS			=  -m32 -ffreestanding -fno-pic -fno-pie -fno-exceptions  -mgeneral-regs-only 
 LD_FLAGS			=  -melf_i386 -Ttext 0x8000 -e kmain -nostdlib --oformat binary
+
+# debug interrupts
+QEMU_FLAG_DBG_INT	=  -d int
 
 # Source files
 BOOTLOADER_SRC 		=  $(BOOT_FOLDER)/bootloader.nasm
@@ -62,5 +66,5 @@ clean:
 	rm -f $(BOOTLOADER_BIN) $(KERNEL_BIN) $(OS_IMAGE) $(C_OBJ) $(NASM_OBJ)
 
 run: $(OS_IMAGE)
-	qemu-system-i386 $<
+	qemu-system-i386 $< $(QEMU_FLAG_DBG_INT)
 	make clean
