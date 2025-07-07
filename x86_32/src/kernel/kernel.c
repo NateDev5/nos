@@ -12,14 +12,14 @@ void kmain()
     // if (!initPS2Controller())
     //     println("Failed to init ps2 controller", LRED);
 
-    int i = 0/0;
+    //int i = 0/0;
+    //__asm__ volatile ("int $0x12");
 
-    //__asm__ volatile("int $0x1");
     
     while (true)
     {
-        //print("Test ", BWHITE);
-        //sleepPIT(10);
+        print("Test ", BWHITE);
+        sleepPIT(1);
         //sleepFor50000NOP(1000);
         /*for(int32 i = 0; i < 20; i++) {
             print("Test ", BWHITE);

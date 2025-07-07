@@ -3,11 +3,9 @@
 
 %macro interruptStub 1
 interruptStub_%+%1:
-    ;pushad
-    push 0x01
+    push %1
     call handleException
-    ;pop eax
-    ;popad
+    add esp, 4
     iret
 %endmacro
 

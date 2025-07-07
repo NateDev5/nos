@@ -31,7 +31,7 @@ void test();
 void printchar (IN int8 _char, IN uint8 format);
 void print(IN const cstr msg, IN uint8 format);
 void println(IN const cstr msg, IN uint8 format);
-void printuint32 (IN uint32 value, IN int32 base);
+void printuint32 (IN uint32 value, IN int32 base, IN uint8 format);
 void setBackgroundColor (IN uint8 color);
 void setForegroundColor (IN uint8 color);
 void clearScreen ();

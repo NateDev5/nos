@@ -31,25 +31,8 @@ typedef struct IDTR
 static IDT_ENTRY idt[256]; // the actual idt;
 static IDTR idtr;
 
-typedef struct InterruptFrame {
-    /*
-    uint32 edi;
-    uint32 esi;
-    uint32 ebp;
-    uint32 temp;
-    uint32 ebx;
-    uint32 edx;
-    uint32 ecx;*/
-    uint32 eax;
-
-    uint32 ip;
-    uint32 cs;
-    uint32 flags;
-    uint32 sp;
-    uint32 ss;
-} InterruptFrame;
-
 void setupIDT();
 void setIDTEntry (IN uint8 vector, IN PTR handler, IN uint8 attributes);
 
-void handleException (IN InterruptFrame* frame);
+
+void handleException (IN uint32 vector, IN uint32 errorCode);

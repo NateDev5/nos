@@ -1,6 +1,7 @@
 #include "pic.h"
 
 #include "../utils/asm.h"
+#include "../video/video.h"
 
 void initPIC () {
     // ICW1
@@ -24,6 +25,10 @@ void initPIC () {
 	outb(PIC2_DATA, 0);
 }
 
-void sendEOI () {
+void sendEOI (IN uint8 irq) {
+    if(irq >= 8)
+        outb(PIC2_COMMAND, PIC_EOI);
+
     outb(PIC1_COMMAND, PIC_EOI);
+
 }

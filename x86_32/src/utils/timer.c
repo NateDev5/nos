@@ -2,6 +2,9 @@
 #include "asm.h"
 #include "math.h"
 #include "../video/video.h"
+#include "../interrupts/pic.h"
+
+static uint32 count;
 
 // power hungry
 void sleepFor50000NOP(IN uint16 numberOfCycles)
@@ -10,13 +13,15 @@ void sleepFor50000NOP(IN uint16 numberOfCycles)
         nop();
 }
 
-extern uint16 count;
-
 void sleepPIT(IN uint16 milliseconds)
 {
     count = milliseconds;
-    printuint32(count, 10);
 
     while (count > 0)
         hlt();
+}
+
+void timerTick (IN InterruptFrame* frame) {
+    if(count > 0) count--;
+    sendEOI(0);
 }
