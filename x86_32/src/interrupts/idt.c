@@ -1,14 +1,15 @@
 #include "idt.h"
 #include "../utils/asm.h"
 #include "../utils/math.h"
-#include "../video/video.h"
-#include "../utils/timer.h"
+#include "../video/vga.h"
+#include "../utils/pit.h"
+#include "../io/keyboard.h"
 #include "pic.h"
 
 extern PTR stubTable[];
 extern PTR timerHandler;
 
-void setupIDT()
+void setupIDT(IN bool verbose)
 {
     initPIC();
 
@@ -18,15 +19,16 @@ void setupIDT()
 
     // set the first 32 vectors because they are reserved
     for (uint8 vector = 0; vector < 32; vector++)
-    {
         setIDTEntry(vector, stubTable[vector], INTERRUPT_GATE);
-    }
 
-    setIDTEntry(32, timerTick, INTERRUPT_GATE);
+    setIDTEntry(32, IRQ0_timerHandler, INTERRUPT_GATE);
+    setIDTEntry(33, IRQ1_keyboardHandler, INTERRUPT_GATE);
 
     // load the idt
     __asm__ volatile("lidt %0" : : "m"(idtr));
     sti();
+
+    if(verbose) println("(OK) IDT initialized", LGREEN);
 }
 
 void setIDTEntry(IN uint8 vector, IN PTR handler, IN uint8 attributes)

@@ -5,6 +5,8 @@
 #define OUT
 #define IN_OUT
 
+#define INTERRUPT
+
 #define true  1
 #define false 0
 

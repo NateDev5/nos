@@ -1,5 +1,5 @@
 #include "math.h"
-#include "../video/video.h"
+#include "../video/vga.h"
 
 // from https://wiki.osdev.org/Printing_To_Screen
 cstr itoa(IN uint32 value, OUT cstr str, IN int32 base) {

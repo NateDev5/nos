@@ -31,7 +31,7 @@ typedef struct IDTR
 static IDT_ENTRY idt[256]; // the actual idt;
 static IDTR idtr;
 
-void setupIDT();
+void setupIDT(IN bool verbose);
 void setIDTEntry (IN uint8 vector, IN PTR handler, IN uint8 attributes);
 
 void handleException (IN uint32 vector, IN uint32 errorCode);

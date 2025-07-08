@@ -1,7 +1,7 @@
 #include "pic.h"
 
 #include "../utils/asm.h"
-#include "../video/video.h"
+#include "../video/vga.h"
 
 void initPIC () {
     // ICW1

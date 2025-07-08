@@ -89,7 +89,7 @@ clean:
 	rm -rf $(BUILD_FOLDER)
 
 run: $(OS_IMAGE)
-	qemu-system-i386 $< $(QEMU_FLAG_DBG_INT)
+	qemu-system-i386 $<
 	make clean
 
 dbg: $(OS_IMAGE_DBG)

@@ -1,9 +1,7 @@
 #pragma once
 
 #include "../utils/types.h"
-
-#define PS2_DATA_PORT 0x60
-#define PS2_STATUS_REGISTER 0x64
+#include "../interrupts/idt.h"
 
 static const char scanCodes[128] = {
     0, 0,
@@ -16,8 +14,12 @@ static const char scanCodes[128] = {
     'z', 'x', 'c', 'v', 'b', 'n', 'm', ',', '.', '/',
     0, 0, 0, ' '};
 
-bool initPS2Controller();
+void initKeyboard (IN bool verbose);
 int8 readKey();
+void readLine (OUT cstr outStr);
+
+__attribute__((interrupt))
+void IRQ1_keyboardHandler (IN InterruptFrame* frame);
 
 typedef struct
 {

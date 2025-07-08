@@ -1,8 +1,14 @@
-#include "video.h"
+#include "vga.h"
 #include "../memory/mem.h"
 #include "../utils/math.h"
+#include "../utils/asm.h"
 
 static uint32 currentOffset = 0;
+
+void disableCursor () {
+    outb(ADDRESS_REGISTER_PORT, CURSOR_START_REGISTER);
+    outb(DATA_REGISTER_PORT, 0x10); // 0001 0000
+}
 
 void printchar(IN int8 _char, IN uint8 format)
 {

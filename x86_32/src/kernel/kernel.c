@@ -1,14 +1,22 @@
 #include "../memory/mem.h"
 #include "../utils/math.h"
-#include "../utils/timer.h"
-#include "../video/video.h"
+#include "../video/vga.h"
 #include "../io/keyboard.h"
 #include "../interrupts/idt.h"
 #include "../utils/asm.h"
+#include "../utils/pit.h"
+#include "regression_test_kernel.h"
+#include "../io/ps2.h"
 
 void kmain()
 {
-    setupIDT();
+    testKernel();
+
+    initKeyboard(true); // before setting up interrupts
+
+    initPIT(true);
+    setupIDT(true);
+    disableCursor();
     // if (!initPS2Controller())
     //     println("Failed to init ps2 controller", LRED);
 
@@ -18,8 +26,10 @@ void kmain()
     
     while (true)
     {
-        print("Test ", BWHITE);
-        sleepPIT(1);
+        //print("Test ", BWHITE);
+        //sleep(1000);
+
+        //sleepPIT(1000);
         //sleepFor50000NOP(1000);
         /*for(int32 i = 0; i < 20; i++) {
             print("Test ", BWHITE);
