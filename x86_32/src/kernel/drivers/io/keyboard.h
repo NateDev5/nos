@@ -1,7 +1,8 @@
 #pragma once
 
-#include "../utils/types.h"
-#include "../interrupts/idt.h"
+#include <kernel/interrupts/idt.h>
+
+#include <utils/types.h>
 
 #define INPUT_BUFFER_SIZE   256
 
@@ -29,17 +30,20 @@
 
 #define BREAK_CODE          0xF0
 
-typedef struct KeypressInfo {
-    uint8 scancode;
-    // CAPS, SHIFT, CTRL, ALT, PRESSED
-    uint8 flags;
+namespace Drivers::Keyboard {
+    typedef struct KeypressInfo {
+        uint8 scancode;
+        // CAPS, SHIFT, CTRL, ALT, PRESSED
+        uint8 flags;
 
-} KeypressInfo;
-void initKeyboard (IN bool verbose);
-void processScancode ();
+    } KeypressInfo;
 
-int8 readKey();
-void readLine (OUT KeypressInfo* buffer);
+    void init (IN bool verbose);
+    void processScancode ();
+
+    int8 readKey();
+    void readLine (OUT KeypressInfo* buffer);
+}
 
 __attribute__((interrupt))
-void IRQ1_keyboardHandler (IN InterruptFrame* frame);
+void IRQ1_keyboardHandler (IN Interrupts::IDT::InterruptFrame* frame);

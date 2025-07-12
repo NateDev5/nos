@@ -1,18 +1,17 @@
-#include "math.h"
-#include "../video/vga.h"
+#include <utils/math.h>
 
 // from https://wiki.osdev.org/Printing_To_Screen
-cstr itoa(IN uint32 value, OUT cstr str, IN int32 base) {
-    cstr rc;
-    cstr ptr;
-    cstr low;
+cstr itoa(IN uint32 value, OUT str outStr, IN int32 base) {
+    str rc;
+    str ptr;
+    str low;
 
     if ( base < 2 || base > 36 )
     {
-        *str = '\0';
-        return str;
+        *outStr = '\0';
+        return outStr;
     }
-    rc = ptr = str;
+    rc = ptr = outStr;
     
     // Set '-' for negative decimals.
     if ( value < 0 && base == 10 )

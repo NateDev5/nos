@@ -1,5 +1,6 @@
 #pragma once
-#include "../utils/types.h"
+
+#include <utils/types.h>
 
 // http://www.osdever.net/FreeVGA/home.htm
 // http://www.osdever.net/FreeVGA/vga/crtcreg.htm#0A
@@ -36,16 +37,18 @@
 // shift 4 bits to the left so the first 4 bits are the first color and then mask the last 4 bits to the second color
 #define PRNT_FORMAT(back,fore) (back << 4) | (fore)
 
-void enableCursor (IN uint8 cursorStart, IN uint8 cursorEnd);
-void disableCursor ();
-void setCursorPos (IN uint8 x, IN uint8 y);
-
-void test();
-void printchar (IN int8 _char, IN uint8 format);
-void print(IN const cstr msg, IN uint8 format);
-void println(IN const cstr msg, IN uint8 format);
-void printuint32 (IN uint32 value, IN int32 base, IN uint8 format);
-void setBackgroundColor (IN uint8 color);
-void setForegroundColor (IN uint8 color);
-void clearScreen ();
-void errorScreen (IN const cstr msg);
+namespace Drivers::VGA {
+    void enableCursor (IN uint8 cursorStart, IN uint8 cursorEnd);
+    void disableCursor ();
+    void setCursorPos (IN uint8 x, IN uint8 y);
+    
+    void test();
+    void printchar (IN int8 _char, IN uint8 format);
+    void print(IN const cstr msg, IN uint8 format);
+    void println(IN const cstr msg, IN uint8 format);
+    void printuint32 (IN uint32 value, IN int32 base, IN uint8 format);
+    void setBackgroundColor (IN uint8 color);
+    void setForegroundColor (IN uint8 color);
+    void clearScreen ();
+    void errorScreen (IN const cstr msg);
+}

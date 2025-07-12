@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../utils/types.h"
+#include <utils/types.h>
 
 // https://wiki.osdev.org/Inline_Assembly/Examples#OUTx
 static inline void outb(uint16 port, uint8 val)

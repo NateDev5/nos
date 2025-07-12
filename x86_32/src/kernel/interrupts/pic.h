@@ -4,7 +4,7 @@
 //https://wiki.osdev.org/8259_PIC
 //https://www.geeksforgeeks.org/computer-organization-architecture/operating-modes-of-8259-pic/
 
-#include "../utils/types.h"
+#include <utils/types.h>
 
 #define PIC1                      0x20
 #define PIC2                      0xA0
@@ -27,5 +27,7 @@
 // end of interrupt
 #define PIC_EOI      0x20
 
-void initPIC ();
-void sendEOI (IN uint8 irq);
+namespace Interrupts::PIC {
+    void init ();
+    void sendEOI (IN uint8 irq);
+}
