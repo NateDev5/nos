@@ -5,4 +5,5 @@
 namespace Testing {
     void testKernel ();
     void testMemory ();
+    void testString ();
 }

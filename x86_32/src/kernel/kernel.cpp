@@ -25,13 +25,6 @@ extern "C" void kmain()
     Interrupts::IDT::setup(true);
 
     Drivers::VGA::disableCursor();
-
-    /*
-    KeypressInfo lineBuffer[256];
-    readLine(lineBuffer);
-    for(uint8 i = 0; i < 256; i++)
-        printuint32(lineBuffer[i].scancode, 16, BWHITE);
-    */
    
     while (true)
     {

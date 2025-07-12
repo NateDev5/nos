@@ -59,7 +59,7 @@ namespace Drivers::VGA {
 
     void printuint32 (IN uint32 value, IN int32 base, IN uint8 format) {
         char str[256];
-        itoa(value, str, base);
+        Math::itoa(value, str, base);
         print(str, format);
     }
 
