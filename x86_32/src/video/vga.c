@@ -58,7 +58,7 @@ void println(IN const cstr msg, IN uint8 format)
 void printuint32 (IN uint32 value, IN int32 base, IN uint8 format) {
     char str[256];
     itoa(value, str, base);
-    println(str, format);
+    print(str, format);
 }
 
 void setBackgroundColor(IN uint8 color)

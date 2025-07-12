@@ -6,7 +6,6 @@
 #include "../utils/asm.h"
 #include "../utils/pit.h"
 #include "regression_test_kernel.h"
-#include "../io/ps2.h"
 
 void kmain()
 {

@@ -65,7 +65,9 @@ $(BUILD_FOLDER)/%.o: $(SRC_FOLDER)/%.nasm
 
 $(KERNEL_BIN): $(C_OBJ) $(NASM_OBJ)
 	$(LD) $(LD_FLAGS) $(KERNEL_OBJ) ${OTHER_OBJ} $(NASM_OBJ) -o $@ 
-	truncate -s 5120 $@
+#	truncate -s 5120 $@ <- old (for 10 sectors)
+	@echo "\e[1m Current kernel size: `stat -L -c %s $@` \e[0m"
+	truncate -s 65536 $@
 
 $(OS_IMAGE): $(BUILD_FOLDER) $(BOOTLOADER_BIN) $(KERNEL_BIN)
 	cat $(BOOTLOADER_BIN) $(KERNEL_BIN) > $@
@@ -89,7 +91,7 @@ clean:
 	rm -rf $(BUILD_FOLDER)
 
 run: $(OS_IMAGE)
-	qemu-system-i386 $<
+	qemu-system-i386 $< 
 	make clean
 
 dbg: $(OS_IMAGE_DBG)

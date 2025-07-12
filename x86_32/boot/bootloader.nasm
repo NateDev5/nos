@@ -6,7 +6,8 @@ DATASEG equ data_descriptor - GDT_start
 
 read_disk:
     mov ah, 0x02 ; the mode
-    mov al, 10 ; number of sectors to read
+   ;mov al, 10 <- old (5120)
+    mov al, 128 ; number of sectors to read
     mov ch, 0 ; track/cylinder number 
     mov cl, 2 ; start at two because our bootsector is in the first sector and is already read
     mov dh, 0 ; read with first head
