@@ -5,12 +5,13 @@
 #include "../interrupts/pic.h"
 #include "devices/ps2.h"
 
-KeypressInfo inputBuffer[256];
+KeypressInfo inputBuffer[INPUT_BUFFER_SIZE];
 uint8 bufferPos = 0;
+uint8 bufferTail = 0;
 
 uint8 keyFlags = 0x0;
 
-bool nextKeyBreak = false;
+bool nextInterruptBreakCode = false;
 
 void initKeyboard(IN bool verbose)
 {
@@ -19,50 +20,49 @@ void initKeyboard(IN bool verbose)
         println("(OK) Keyboard initialized", LGREEN);
 }
 
-int8 readKey()
+void readLine(OUT KeypressInfo *buffer)
 {
 
+}
+
+int8 readKey()
+{
+    
     return 0;
 }
 
-void processScancode () {
-    uint8 flags = 0x01 & nextKeyBreak;
+void processScancode()
+{
+    uint8 flags = 0x01 & !nextInterruptBreakCode;
     uint8 scancode = poll();
 
-    if(scancode == BREAK_CODE) {
-        nextKeyBreak = true;
+    if (scancode == BREAK_CODE)
+    {
+        nextInterruptBreakCode = true;
         return;
     }
 
     switch (scancode)
     {
     case SCANCODE_ALT:
-        //         ↓    
-        // 0000 0001
-        keyFlags = nextKeyBreak ? (keyFlags | 0x01) : (keyFlags & ~0x01);
+        keyFlags = nextInterruptBreakCode ? (keyFlags & ~ALT_FLAG) : (keyFlags | ALT_FLAG);
         break;
     case SCANCODE_CTRL:
-        //        ↓    
-        // 0000 0010
-        keyFlags = nextKeyBreak ? (keyFlags | 0x02) : (keyFlags & ~0x02);
+        keyFlags = nextInterruptBreakCode ? (keyFlags & ~CTRL_FLAG) : (keyFlags | CTRL_FLAG);
         break;
     case SCANCODE_SHIFT:
-        //       ↓    
-        // 0000 0100
-        keyFlags = nextKeyBreak ? 0x04 : 0x0;
+        keyFlags = nextInterruptBreakCode ? (keyFlags & ~SHIFT_FLAG) : (keyFlags | SHIFT_FLAG);
         break;
     case SCANCODE_CAPS:
-        //      ↓    
-        // 0000 1000
-        keyFlags |= nextKeyBreak ? 0x08 : 0x0;
+        if (nextInterruptBreakCode)
+            break;
+        keyFlags ^= CAPS_FLAG;
         break;
     default:
         break;
     }
 
-    printuint32(keyFlags, 2, BWHITE);
-    print(" | ", BWHITE);
-
+    flags |= (keyFlags << 1);
 
     inputBuffer[bufferPos].scancode = scancode;
     inputBuffer[bufferPos].flags = flags;
@@ -71,11 +71,18 @@ void processScancode () {
     if (bufferPos > 255)
         bufferPos = 0;
 
-    nextKeyBreak = false;
+    nextInterruptBreakCode = false;
 }
 
 void IRQ1_keyboardHandler(IN InterruptFrame *frame)
 {
     processScancode();
+    clearScreen();
+    for(uint8 i = 0; i < 20; i++) {
+        printuint32(inputBuffer[i].scancode, 16, BWHITE);
+        printchar('_', BWHITE);
+        printuint32(inputBuffer[i].flags, 2, BWHITE);
+        printchar('|', BWHITE);
+    }
     sendEOI(1);
 }
