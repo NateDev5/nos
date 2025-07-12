@@ -63,6 +63,30 @@ namespace Drivers::VGA {
         print(str, format);
     }
 
+    void printf(IN cstr msg, IN uint8 format, IN ...) {
+        if (msg == NULL)
+            return;
+
+        uint8 *videoMem = (uint8 *)BASE_VID_MEM;
+        int32 offset = 0;
+        
+        for (int32 i = 0; (msg[i] != 0) && (i < SCRN_SIZE); i++)
+        {
+            if (msg[i] == '\n')
+            {
+                int offsetForNewLine = currentOffset % (SCRN_WIDTH * 2);
+                currentOffset += (SCRN_WIDTH * 2) - offsetForNewLine;
+                offset = 0;
+                continue;
+            }
+
+            videoMem[offset + currentOffset] = msg[i];
+            videoMem[offset + 1 + currentOffset] = format;
+            offset += 2;
+        }
+        currentOffset += offset;
+    }
+
     void setBackgroundColor(IN uint8 color)
     {
         uint8 *videoMem = (uint8 *)BASE_VID_MEM;

@@ -30,11 +30,6 @@ namespace Testing {
         uint16 strLen_testStr = Library::strlen(testStr);
         Debug::assert(strLen_testStr == 8, "strlen error");
 
-        //strcpy
-        str testStrToCpy = (str)"String to copy";
-        str targetString;
-        Library::strcpy(testStrToCpy, targetString);
-
         //strcmp
         cstr testStrCmp1 = "String to compare 1";
         cstr testStrCmp2 = "String to compare 2";
@@ -44,7 +39,21 @@ namespace Testing {
         strcmpResult = Library::strcmp(testStrCmp1, testStrCmp1);
         Debug::assert(strcmpResult, "strcmp error");
 
+        //strcpy
+        str testStrToCpy = (str)"String to copy";
+        str targetString;
+        Library::strcpy(testStrToCpy, targetString);
+
         strcmpResult = Library::strcmp(testStrToCpy, targetString);
-        Debug::assert(strcmpResult, "strcmp error");
+        Debug::assert(strcmpResult, "strcpy error");
+
+        //strcat
+        str testStrToCat1 = (str)"String 1 + ";
+        str testStrToCat2 = (str)"String 2";
+        int8 outStrCat[STR_MAX_LEN];
+        Library::strcat(testStrToCat1, testStrToCat2, outStrCat);
+
+        strcmpResult = Library::strcmp("String 1 + String 2", outStrCat);
+        Debug::assert(strcmpResult, outStrCat);
     }
 }
