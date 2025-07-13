@@ -1,4 +1,4 @@
-#include <kernel/devices/ps2.h>
+#include <kernel/devices/io/ps2.h>
 
 #include <kernel/library/assert.h>
 

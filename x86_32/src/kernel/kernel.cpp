@@ -9,16 +9,26 @@
 #include <kernel/library/string.h>
 #include <kernel/library/log.h>
 
+#include <kernel/terminal.h>
+
 extern "C" void kmain()
 {
     Drivers::VGA::disableCursor();
 
+    // testing
     Testing::testKernel();
 
+    // setup
     Drivers::Keyboard::init(true); // before setting up interrupts
 
     Drivers::PIT::init(true);
     Interrupts::IDT::setup(true);
+
+    // welcome
+    Library::fprintln("Welcome to NOS!", Drivers::VGA::CYAN);
+
+    // terminal
+    Kernel::Terminal::run();
    
     while (true)
     {

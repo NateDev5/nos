@@ -5,121 +5,87 @@
 #include <kernel/library/panic.h>
 #include <kernel/library/stdarg.h>
 
+#include <kernel/library/log.h>
+
 #include <utils/math.h>
 #include <utils/asm.h>
 
 namespace Drivers::VGA {
-    static uint32 currentOffset = 0;
+    static uint16 currentOffset = 0;
 
-    void disableCursor () {
-        outb(ADDRESS_REGISTER_PORT, CURSOR_START_REGISTER);
-        outb(DATA_REGISTER_PORT, 0x10); // 0001 0000
+    void modifyRegister (IN uint8 reg, IN uint8 data) {
+        outb(ADDRESS_REGISTER_PORT, reg);
+        outb(DATA_REGISTER_PORT, data);
     }
 
-    void putchar (IN int8 _char) {
-        fputchar(_char, BWHITE);
+    void enableCursor (IN CursorStyle cursorStyle) {
+        uint8 maxScanLines = inb(MAX_SCAN_LINE_REGISTER);
+        maxScanLines &= FIRST_5_BIT_MASK;
+        switch (cursorStyle)
+        {
+        case UNDER: 
+            modifyRegister(CURSOR_START_REGISTER, 0xD);
+            modifyRegister(CURSOR_END_REGISTER, maxScanLines);
+            break;
+        case LARGE:
+            modifyRegister(CURSOR_START_REGISTER, 0);
+            modifyRegister(CURSOR_END_REGISTER, maxScanLines);
+        }
+    }
+
+    void disableCursor () {
+        modifyRegister(CURSOR_START_REGISTER, CURSOR_DISABLED); // 0010 0000
+    }
+
+    void setCursorPos (IN uint16 offset) {
+        modifyRegister(CURSOR_LOCATION_HIGH_REGISTER, (offset >> 8) & 0xFF);
+        modifyRegister(CURSOR_LOCATION_LOW_REGISTER,  offset & 0xFF);
     }
 
     void fputchar (IN int8 _char, IN uint8 format) {
         if (_char == NULL) Kernel::panic("(putcharf) _char is null");
-
-        if (currentOffset >= SCRN_SIZE)
+        
+        if (currentOffset >= SCRN_SIZE * 2)
             return;
-
+        
         if (_char == '\n')
         {
             int offsetForNewLine = currentOffset % (SCRN_WIDTH * 2);
             currentOffset += (SCRN_WIDTH * 2) - offsetForNewLine;
             return;
         }
-
+        
         uint8 *videoMem = (uint8 *)BASE_VID_MEM;
         videoMem[currentOffset] = _char;
         videoMem[currentOffset + 1] = format;
         currentOffset += 2;
+        
+        //setCursorPos(currentOffset / 2);
     }
 
-    void putstr (IN cstr string) {
-        fputstr(string, BWHITE);
+    void putchar (IN int8 _char) {
+        fputchar(_char, BWHITE);
     }
 
     void fputstr (IN cstr string, IN uint8 format) {
         if (string == NULL) Kernel::panic("(fputstr) string is null");
-
+    
         for (uint32 i = 0; (string[i] != 0) && (i < SCRN_SIZE); i++)
             fputchar(string[i], format);
     }
+    void putstr (IN cstr string) {
+        fputstr(string, BWHITE);
+    }
 
-    /*
-    void printchar(IN int8 _char, IN uint8 format)
-    {
-        if (_char == NULL)
-            return;
+    void fputcharAt (IN int8 _char, IN uint16 offset) {
+    }
 
-        if (currentOffset >= SCRN_SIZE)
-            return;
-
+    void popchar () {
         uint8 *videoMem = (uint8 *)BASE_VID_MEM;
-        videoMem[currentOffset] = _char;
-        videoMem[currentOffset + 1] = format;
-        currentOffset += 2;
+        videoMem[currentOffset - 1] = 0;
+        videoMem[currentOffset - 2] = 0;
+        currentOffset -= 2;
     }
-
-    void print(IN const cstr msg, IN uint8 format)
-    {
-        if (msg == NULL)
-            return;
-
-        uint8 *videoMem = (uint8 *)BASE_VID_MEM;
-        int32 offset = 0;
-
-        for (int32 i = 0; (msg[i] != 0) && (i < SCRN_SIZE); i++)
-        {
-            if (msg[i] == '\n')
-            {
-                int offsetForNewLine = currentOffset % (SCRN_WIDTH * 2);
-                currentOffset += (SCRN_WIDTH * 2) - offsetForNewLine;
-                offset = 0;
-                continue;
-            }
-
-            videoMem[offset + currentOffset] = msg[i];
-            videoMem[offset + 1 + currentOffset] = format;
-            offset += 2;
-        }
-        currentOffset += offset;
-    }
-
-    void println(IN const cstr msg, IN uint8 format)
-    {
-        print(msg, format);
-        print("\n", format);
-    }
-
-    void printuint32 (IN uint32 value, IN int32 base, IN uint8 format) {
-        char str[256];
-        Math::itoa(value, str, base);
-        print(str, format);
-    }
-
-    void printf(IN cstr msg, IN uint8 format, IN ...) {
-        if (msg == NULL)
-            return;
-
-        int8 outMsg[STR_MAX_LEN];
-
-        va_list args;
-        va_start(args, format);
-
-        str arg = va_arg(args, str);
-        printuint32((uint32)&arg[0], 16, BWHITE);
-        //Library::strfmt(msg, outMsg, args);
-
-        va_end(args);
-
-        print(outMsg, format);
-    }
-    */
 
     void setBackgroundColor(IN uint8 color)
     {
@@ -144,18 +110,9 @@ namespace Drivers::VGA {
         }
     }
 
-    /*
-    void errorScreen (IN const cstr msg) {
-        Drivers::VGA::clearScreen();
-        print("ERROR: ", BLACK);
-        println(msg, BLACK);
-        setBackgroundColor(LRED);
-    }
-    */
-
     void clearScreen()
     {
-        Memory::memset((PTRMEM)BASE_VID_MEM, 0x0, SCRN_SIZE * 2);
+        Memory::memset((PTRMEM)BASE_VID_MEM, 0, SCRN_SIZE * 2);
         currentOffset = 0;
     }
 
@@ -167,5 +124,9 @@ namespace Drivers::VGA {
             videoMem[i * 2] = 'A' + i;
             videoMem[i * 2 + 1] = i;
         }
+    }
+
+    uint16 getCurrentOffset () {
+        return currentOffset;
     }
 }

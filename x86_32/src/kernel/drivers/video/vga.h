@@ -6,16 +6,23 @@
 // http://www.osdever.net/FreeVGA/vga/crtcreg.htm#0A
 // http://www.osdever.net/FreeVGA/vga/vgareg.htm
 
-#define BASE_VID_MEM            0xB8000
-#define SCRN_WIDTH              80
-#define SCRN_HEIGHT             25
-#define SCRN_SIZE               SCRN_HEIGHT * SCRN_WIDTH
+#define BASE_VID_MEM                    0xB8000
+#define SCRN_WIDTH                      80
+#define SCRN_HEIGHT                     25
+#define SCRN_SIZE                       SCRN_HEIGHT * SCRN_WIDTH
 
-#define ADDRESS_REGISTER_PORT   0x3D4
-#define DATA_REGISTER_PORT      0x3D5
+#define ADDRESS_REGISTER_PORT           0x3D4
+#define DATA_REGISTER_PORT              0x3D5
 
-#define CURSOR_START_REGISTER   0x0A
-#define CURSOR_END_REGISTER     0x0B
+#define MAX_SCAN_LINE_REGISTER          0x09
+#define CURSOR_START_REGISTER           0x0A
+#define CURSOR_END_REGISTER             0x0B
+#define CURSOR_LOCATION_HIGH_REGISTER   0x0E
+#define CURSOR_LOCATION_LOW_REGISTER    0x0F
+
+#define CURSOR_DISABLED                 0x20
+
+#define FIRST_5_BIT_MASK                0x1F
 
 /*
 #define BLACK                   0x0
@@ -59,22 +66,32 @@ namespace Drivers::VGA {
         BWHITE   =  0xF
     };
 
-    void enableCursor (IN uint8 cursorStart, IN uint8 cursorEnd);
+    enum CursorStyle {
+        UNDER,
+        LARGE
+    };
+
+    void modifyRegister (IN uint8 reg, IN uint8 data);
+
+    void enableCursor (IN CursorStyle cursorStyle);
     void disableCursor ();
-    void setCursorPos (IN uint8 x, IN uint8 y);
+    void setCursorPos (IN uint16 offset);
     
-    void test();
     void putchar (IN int8 _char);
     void fputchar (IN int8 _char, IN uint8 format);
+
     void putstr (IN cstr string);
     void fputstr (IN cstr string, IN uint8 format);
-    //void printchar (IN int8 _char, IN uint8 format);
-    //void print(IN const cstr msg, IN uint8 format);
-    //void println(IN const cstr msg, IN uint8 format);
-    //void printuint32 (IN uint32 value, IN int32 base, IN uint8 format);
-    //void printf(IN cstr msg, IN uint8 format, IN ...);
+
+    void fputcharAt (IN int8 _char, IN uint16 offset);
+    
+    void popchar ();
+
     void setBackgroundColor (IN uint8 color);
     void setForegroundColor (IN uint8 color);
+
     void clearScreen ();
-    void errorScreen (IN const cstr msg);
+    void test();
+
+    uint16 getCurrentOffset ();
 }

@@ -1,0 +1,115 @@
+#pragma once
+
+#define KEYCODE_INVALID                  0x00
+
+#define KEYCODE_A                        0x01
+#define KEYCODE_B                        0x02
+#define KEYCODE_C                        0x03
+#define KEYCODE_D                        0x04
+#define KEYCODE_E                        0x05
+#define KEYCODE_F                        0x06
+#define KEYCODE_G                        0x07
+#define KEYCODE_H                        0x08
+#define KEYCODE_I                        0x09
+#define KEYCODE_J                        0x0A
+#define KEYCODE_K                        0x0B
+#define KEYCODE_L                        0x0C
+#define KEYCODE_M                        0x0D
+#define KEYCODE_N                        0x0E
+#define KEYCODE_O                        0x0F
+#define KEYCODE_P                        0x10
+#define KEYCODE_Q                        0x11
+#define KEYCODE_R                        0x12
+#define KEYCODE_S                        0x13
+#define KEYCODE_T                        0x14
+#define KEYCODE_U                        0x15
+#define KEYCODE_V                        0x16
+#define KEYCODE_W                        0x17
+#define KEYCODE_X                        0x18
+#define KEYCODE_Y                        0x19
+#define KEYCODE_Z                        0x1A
+
+#define KEYCODE_0                        0x1B
+#define KEYCODE_1                        0x1C
+#define KEYCODE_2                        0x1D
+#define KEYCODE_3                        0x1E
+#define KEYCODE_4                        0x1F
+#define KEYCODE_5                        0x20
+#define KEYCODE_6                        0x21
+#define KEYCODE_7                        0x22
+#define KEYCODE_8                        0x23
+#define KEYCODE_9                        0x24
+
+#define KEYCODE_TILDE                    0x25
+#define KEYCODE_MINUS                    0x26
+#define KEYCODE_EQUAL                    0x27
+#define KEYCODE_LBRACKET                 0x28
+#define KEYCODE_RBRACKET                 0x29
+#define KEYCODE_BACK_SLASH               0x2A
+#define KEYCODE_SEMICOLON                0x2B
+#define KEYCODE_APOSTROPHE               0x2C
+#define KEYCODE_COMMA                    0x2D
+#define KEYCODE_PERIOD                   0x2E
+#define KEYCODE_FORWARD_SLASH            0x2F
+
+#define KEYCODE_F1                       0x30
+#define KEYCODE_F2                       0x31
+#define KEYCODE_F3                       0x32
+#define KEYCODE_F4                       0x33
+#define KEYCODE_F5                       0x34
+#define KEYCODE_F6                       0x35
+#define KEYCODE_F7                       0x36
+#define KEYCODE_F8                       0x37
+#define KEYCODE_F9                       0x38
+#define KEYCODE_F10                      0x39
+#define KEYCODE_F11                      0x3A
+#define KEYCODE_F12                      0x3B
+
+#define KEYCODE_BACKSPACE                0x3C
+#define KEYCODE_SPACE                    0x3D
+#define KEYCODE_TAB                      0x3E
+#define KEYCODE_CAPS                     0x3F
+#define KEYCODE_LSHFT                    0x40
+#define KEYCODE_RSHFT                    0x41
+#define KEYCODE_LCTRL                    0x42
+#define KEYCODE_RCTRL                    0x43
+#define KEYCODE_LALT                     0x44
+#define KEYCODE_RALT                     0x45
+#define KEYCODE_LWIN                     0x46
+#define KEYCODE_RWIN                     0x47
+#define KEYCODE_ENTER                    0x48
+#define KEYCODE_ESC                      0x49
+#define KEYCODE_INSERT                   0x4A
+#define KEYCODE_DELETE                   0x4B
+#define KEYCODE_HOME                     0x4C
+#define KEYCODE_END                      0x4D
+#define KEYCODE_PGUP                     0x4E
+#define KEYCODE_PGDN                     0x4F
+#define KEYCODE_UARROW                   0x50
+#define KEYCODE_LARROW                   0x51
+#define KEYCODE_DARROW                   0x52
+#define KEYCODE_RARROW                   0x53
+#define KEYCODE_NUM                      0x54
+
+/*
+#define KEYCODE_KP/                      0x
+#define KEYCODE_KP*                      0x
+#define KEYCODE_KP-                      0x
+#define KEYCODE_KP+                      0x
+#define KEYCODE_KPEN                     0x
+#define KEYCODE_KP.                      0x
+#define KEYCODE_KP0                      0x
+#define KEYCODE_KP1                      0x
+#define KEYCODE_KP2                      0x
+#define KEYCODE_KP3                      0x
+#define KEYCODE_KP4                      0x
+#define KEYCODE_KP5                      0x
+#define KEYCODE_KP6                      0x
+#define KEYCODE_KP7                      0x
+#define KEYCODE_KP8                      0x
+#define KEYCODE_KP9                      0x
+#define KEYCODE_APPS                     0x
+#define KEYCODE_PRNTSCRN                 0x
+#define KEYCODE_SCROLL                   0x
+#define KEYCODE_PAUSE                    0x
+*/

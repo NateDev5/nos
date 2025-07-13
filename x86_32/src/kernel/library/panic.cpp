@@ -8,13 +8,14 @@
 namespace Kernel {
     void panic (IN cstr msg) {
         errorScreen(msg);
-
+        
         cli();
         while (true)
-            hlt();
+        hlt();
     }
-
+    
     void errorScreen (IN cstr errorMsg) {
+        Drivers::VGA::disableCursor();
         Library::clear();
         Library::print("ERROR: ");
         Library::println(errorMsg);
