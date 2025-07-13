@@ -4,6 +4,8 @@
 #include <kernel/interrupts/idt.h>
 #include <kernel/interrupts/pic.h>
 
+#include <kernel/library/log.h>
+
 #include <kernel/devices/ps2.h>
 
 #include <utils/math.h>
@@ -22,7 +24,7 @@ namespace Drivers::Keyboard {
     {
         Devices::PS2::init();
         if (verbose)
-            VGA::println("(OK) Keyboard initialized", LGREEN);
+            Library::fprintln("(OK) Keyboard initialized", Drivers::VGA::LGREEN);
     }
 
     void readLine(OUT KeypressInfo *buffer)

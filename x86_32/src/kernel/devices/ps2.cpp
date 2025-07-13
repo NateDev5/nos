@@ -1,10 +1,8 @@
 #include <kernel/devices/ps2.h>
 
-#include <kernel/debug/assert.h>
+#include <kernel/library/assert.h>
 
 #include <utils/asm.h>
-
-static uint8 currentFlags = 0;
 
 namespace Devices::PS2 {
     void init () {
@@ -12,7 +10,7 @@ namespace Devices::PS2 {
         outb(PS2_COMMAND_REGISTER, PS2_SELFTEST_SEND);
         ioWait();
         uint8 selfTestResult = inb(PS2_DATA_PORT);
-        Debug::assert(selfTestResult == PS2_SELFTEST_RECEIVE, "PS2 Controller self test failed");
+        Kernel::assert(selfTestResult == PS2_SELFTEST_RECEIVE, "PS2 Controller self test failed");
 
         // tell the controller the next byte written to data port is the keyboard command byte
         outb(PS2_COMMAND_REGISTER, PS2_WRITE_COMMAND_BYTE);

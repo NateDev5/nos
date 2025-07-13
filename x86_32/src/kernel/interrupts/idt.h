@@ -29,9 +29,6 @@ namespace Interrupts::IDT {
         uint32 base; // base address of IDT
     } __attribute__((packed)) IDTR;
 
-    static IDT_ENTRY idt[256]; // the actual idt;
-    static IDTR idtr;
-
     void setup(IN bool verbose);
     void setIDTEntry (IN uint8 vector, IN PTR handler, IN uint8 attributes);
     

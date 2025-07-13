@@ -1,6 +1,8 @@
 #include <kernel/drivers/hardware/pit.h>
 #include <kernel/drivers/video/vga.h>
 
+#include <kernel/library/log.h>
+
 #include <kernel/interrupts/pic.h>
 
 #include <utils/asm.h>
@@ -18,7 +20,7 @@ namespace Drivers::PIT {
         outb(PIT_CHANNEL_0, divisor & 0xFF);
         outb(PIT_CHANNEL_0, divisor >> 8);
 
-        if(verbose) Drivers::VGA::println("(OK) PIT initialized", LGREEN);
+        if(verbose) Library::fprintln("(OK) PIT initialized", Drivers::VGA::LGREEN);
     }
 
     static uint32 curMilliseconds;

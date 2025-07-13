@@ -12,7 +12,7 @@ LD					=  /usr/bin/ld
 # for using __attribute__((interrupt)):
 # -mgeneral-regs-only 
 # -Werror
-GCC_FLAGS			=  -m32 -ffreestanding -fno-pic -fno-pie -fno-exceptions -fno-rtti -Werror -mgeneral-regs-only 
+GCC_FLAGS			=  -m32 -ffreestanding -fno-pic -fno-pie -fno-exceptions -fno-rtti -Werror -Wall -mgeneral-regs-only 
 GCC_FLAGS_DBG		=  -m32 -ffreestanding -fno-pic -fno-pie -fno-exceptions -Werror -g
 LD_FLAGS			=  -melf_i386 -Ttext 0x8000 -e kmain -nostdlib --oformat binary
 

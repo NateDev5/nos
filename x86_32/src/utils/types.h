@@ -1,6 +1,6 @@
 #pragma once
 
-#define NULL  0
+#define NULL            0
 #define IN
 #define OUT
 #define IN_OUT
