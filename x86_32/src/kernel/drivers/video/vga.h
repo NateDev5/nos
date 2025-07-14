@@ -24,6 +24,11 @@
 
 #define FIRST_5_BIT_MASK                0x1F
 
+// shift 4 bits to the left so the first 4 bits are the first color and then mask the last 4 bits to the second color
+#define FORMAT(back,fore) (back << 4) | (fore)
+
+#define BASE_FMT                        FORMAT(0x0,0xF)
+
 /*
 #define BLACK                   0x0
 #define BLUE                    0x1
@@ -42,9 +47,6 @@
 #define YELLOW                  0xE
 #define BWHITE                  0xF
 */
-
-// shift 4 bits to the left so the first 4 bits are the first color and then mask the last 4 bits to the second color
-#define FORMAT(back,fore) (back << 4) | (fore)
 
 namespace Drivers::VGA {
     enum Color {
@@ -84,8 +86,10 @@ namespace Drivers::VGA {
     void fputstr (IN cstr string, IN uint8 format);
 
     void fputcharAt (IN int8 _char, IN uint16 offset);
-    
+
     void popchar ();
+
+    void removecharAt (IN uint16 offset);
 
     void setBackgroundColor (IN uint8 color);
     void setForegroundColor (IN uint8 color);

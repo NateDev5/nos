@@ -2,6 +2,7 @@
 
 #include <kernel/library/log.h>
 #include <kernel/library/string.h>
+#include <kernel/library/arrayutils.h>
 
 #include <kernel/drivers/video/vga.h>
 #include <kernel/drivers/io/keycodes.h>
@@ -75,7 +76,6 @@ namespace Kernel::Terminal {
     void run() {
         Drivers::VGA::enableCursor(Drivers::VGA::UNDER);
         newEntry();
-        terminalBuffer[0] = '1';
 
         while (true) {
             Drivers::Keyboard::KeypressInfo keypress = Drivers::Keyboard::readKey();
@@ -95,13 +95,16 @@ namespace Kernel::Terminal {
             if(keypress.keycode == KEYCODE_BACKSPACE) {
                 if(terminalBufferPos == 0) return;
 
-                /*if(terminalBuffer[terminalBufferPos+1] == 0) {
-                    terminalBufferPos--;
-                    terminalBuffer[terminalBufferPos] = 0;
-                    currentOffset--;
-                    Drivers::VGA::popchar();
-                    Drivers::VGA::setCursorPos(currentOffset);
-                }*/
+                // - 2 because at the start of every entry there is "> "
+                uint16 currentCursorPos = currentOffset % SCRN_WIDTH - 2;
+                terminalBufferPos = Library::removeAt(terminalBuffer, TERMINAL_BUFFER_SIZE, terminalBufferPos, currentCursorPos - 1);
+
+                currentOffset--;
+
+                Drivers::VGA::removecharAt(currentOffset * 2);
+
+                Drivers::VGA::setCursorPos(currentOffset);
+
             }
 
             if(keypress.flags & Drivers::Keyboard::EXTENDED 

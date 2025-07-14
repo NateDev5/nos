@@ -4,6 +4,7 @@
 #include <kernel/library/string.h>
 #include <kernel/library/panic.h>
 #include <kernel/library/stdarg.h>
+#include <kernel/library/arrayutils.h>
 
 #include <kernel/library/log.h>
 
@@ -87,6 +88,17 @@ namespace Drivers::VGA {
         currentOffset -= 2;
     }
 
+    void removecharAt (IN uint16 offset) {
+        if(offset > SCRN_SIZE) return;
+
+        uint8 *videoMem = (uint8 *)BASE_VID_MEM;
+
+        for(uint16 i = offset; i < currentOffset; i += 2) {
+            videoMem[i] = videoMem[i+2];
+            videoMem[i+1] = videoMem[i+3];
+        }
+    }
+
     void setBackgroundColor(IN uint8 color)
     {
         uint8 *videoMem = (uint8 *)BASE_VID_MEM;
@@ -112,8 +124,14 @@ namespace Drivers::VGA {
 
     void clearScreen()
     {
-        Memory::memset((PTRMEM)BASE_VID_MEM, 0, SCRN_SIZE * 2);
         currentOffset = 0;
+
+        uint8 *videoMem = (uint8 *)BASE_VID_MEM;
+
+        for(uint32 ui = 0; ui < SCRN_SIZE * 2; ui++) {
+            if(ui % 2) videoMem[ui] = BASE_FMT;
+            else videoMem[ui] = 0;
+        }
     }
 
     void test()
