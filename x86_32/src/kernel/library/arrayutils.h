@@ -17,8 +17,6 @@ namespace Library {
             return arrayPos;
         }
 
-        array[index] = NULL;
-
         for(uint32 i = index; i < arrayPos; i++) {
             array[i] = array[i+1];
             array[i+1] = NULL;

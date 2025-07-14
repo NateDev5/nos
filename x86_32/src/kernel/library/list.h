@@ -40,8 +40,6 @@ namespace Library {
             void removeAt (IN uint32 index) {
                 if(index > listPos - 1) Kernel::panic("(List::removeAt) List index out of bounds");
 
-                data[index] = NULL;
-
                 for(uint32 i = index; i < listPos; i++) {
                     data[i] = data[i+1];
                     data[i+1] = NULL;

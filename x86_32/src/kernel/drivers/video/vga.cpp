@@ -96,7 +96,12 @@ namespace Drivers::VGA {
         for(uint16 i = offset; i < currentOffset; i += 2) {
             videoMem[i] = videoMem[i+2];
             videoMem[i+1] = videoMem[i+3];
+
+            videoMem[i+2] = NULL;
+            videoMem[i+3] = BASE_FMT;
         }
+
+        currentOffset -= 2;
     }
 
     void setBackgroundColor(IN uint8 color)
