@@ -36,7 +36,7 @@ namespace Kernel::Terminal {
             // other
             0    /* back space */, 
             ' '  /* space */,
-            '\t' /* tab */,
+            0 /* tab */,
             0,0,0,0,
             0    /* enter */,
             0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
@@ -59,7 +59,7 @@ namespace Kernel::Terminal {
             // other
             0    /* back space */, 
             ' '  /* space */,
-            '\t' /* tab */,
+            0    /* tab */,
             0,0,0,0,
             0    /* enter */,
             0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
@@ -86,9 +86,12 @@ namespace Kernel::Terminal {
     void handleKeypress (IN Drivers::Keyboard::KeypressInfo keypress) {
         if(keypress.flags & Drivers::Keyboard::KEYDOWN && keypress.scancode != SCANCODE_INVALID) {
             if(keypress.keycode == KEYCODE_ENTER) {
+                uint16 currentLine = (currentOffset / SCRN_WIDTH) + 1;
                 Library::print("\n");
                 handleBuffer();
                 newEntry();
+                if(currentLine == SCRN_HEIGHT)
+                    Drivers::VGA::offsetScreen();
                 return;
             }
 
@@ -97,6 +100,7 @@ namespace Kernel::Terminal {
 
                 // - 2 because at the start of every entry there is "> "
                 uint16 currentCursorPos = currentOffset % SCRN_WIDTH - 2;
+                if(currentCursorPos == 0) return;
                 terminalBufferPos = Library::removeAt(terminalBuffer, TERMINAL_BUFFER_SIZE, terminalBufferPos, currentCursorPos - 1);
 
                 currentOffset--;

@@ -6,10 +6,13 @@
 // http://www.osdever.net/FreeVGA/vga/crtcreg.htm#0A
 // http://www.osdever.net/FreeVGA/vga/vgareg.htm
 
+#define START_VID_MEM                   0xA0000
 #define BASE_VID_MEM                    0xB8000
+#define END_VID_MEM                     0xC0000
 #define SCRN_WIDTH                      80
 #define SCRN_HEIGHT                     25
 #define SCRN_SIZE                       SCRN_HEIGHT * SCRN_WIDTH
+#define VID_MEM_BOUNDS                  (uint32)(BASE_VID_MEM + (SCRN_SIZE * 2))
 
 #define ADDRESS_REGISTER_PORT           0x3D4
 #define DATA_REGISTER_PORT              0x3D5
@@ -73,6 +76,8 @@ namespace Drivers::VGA {
         LARGE
     };
 
+    void init ();
+
     void modifyRegister (IN uint8 reg, IN uint8 data);
 
     void enableCursor (IN CursorStyle cursorStyle);
@@ -90,6 +95,8 @@ namespace Drivers::VGA {
     void popchar ();
 
     void removecharAt (IN uint16 offset);
+
+    void offsetScreen (); 
 
     void setBackgroundColor (IN uint8 color);
     void setForegroundColor (IN uint8 color);

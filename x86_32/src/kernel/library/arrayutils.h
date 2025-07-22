@@ -8,7 +8,7 @@ namespace Library {
     template<typename T>
     uint32 removeAt (IN_OUT T* array, IN uint32 arrayLen, IN uint32 arrayPos, IN uint32 index) {
         if(array == NULL) Kernel::panic("(arrayutils::removeAt) Array is null");
-        if(index >= arrayLen || index > arrayPos) Kernel::panic("(arrayutils::removeAt) Index out of bounds");
+        if(index > arrayPos) Kernel::panic("(arrayutils::removeAt) Index out of bounds");
 
         if(index == arrayLen - 1) {
             array[index] = NULL;
