@@ -96,8 +96,6 @@ namespace Drivers::VGA {
 
     void removecharAt (IN uint16 offset);
 
-    void offsetScreen (); 
-
     void setBackgroundColor (IN uint8 color);
     void setForegroundColor (IN uint8 color);
 

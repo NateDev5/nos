@@ -8,3 +8,5 @@ videoMem[i * 2 + 1] = 0x07;
 
 //https://en.wikipedia.org/wiki/X86_calling_conventions
 //https://stanislavs.org/helppc/int_table.html
+
+https://wiki.osdev.org/Stack_Smashing_Protector

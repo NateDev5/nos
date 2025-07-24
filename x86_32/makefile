@@ -6,13 +6,14 @@ SRC_FOLDER			=  src
 KERNEL_FOLDER		=  $(SRC_FOLDER)/kernel
 
 # Tools
-GCC					=  /usr/bin/gcc
-LD					=  /usr/bin/ld
+GCC					=  gcc#/usr/bin/gcc
+LD					=  ld#/usr/bin/ld
 
 # for using __attribute__((interrupt)):
 # -mgeneral-regs-only 
 # -Werror
-GCC_FLAGS			=  -m32 -ffreestanding -fno-pic -fno-pie -fno-exceptions -fno-rtti -Werror -Wall -mgeneral-regs-only 
+# -fno-stack-protector (stack overflows wont be found and it might find bugs if enabled)
+GCC_FLAGS			=  -m32 -ffreestanding -fno-pic -fno-pie -fno-exceptions -fno-rtti -fno-stack-protector -Werror -Wall -mgeneral-regs-only
 GCC_FLAGS_DBG		=  -m32 -ffreestanding -fno-pic -fno-pie -fno-exceptions -Werror -g
 LD_FLAGS			=  -melf_i386 -Ttext 0x8000 -e kmain -nostdlib --oformat binary
 

@@ -108,38 +108,6 @@ namespace Drivers::VGA {
         currentOffset -= 2;
     }
 
-    void offsetScreen () {
-        uint8 *videoMemBounds = (uint8 *)VID_MEM_BOUNDS;
-
-        for(int i = 0; i < 500; i +=2) {
-            videoMemBounds[i] = 'N';
-            videoMemBounds[i+1] = BASE_FMT;
-        }
-
-        uint32 endAddressOutOfBounds = 0;
-        for(uint32 i = 0; ((uint32)&videoMemBounds[i]) < END_VID_MEM; i += 2) {
-            endAddressOutOfBounds = (uint32)&videoMemBounds[i];
-            if(videoMemBounds[i] == NULL) break;
-        }
-
-        uint32 diff = endAddressOutOfBounds - VID_MEM_BOUNDS;
-        for(uint32 i = 0; i < diff; i++)
-            removecharAt(0);
-
-        Memory::memcpy((PTRMEM)VID_MEM_BOUNDS, ((PTRMEM)BASE_VID_MEM + currentOffset), diff);
-        //Library::printf("%i", diff);
-
-        /*for(uint32 i = offset; i < currentOffset; i += 2) {
-            videoMem[i] = videoMem[i+2];
-            videoMem[i+1] = videoMem[i+3];
-
-            videoMem[i+2] = NULL;
-            videoMem[i+3] = BASE_FMT;
-        }*/
-
-        //clearScreen();
-    }
-
     void setBackgroundColor(IN uint8 color)
     {
         uint8 *videoMem = (uint8 *)BASE_VID_MEM;

@@ -29,9 +29,9 @@ extern "C" void kmain()
     Library::fprintln("Welcome to NOS!", Drivers::VGA::CYAN);
 
     // terminal
-    //Kernel::Terminal::run();
+    Kernel::Terminal::run();
 
-    Drivers::VGA::offsetScreen();
+    //Drivers::VGA::offsetScreen();
    
     while (true)
     {
