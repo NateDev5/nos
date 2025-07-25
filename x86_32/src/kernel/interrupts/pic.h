@@ -29,5 +29,5 @@
 
 namespace Interrupts::PIC {
     void init ();
-    void sendEOI (IN uint8 irq);
+    void send_EOI (IN uint8 irq);
 }

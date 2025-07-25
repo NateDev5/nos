@@ -9,7 +9,7 @@
 #define KEYCODE_MAP_EXTENDED_LEN     17
 
 namespace Drivers::Keyboard {
-    static constexpr uint8 keycodeMap[][2] = {
+    static constexpr uint8 keycode_map[][2] = {
         {PS2_SCANCODE_A, KEYCODE_A},
         {PS2_SCANCODE_B, KEYCODE_B},
         {PS2_SCANCODE_C, KEYCODE_C},
@@ -97,7 +97,7 @@ namespace Drivers::Keyboard {
         {PS2_SCANCODE_SCROLL, KEYCODE_INVALID}
     };
 
-    static constexpr uint8 keycodeMapExtended [][2] = {
+    static constexpr uint8 keycode_map_extended [][2] = {
         {PS2_SCANCODE_RCTRL, KEYCODE_RCTRL},
         {PS2_SCANCODE_RALT, KEYCODE_RALT},
         {PS2_SCANCODE_LWIN, KEYCODE_LWIN},

@@ -42,12 +42,12 @@ namespace Drivers::Keyboard {
     };
 
     void init (IN bool verbose);
-    uint8 getKeycode (IN uint8 scancode, IN bool extended);
-    void processScancode ();
+    uint8 get_keycode (IN uint8 scancode, IN bool extended);
+    void process_scancode ();
 
-    KeypressInfo readKey();
-    void readLine (OUT KeypressInfo* buffer);
+    KeypressInfo read_key();
+    void read_line (OUT KeypressInfo* buffer);
 }
 
 __attribute__((interrupt))
-void IRQ1_keyboardHandler (IN Interrupts::IDT::InterruptFrame* frame);
+void IRQ1_keyboard_handler (IN Interrupts::IDT::InterruptFrame* frame);

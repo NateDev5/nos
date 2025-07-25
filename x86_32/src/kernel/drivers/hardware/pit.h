@@ -16,4 +16,4 @@ namespace Drivers::PIT {
 }
 
 __attribute__((interrupt))
-void IRQ0_timerHandler (IN Interrupts::IDT::InterruptFrame* frame);
+void IRQ0_timer_handler (IN Interrupts::IDT::InterruptFrame* frame);

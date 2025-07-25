@@ -1,53 +1,53 @@
 ; %+ is to concantenate strings
 ; %1 is the argument number 1
 
-%macro interruptStub 1
-interruptStub_%+%1:
+%macro interrupt_stub 1
+interrupt_stub_%+%1:
     push %1
-    call handleException
+    call handle_exception
     add esp, 4
     iret
 %endmacro
 
-extern handleException
+extern handle_exception
 
-interruptStub 0
-interruptStub 1
-interruptStub 2
-interruptStub 3
-interruptStub 4
-interruptStub 5
-interruptStub 6
-interruptStub 7
-interruptStub 8
-interruptStub 9
-interruptStub 10
-interruptStub 11
-interruptStub 12
-interruptStub 13
-interruptStub 14
-interruptStub 15
-interruptStub 16
-interruptStub 17
-interruptStub 18
-interruptStub 19
-interruptStub 20
-interruptStub 21
-interruptStub 22
-interruptStub 23
-interruptStub 24
-interruptStub 25
-interruptStub 26
-interruptStub 27
-interruptStub 28
-interruptStub 29
-interruptStub 30
-interruptStub 31
+interrupt_stub 0
+interrupt_stub 1
+interrupt_stub 2
+interrupt_stub 3
+interrupt_stub 4
+interrupt_stub 5
+interrupt_stub 6
+interrupt_stub 7
+interrupt_stub 8
+interrupt_stub 9
+interrupt_stub 10
+interrupt_stub 11
+interrupt_stub 12
+interrupt_stub 13
+interrupt_stub 14
+interrupt_stub 15
+interrupt_stub 16
+interrupt_stub 17
+interrupt_stub 18
+interrupt_stub 19
+interrupt_stub 20
+interrupt_stub 21
+interrupt_stub 22
+interrupt_stub 23
+interrupt_stub 24
+interrupt_stub 25
+interrupt_stub 26
+interrupt_stub 27
+interrupt_stub 28
+interrupt_stub 29
+interrupt_stub 30
+interrupt_stub 31
 
-global stubTable
-stubTable:
+global stub_table
+stub_table:
 %assign i 0 
 %rep    32 
-    dd interruptStub_%+i
+    dd interrupt_stub_%+i
 %assign i i+1 
 %endrep

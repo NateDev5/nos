@@ -1,3 +1,4 @@
+#include "utils/types.h"
 #include <kernel/drivers/video/vga.h>
 #include <kernel/memory/mem.h>
 
@@ -12,61 +13,61 @@
 #include <utils/asm.h>
 
 namespace Drivers::VGA {
-    static uint16 currentOffset = 0;
+    static uint16 current_offset = 0;
 
     void init () {
         Memory::memset((PTRMEM)START_VID_MEM, 0, END_VID_MEM - START_VID_MEM);
     }
 
-    void modifyRegister (IN uint8 reg, IN uint8 data) {
+    void modify_register(uint8 reg, uint8 data) {
         outb(ADDRESS_REGISTER_PORT, reg);
         outb(DATA_REGISTER_PORT, data);
     }
 
-    void enableCursor (IN CursorStyle cursorStyle) {
-        uint8 maxScanLines = inb(MAX_SCAN_LINE_REGISTER);
-        maxScanLines &= FIRST_5_BIT_MASK;
-        switch (cursorStyle)
+    void enable_cursor (IN CursorStyle cursor_style) {
+        uint8 max_scan_lines = inb(MAX_SCAN_LINE_REGISTER);
+        max_scan_lines &= FIRST_5_BIT_MASK;
+        switch (cursor_style)
         {
         case UNDER: 
-            modifyRegister(CURSOR_START_REGISTER, 0xD);
-            modifyRegister(CURSOR_END_REGISTER, maxScanLines);
+            modify_register(CURSOR_START_REGISTER, 0xD);
+            modify_register(CURSOR_END_REGISTER, max_scan_lines);
             break;
         case LARGE:
-            modifyRegister(CURSOR_START_REGISTER, 0);
-            modifyRegister(CURSOR_END_REGISTER, maxScanLines);
+            modify_register(CURSOR_START_REGISTER, 0);
+            modify_register(CURSOR_END_REGISTER, max_scan_lines);
         }
     }
 
-    void disableCursor () {
-        modifyRegister(CURSOR_START_REGISTER, CURSOR_DISABLED); // 0010 0000
+    void disable_cursor () {
+				modify_register(CURSOR_START_REGISTER, CURSOR_DISABLED); // 0010 0000
     }
 
-    void setCursorPos (IN uint16 offset) {
-        modifyRegister(CURSOR_LOCATION_HIGH_REGISTER, (offset >> 8) & 0xFF);
-        modifyRegister(CURSOR_LOCATION_LOW_REGISTER,  offset & 0xFF);
+    void set_cursor_pos (IN uint16 offset) {
+        modify_register(CURSOR_LOCATION_HIGH_REGISTER, (offset >> 8) & 0xFF);
+        modify_register(CURSOR_LOCATION_LOW_REGISTER,  offset & 0xFF);
     }
 
     void fputchar (IN int8 _char, IN uint8 format) {
         if (_char == NULL) Kernel::panic("(putcharf) _char is null");
         
-        if (currentOffset >= SCRN_SIZE * 2)
+        if (current_offset >= SCRN_SIZE * 2)
             return;
         
         if (_char == '\n')
         {
-            int offsetForNewLine = currentOffset % (SCRN_WIDTH * 2);
-            currentOffset += (SCRN_WIDTH * 2) - offsetForNewLine;
+            uint32 offset_for_new_line = current_offset % (SCRN_WIDTH * 2);
+            current_offset += (SCRN_WIDTH * 2) - offset_for_new_line;
             return;
         }
         
-        uint8 *videoMem = (uint8 *)BASE_VID_MEM;
-        videoMem[currentOffset] = _char;
-        videoMem[currentOffset + 1] = format;
-        currentOffset += 2;
+        uint8 *video_mem = (uint8 *)BASE_VID_MEM;
+        video_mem[current_offset] = _char;
+        video_mem[current_offset + 1] = format;
+        current_offset += 2;
         
-        //setCursorPos(currentOffset / 2);
-    }
+        //setCursorPos(current_offset / 2);
+   }
 
     void putchar (IN int8 _char) {
         fputchar(_char, BWHITE);
@@ -86,74 +87,74 @@ namespace Drivers::VGA {
     }
 
     void popchar () {
-        uint8 *videoMem = (uint8 *)BASE_VID_MEM;
-        videoMem[currentOffset - 1] = 0;
-        videoMem[currentOffset - 2] = 0;
-        currentOffset -= 2;
+        uint8 *video_mem = (uint8 *)BASE_VID_MEM;
+        video_mem[current_offset - 1] = 0;
+        video_mem[current_offset - 2] = 0;
+        current_offset -= 2;
     }
 
-    void removecharAt (IN uint16 offset) {
+    void removechar_at (IN uint16 offset) {
         if(offset > SCRN_SIZE) return;
 
-        uint8 *videoMem = (uint8 *)BASE_VID_MEM;
+        uint8 *video_mem = (uint8 *)BASE_VID_MEM;
 
-        for(uint16 i = offset; i < currentOffset; i += 2) {
-            videoMem[i] = videoMem[i+2];
-            videoMem[i+1] = videoMem[i+3];
+        for(uint16 i = offset; i < current_offset; i += 2) {
+            video_mem[i] = video_mem[i+2];
+            video_mem[i+1] = video_mem[i+3];
 
-            videoMem[i+2] = NULL;
-            videoMem[i+3] = BASE_FMT;
+            video_mem[i+2] = NULL;
+            video_mem[i+3] = BASE_FMT;
         }
 
-        currentOffset -= 2;
+        current_offset -= 2;
     }
 
-    void setBackgroundColor(IN uint8 color)
+    void set_background_color(IN uint8 color)
     {
-        uint8 *videoMem = (uint8 *)BASE_VID_MEM;
+        uint8 *video_mem = (uint8 *)BASE_VID_MEM;
 
         for (int32 i = 0; i <= SCRN_SIZE; i++)
         {
             // 0x0F is a mask for 00001111 so applying a logical AND will get only the four bytes
-            int32 curForeColor = videoMem[i * 2 + 1] & 0x0F;
-            videoMem[i * 2 + 1] = color << 4 | curForeColor;
+            int32 cur_fore_color = video_mem[i * 2 + 1] & 0x0F;
+            video_mem[i * 2 + 1] = color << 4 | cur_fore_color;
         }
     }
 
-    void setForegroundColor(IN uint8 color)
+    void set_foreground_color(IN uint8 color)
     {
-        uint8 *videoMem = (uint8 *)BASE_VID_MEM;
+        uint8 *video_mem = (uint8 *)BASE_VID_MEM;
         for (int32 i = 0; i <= SCRN_SIZE; i++)
         {
             // 0x0F is a mask for 11110000 so applying a logical AND will get only the four bytes
-            int32 curBackColor = videoMem[i * 2 + 1] & 0xF0;
-            videoMem[i * 2 + 1] = curBackColor | color;
+            int32 cur_back_color = video_mem[i * 2 + 1] & 0xF0;
+            video_mem[i * 2 + 1] = cur_back_color | color;
         }
     }
 
-    void clearScreen()
+    void clear_screen()
     {
-        currentOffset = 0;
+        current_offset = 0;
 
-        uint8 *videoMem = (uint8 *)BASE_VID_MEM;
+        uint8 *video_mem = (uint8 *)BASE_VID_MEM;
 
         for(uint32 ui = 0; ui < SCRN_SIZE * 2; ui++) {
-            if(ui % 2) videoMem[ui] = BASE_FMT;
-            else videoMem[ui] = 0;
+            if(ui % 2) video_mem[ui] = BASE_FMT;
+            else video_mem[ui] = 0;
         }
     }
 
     void test()
     {
-        uint8 *videoMem = (uint8 *)BASE_VID_MEM;
+        uint8 *video_mem = (uint8 *)BASE_VID_MEM;
         for (int32 i = 0; i <= SCRN_SIZE; i++)
         {
-            videoMem[i * 2] = 'A' + i;
-            videoMem[i * 2 + 1] = i;
+            video_mem[i * 2] = 'A' + i;
+            video_mem[i * 2 + 1] = i;
         }
     }
 
-    uint16 getCurrentOffset () {
-        return currentOffset;
+    uint16 get_current_offset () {
+        return current_offset;
     }
 }

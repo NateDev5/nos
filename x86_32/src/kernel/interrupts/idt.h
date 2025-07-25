@@ -15,11 +15,11 @@ namespace Interrupts::IDT {
     // IDT entry
     typedef struct IDT_ENTRY
     {
-        uint16 isrAddLow;
+        uint16 isr_add_low;
         uint16 selector;
         uint8 zero;
         uint8 attributes; // gate type, dpl (cpu privilege), P (present bit, must be 1 for the descriptor to be valid)
-        uint16 isrAddHigh;
+        uint16 isr_add_high;
     } __attribute__((packed)) IDT_ENTRY;
 
     // IDT register
@@ -30,7 +30,7 @@ namespace Interrupts::IDT {
     } __attribute__((packed)) IDTR;
 
     void setup(IN bool verbose);
-    void setIDTEntry (IN uint8 vector, IN PTR handler, IN uint8 attributes);
+    void set_IDT_entry (IN uint8 vector, IN PTR handler, IN uint8 attributes);
     
     typedef struct InterruptFrame {
         uint32 ip;
@@ -41,4 +41,4 @@ namespace Interrupts::IDT {
     } InterruptFrame;
 }
 
-extern "C" void handleException (IN uint32 vector, IN uint32 errorCode);
+extern "C" void handle_exception (IN uint32 vector, IN uint32 error_code);

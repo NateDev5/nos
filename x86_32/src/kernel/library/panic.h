@@ -4,5 +4,5 @@
 
 namespace Kernel {
     void panic (IN cstr msg);
-    void errorScreen (IN cstr errorMsg);
+    void error_screen (IN cstr error_msg);
 }

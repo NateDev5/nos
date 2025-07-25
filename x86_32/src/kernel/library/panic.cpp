@@ -7,19 +7,19 @@
 
 namespace Kernel {
     void panic (IN cstr msg) {
-        errorScreen(msg);
+        error_screen(msg);
         
         cli();
         while (true)
         hlt();
     }
     
-    void errorScreen (IN cstr errorMsg) {
-        Drivers::VGA::disableCursor();
+    void error_screen (IN cstr error_msg) {
+        Drivers::VGA::disable_cursor();
         Library::clear();
         Library::print("ERROR: ");
-        Library::println(errorMsg);
-        Drivers::VGA::setBackgroundColor(Drivers::VGA::LRED);
-        Drivers::VGA::setForegroundColor(Drivers::VGA::BLACK);
+        Library::println(error_msg);
+        Drivers::VGA::set_background_color(Drivers::VGA::LRED);
+        Drivers::VGA::set_foreground_color(Drivers::VGA::BLACK);
     }
 }

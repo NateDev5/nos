@@ -13,11 +13,11 @@
 
 extern "C" void kmain()
 {
-    Drivers::VGA::disableCursor();
+    Drivers::VGA::disable_cursor();
     Drivers::VGA::init();
 
     // testing
-    Testing::testKernel();
+    Testing::test_kernel();
 
     // setup
     Drivers::Keyboard::init(true); // before setting up interrupts
@@ -30,7 +30,6 @@ extern "C" void kmain()
 
     // terminal
     Kernel::Terminal::run();
-
     //Drivers::VGA::offsetScreen();
    
     while (true)

@@ -8,11 +8,11 @@ namespace Memory {
             address[ui] = data;
     }
 
-    void memcpy (IN PTRMEM baseAddress, IN PTRMEM targetAddress, IN uint32 size) {
-        if(baseAddress == NULL) return;
-        if(targetAddress == NULL) return;
+    void memcpy (IN PTRMEM base_address, IN PTRMEM target_address, IN uint32 size) {
+        if(base_address == NULL) return;
+        if(target_address == NULL) return;
 
         for(uint32 ui = 0; ui <= size; ui++)
-            targetAddress[ui] = baseAddress[ui];
+            target_address[ui] = base_address[ui];
     }
 }

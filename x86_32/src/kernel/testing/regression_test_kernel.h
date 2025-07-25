@@ -3,9 +3,9 @@
 #include <utils/types.h>
 
 namespace Testing {
-    void testKernel ();
-    void testMemory ();
-    void testString ();
-    void testList ();
-    void testArrayUtils ();
+    void test_kernel ();
+    void test_memory ();
+    void test_string ();
+    void test_list ();
+    void test_array_utils ();
 }

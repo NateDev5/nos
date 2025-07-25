@@ -14,21 +14,21 @@ namespace Library {
     %b for a binary representation of an int
     %h for an hexadecimal representation of an int
     */
-    void vfprintf(IN cstr format, IN uint8 colorFormat, IN va_list args);
+    void vfprintf(IN cstr format, IN uint8 color_format, IN va_list args);
 
-    void fprintf(IN cstr format, IN uint8 colorFormat, IN ...);
+    void fprintf(IN cstr format, IN uint8 color_format, IN ...);
     void printf(IN cstr format, IN ...);
 
-    void fprintf_ln(IN cstr format, IN uint8 colorFormat, IN ...);
+    void fprintf_ln(IN cstr format, IN uint8 color_format, IN ...);
     void printf_ln(IN cstr format, IN ...);
 
-    void fprint(IN cstr message, IN uint8 colorFormat);
+    void fprint(IN cstr message, IN uint8 color_format);
     void print(IN cstr message);
 
-    void fprintln (IN cstr message, IN uint8 colorFormat);
+    void fprintln (IN cstr message, IN uint8 color_format);
     void println (IN cstr message);
 
-    void fprintc (IN int8 _char, IN uint8 colorFormat);
+    void fprintc (IN int8 _char, IN uint8 color_format);
     void printc (IN int8 _char);
 
     void clear ();

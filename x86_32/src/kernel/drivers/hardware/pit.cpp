@@ -23,21 +23,21 @@ namespace Drivers::PIT {
         if(verbose) Library::fprintln("(OK) PIT initialized", Drivers::VGA::LGREEN);
     }
 
-    static uint32 curMilliseconds;
+    static uint32 cur_milliseconds;
 
     void sleep(IN uint32 milliseconds)
     {
-        curMilliseconds = milliseconds;
+        cur_milliseconds = milliseconds;
 
-        while (curMilliseconds > 0)
+        while (cur_milliseconds > 0)
             hlt();
     }
 }
 
-void IRQ0_timerHandler(IN Interrupts::IDT::InterruptFrame *frame)
+void IRQ0_timer_handler(IN Interrupts::IDT::InterruptFrame *frame)
 {
-    if (Drivers::PIT::curMilliseconds > 0)
-            Drivers::PIT::curMilliseconds--;
+    if (Drivers::PIT::cur_milliseconds > 0)
+            Drivers::PIT::cur_milliseconds--;
 
-    Interrupts::PIC::sendEOI(0);
+    Interrupts::PIC::send_EOI(0);
 }

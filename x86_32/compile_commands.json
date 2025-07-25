@@ -1,0 +1,25 @@
+[
+  {
+    "arguments": [
+      "/nix/store/a0d7m3zn9p2dfa1h7ag9h2wzzr2w25sn-gcc-wrapper-14.2.1.20250322/bin/gcc",
+      "-m32",
+      "-ffreestanding",
+      "-fno-pic",
+      "-fno-pie",
+      "-fno-exceptions",
+      "-fno-rtti",
+      "-fno-stack-protector",
+      "-Werror",
+      "-Wall",
+      "-mgeneral-regs-only",
+      "-Isrc",
+      "-c",
+      "-o",
+      "build/kernel/terminal.o",
+      "src/kernel/terminal.cpp"
+    ],
+    "directory": "/home/nate/projects/nos/x86_32",
+    "file": "/home/nate/projects/nos/x86_32/src/kernel/terminal.cpp",
+    "output": "/home/nate/projects/nos/x86_32/build/kernel/terminal.o"
+  }
+]

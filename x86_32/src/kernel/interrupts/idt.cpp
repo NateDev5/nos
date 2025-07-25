@@ -12,8 +12,8 @@
 #include <utils/math.h>
 
 
-extern PTR stubTable[];
-extern PTR timerHandler;
+extern PTR stub_table[];
+extern PTR timer_handler;
 
 namespace Interrupts::IDT {
     static IDT_ENTRY idt[256]; // the actual idt;
@@ -29,10 +29,10 @@ namespace Interrupts::IDT {
 
         // set the first 32 vectors because they are reserved
         for (uint8 vector = 0; vector < 32; vector++)
-            setIDTEntry(vector, stubTable[vector], INTERRUPT_GATE);
+            set_IDT_entry(vector, stub_table[vector], INTERRUPT_GATE);
 
-        setIDTEntry(32, reinterpret_cast<PTR>(IRQ0_timerHandler), INTERRUPT_GATE);
-        setIDTEntry(33, reinterpret_cast<PTR>(IRQ1_keyboardHandler), INTERRUPT_GATE);
+        set_IDT_entry(32, reinterpret_cast<PTR>(IRQ0_timer_handler), INTERRUPT_GATE);
+        set_IDT_entry(33, reinterpret_cast<PTR>(IRQ1_keyboard_handler), INTERRUPT_GATE);
 
         // load the idt
         __asm__ volatile("lidt %0" : : "m"(idtr));
@@ -41,10 +41,10 @@ namespace Interrupts::IDT {
         if(verbose) Library::fprintln("(OK) IDT initialized", Drivers::VGA::Color::LGREEN);
     }
 
-    void setIDTEntry(IN uint8 vector, IN PTR handler, IN uint8 attributes)
+    void set_IDT_entry(IN uint8 vector, IN PTR handler, IN uint8 attributes)
     {
         IDT_ENTRY *descriptor = &idt[vector];
-        descriptor->isrAddLow = ((uint32)handler) & 0xFFFF; // take the first 16 bits of the address
+        descriptor->isr_add_low = ((uint32)handler) & 0xFFFF; // take the first 16 bits of the address
 
         // https://wiki.osdev.org/Segment_Selector
         descriptor->selector = 0x08; // code descriptor in GDT is at index 1 and we want Ring 0 access
@@ -52,74 +52,74 @@ namespace Interrupts::IDT {
         descriptor->zero = 0;
         descriptor->attributes = attributes;
 
-        descriptor->isrAddHigh = ((uint32)handler >> 16) & 0xFFFF; // take the last 16 bits
+        descriptor->isr_add_high = ((uint32)handler >> 16) & 0xFFFF; // take the last 16 bits
     }
 
 }
 
-extern "C" void handleException(IN uint32 vector, IN uint32 errorCode)
+extern "C" void handle_exception(IN uint32 vector, IN uint32 error_code)
 {
     switch (vector)
     {
     case 0:
-        Kernel::errorScreen("Divide error");
+        Kernel::error_screen("Divide error");
         break;
     case 2:
-        Kernel::errorScreen("NMI");
+        Kernel::error_screen("NMI");
         break;
     case 8:
-        Kernel::errorScreen("Double fault");
-        Library::printf("Error code : %h", errorCode);
-        Drivers::VGA::setBackgroundColor(Drivers::VGA::LRED);
-        Drivers::VGA::setForegroundColor(Drivers::VGA::BLACK);
+        Kernel::error_screen("Double fault");
+        Library::printf("Error code : %h", error_code);
+        Drivers::VGA::set_background_color(Drivers::VGA::LRED);
+        Drivers::VGA::set_foreground_color(Drivers::VGA::BLACK);
         break;
     case 10:
-        Kernel::errorScreen("Invalid TSS");
-        Library::printf("Error code : %h", errorCode);
-        Drivers::VGA::setBackgroundColor(Drivers::VGA::LRED);
-        Drivers::VGA::setForegroundColor(Drivers::VGA::BLACK);
+        Kernel::error_screen("Invalid TSS");
+        Library::printf("Error code : %h", error_code);
+        Drivers::VGA::set_background_color(Drivers::VGA::LRED);
+        Drivers::VGA::set_foreground_color(Drivers::VGA::BLACK);
         break;
     case 11:
-        Kernel::errorScreen("Segment Not Present");
-        Library::printf("Error code : %h", errorCode);
-        Drivers::VGA::setBackgroundColor(Drivers::VGA::LRED);
-        Drivers::VGA::setForegroundColor(Drivers::VGA::BLACK);
+        Kernel::error_screen("Segment Not Present");
+        Library::printf("Error code : %h", error_code);
+        Drivers::VGA::set_background_color(Drivers::VGA::LRED);
+        Drivers::VGA::set_foreground_color(Drivers::VGA::BLACK);
         break;
     case 12:
-        Kernel::errorScreen("Stack-segment fault");
-        Library::printf("Error code : %h", errorCode);
-        Drivers::VGA::setBackgroundColor(Drivers::VGA::LRED);
-        Drivers::VGA::setForegroundColor(Drivers::VGA::BLACK);
+        Kernel::error_screen("Stack-segment fault");
+        Library::printf("Error code : %h", error_code);
+        Drivers::VGA::set_background_color(Drivers::VGA::LRED);
+        Drivers::VGA::set_foreground_color(Drivers::VGA::BLACK);
         break;
     case 13:
-        Kernel::errorScreen("General protection fault");
-        Library::printf("Error code : %h", errorCode);
-        Drivers::VGA::setBackgroundColor(Drivers::VGA::LRED);
-        Drivers::VGA::setForegroundColor(Drivers::VGA::BLACK);
+        Kernel::error_screen("General protection fault");
+        Library::printf("Error code : %h", error_code);
+        Drivers::VGA::set_background_color(Drivers::VGA::LRED);
+        Drivers::VGA::set_foreground_color(Drivers::VGA::BLACK);
         break;
     case 14:
-        Kernel::errorScreen("Page fault");
-        Library::printf("Error code : %h", errorCode);
-        Drivers::VGA::setBackgroundColor(Drivers::VGA::LRED);
-        Drivers::VGA::setForegroundColor(Drivers::VGA::BLACK);
+        Kernel::error_screen("Page fault");
+        Library::printf("Error code : %h", error_code);
+        Drivers::VGA::set_background_color(Drivers::VGA::LRED);
+        Drivers::VGA::set_foreground_color(Drivers::VGA::BLACK);
         break;
     case 17:
-        Kernel::errorScreen("Alignment check");
-        Library::printf("Error code : %h", errorCode);
-        Drivers::VGA::setBackgroundColor(Drivers::VGA::LRED);
-        Drivers::VGA::setForegroundColor(Drivers::VGA::BLACK);
+        Kernel::error_screen("Alignment check");
+        Library::printf("Error code : %h", error_code);
+        Drivers::VGA::set_background_color(Drivers::VGA::LRED);
+        Drivers::VGA::set_foreground_color(Drivers::VGA::BLACK);
         break;
     case 21:
-        Kernel::errorScreen("Control protection exception");
-        Library::printf("Error code : %h", errorCode);
-        Drivers::VGA::setBackgroundColor(Drivers::VGA::LRED);
-        Drivers::VGA::setForegroundColor(Drivers::VGA::BLACK);
+        Kernel::error_screen("Control protection exception");
+        Library::printf("Error code : %h", error_code);
+        Drivers::VGA::set_background_color(Drivers::VGA::LRED);
+        Drivers::VGA::set_foreground_color(Drivers::VGA::BLACK);
         break;
     default:
-        Kernel::errorScreen("Unknown error");
-        Library::printf("Code : %h\nError code : %h", vector, errorCode);
-        Drivers::VGA::setBackgroundColor(Drivers::VGA::LRED);
-        Drivers::VGA::setForegroundColor(Drivers::VGA::BLACK);
+        Kernel::error_screen("Unknown error");
+        Library::printf("Code : %h\nError code : %h", vector, error_code);
+        Drivers::VGA::set_background_color(Drivers::VGA::LRED);
+        Drivers::VGA::set_foreground_color(Drivers::VGA::BLACK);
         break;
     }
     cli();

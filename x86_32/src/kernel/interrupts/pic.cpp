@@ -27,7 +27,7 @@ namespace Interrupts::PIC {
     	outb(PIC2_DATA, 0);
     }
 
-    void sendEOI (IN uint8 irq) {
+    void send_EOI (IN uint8 irq) {
         if(irq >= 8)
             outb(PIC2_COMMAND, PIC_EOI);
 

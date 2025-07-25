@@ -13,14 +13,14 @@
 #include <utils/asm.h>
 
 namespace Drivers::Keyboard {
-    KeypressInfo inputBuffer[INPUT_BUFFER_SIZE];
-    uint8 bufferPos = 0;
-    uint8 bufferTail = 0;
+    KeypressInfo input_buffer[INPUT_BUFFER_SIZE];
+    uint8 buffer_pos = 0;
+    uint8 buffer_tail = 0;
 
-    uint8 keyFlags = 0x0;
+    uint8 key_flags = 0x0;
 
-    bool nextInterruptBreakCode = false;
-    bool nextInterruptExtendedCode = false;
+    bool next_interrupt_break_code = false;
+    bool next_interrupt_extended_code = false;
 
     void init(IN bool verbose)
     {
@@ -29,26 +29,26 @@ namespace Drivers::Keyboard {
             Library::fprintln("(OK) Keyboard initialized", Drivers::VGA::LGREEN);
     }
 
-    KeypressInfo readKey()
+    KeypressInfo read_key()
     {
-        if(inputBuffer[bufferTail].scancode == SCANCODE_INVALID) return {};
+        if(input_buffer[buffer_tail].scancode == SCANCODE_INVALID) return {};
 
-        KeypressInfo info = inputBuffer[bufferTail];
-        inputBuffer[bufferTail].scancode = SCANCODE_INVALID;
-        inputBuffer[bufferTail].keycode = KEYCODE_INVALID;
-        inputBuffer[bufferTail].flags = 0;
+        KeypressInfo info = input_buffer[buffer_tail];
+        input_buffer[buffer_tail].scancode = SCANCODE_INVALID;
+        input_buffer[buffer_tail].keycode = KEYCODE_INVALID;
+        input_buffer[buffer_tail].flags = 0;
 
-        bufferTail = (bufferTail + 1) % INPUT_BUFFER_SIZE;
+        buffer_tail = (buffer_tail + 1) % INPUT_BUFFER_SIZE;
         return { info };
     }
 
-    void readLine(OUT KeypressInfo *buffer)
+    void read_line(OUT KeypressInfo *buffer)
     {
 
     }
 
-    uint8 getKeycode (IN uint8 scancode, IN bool extended) {
-        auto map = extended ? keycodeMapExtended : keycodeMap;
+    uint8 get_keycode (IN uint8 scancode, IN bool extended) {
+        auto map = extended ? keycode_map_extended : keycode_map;
         auto len = extended ? KEYCODE_MAP_EXTENDED_LEN : KEYCODE_MAP_LEN;
 
         for(uint8 i = 0; i < len; i++)
@@ -58,62 +58,62 @@ namespace Drivers::Keyboard {
         return KEYCODE_INVALID;
     }
 
-    void processScancode()
+    void process_scancode()
     {
-        uint8 flags = 0x01 & !nextInterruptBreakCode;
+        uint8 flags = 0x01 & !next_interrupt_break_code;
         uint8 scancode = Devices::PS2::poll();
 
         if(scancode == EXTENDED_CODE) 
         {
-            nextInterruptExtendedCode = true;
+            next_interrupt_extended_code = true;
             return;
         }
 
         if (scancode == BREAK_CODE) 
         {
-            nextInterruptBreakCode = true;
+            next_interrupt_break_code = true;
             return;
         }
 
-        if(!nextInterruptExtendedCode)
+        if(!next_interrupt_extended_code)
             switch (scancode)
             {
             case SCANCODE_ALT:
-                keyFlags = nextInterruptBreakCode ? (keyFlags & ~ALT) : (keyFlags | ALT);
+                key_flags = next_interrupt_break_code ? (key_flags & ~ALT) : (key_flags | ALT);
                 break;
             case SCANCODE_CTRL:
-                keyFlags = nextInterruptBreakCode ? (keyFlags & ~CTRL) : (keyFlags | CTRL);
+                key_flags = next_interrupt_break_code ? (key_flags & ~CTRL) : (key_flags | CTRL);
                 break;
             case SCANCODE_SHIFT:
-                keyFlags = nextInterruptBreakCode ? (keyFlags & ~SHIFT) : (keyFlags | SHIFT);
+                key_flags = next_interrupt_break_code ? (key_flags & ~SHIFT) : (key_flags | SHIFT);
                 break;
             case SCANCODE_CAPS:
-                if (nextInterruptBreakCode)
+                if (next_interrupt_break_code)
                     break;
-                keyFlags ^= CAPS;
+                key_flags ^= CAPS;
                 break;
             default:
                 break;
             }
 
-        flags |= keyFlags;
+        flags |= key_flags;
 
-        if(nextInterruptExtendedCode)
+        if(next_interrupt_extended_code)
             flags |= EXTENDED;
 
-        inputBuffer[bufferPos].scancode = scancode;
-        inputBuffer[bufferPos].flags = flags;
-        inputBuffer[bufferPos].keycode = getKeycode(scancode, nextInterruptExtendedCode);
+        input_buffer[buffer_pos].scancode = scancode;
+        input_buffer[buffer_pos].flags = flags;
+        input_buffer[buffer_pos].keycode = get_keycode(scancode, next_interrupt_extended_code);
 
-        bufferPos = (bufferPos + 1) % INPUT_BUFFER_SIZE;
+        buffer_pos = (buffer_pos + 1) % INPUT_BUFFER_SIZE;
 
-        nextInterruptBreakCode = false;
-        nextInterruptExtendedCode = false;
+        next_interrupt_break_code = false;
+        next_interrupt_extended_code = false;
     }
 }
 
-void IRQ1_keyboardHandler(IN Interrupts::IDT::InterruptFrame *frame)
+void IRQ1_keyboard_handler(IN Interrupts::IDT::InterruptFrame *frame)
 {
-    Drivers::Keyboard::processScancode();
-    Interrupts::PIC::sendEOI(1);
+    Drivers::Keyboard::process_scancode();
+    Interrupts::PIC::send_EOI(1);
 }

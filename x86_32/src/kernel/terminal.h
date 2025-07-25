@@ -8,8 +8,8 @@
 
 namespace Kernel::Terminal {
     void run();
-    void handleKeypress (IN Drivers::Keyboard::KeypressInfo keypress);
-    void displayCharacter(IN int8 _char);
-    void newEntry ();
-    void handleBuffer ();
+    void handle_keypress (IN Drivers::Keyboard::KeypressInfo keypress);
+    void display_character(IN int8 _char);
+    void new_entry ();
+    void handle_buffer ();
 }

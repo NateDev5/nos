@@ -15,7 +15,7 @@ LD					=  ld#/usr/bin/ld
 # -fno-stack-protector (stack overflows wont be found and it might find bugs if enabled)
 GCC_FLAGS			=  -m32 -ffreestanding -fno-pic -fno-pie -fno-exceptions -fno-rtti -fno-stack-protector -Werror -Wall -mgeneral-regs-only
 GCC_FLAGS_DBG		=  -m32 -ffreestanding -fno-pic -fno-pie -fno-exceptions -Werror -g
-LD_FLAGS			=  -melf_i386 -Ttext 0x8000 -e kmain -nostdlib --oformat binary
+LD_FLAGS			=  -melf_i386 -Ttext 0x8000 -e kmain -nostdlib --oformat elf32-i386
 
 # debug interrupts
 QEMU_FLAG_DBG_INT	=  -d int
@@ -66,9 +66,11 @@ $(BUILD_FOLDER)/%.o: $(SRC_FOLDER)/%.nasm
 	nasm -f elf32 -o $@ $<
 
 $(KERNEL_BIN): $(CPP_OBJ) $(NASM_OBJ)
-	$(LD) $(LD_FLAGS) $(KERNEL_OBJ) ${OTHER_OBJ} $(NASM_OBJ) -o $@ 
+	$(LD) $(LD_FLAGS) $(KERNEL_OBJ) ${OTHER_OBJ} $(NASM_OBJ) -o $@.elf
+	cp $@.elf $@.raw
 #	truncate -s 5120 $@ <- old (for 10 sectors)
-	@echo "\e[1m Current kernel size: `stat -L -c %s $@` \e[0m"
+	objcopy -O binary $@.elf $@
+	@echo "Current kernel size: `stat -L -c %s $@`"
 	truncate -s 65536 $@
 
 $(OS_IMAGE): $(BUILD_FOLDER) $(BOOTLOADER_BIN) $(KERNEL_BIN)

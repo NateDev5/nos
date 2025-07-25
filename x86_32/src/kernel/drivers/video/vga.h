@@ -1,7 +1,6 @@
 #pragma once
 
 #include <utils/types.h>
-
 // http://www.osdever.net/FreeVGA/home.htm
 // http://www.osdever.net/FreeVGA/vga/crtcreg.htm#0A
 // http://www.osdever.net/FreeVGA/vga/vgareg.htm
@@ -78,11 +77,11 @@ namespace Drivers::VGA {
 
     void init ();
 
-    void modifyRegister (IN uint8 reg, IN uint8 data);
+    void modify_register (IN uint8 reg, IN uint8 data);
 
-    void enableCursor (IN CursorStyle cursorStyle);
-    void disableCursor ();
-    void setCursorPos (IN uint16 offset);
+    void enable_cursor (IN CursorStyle cursor_style);
+    void disable_cursor ();
+    void set_cursor_pos (IN uint16 offset);
     
     void putchar (IN int8 _char);
     void fputchar (IN int8 _char, IN uint8 format);
@@ -90,17 +89,17 @@ namespace Drivers::VGA {
     void putstr (IN cstr string);
     void fputstr (IN cstr string, IN uint8 format);
 
-    void fputcharAt (IN int8 _char, IN uint16 offset);
+    void fputchar_at (IN int8 _char, IN uint16 offset);
 
     void popchar ();
 
-    void removecharAt (IN uint16 offset);
+    void removechar_at (IN uint16 offset);
 
-    void setBackgroundColor (IN uint8 color);
-    void setForegroundColor (IN uint8 color);
+    void set_background_color (IN uint8 color);
+    void set_foreground_color (IN uint8 color);
 
-    void clearScreen ();
+    void clear_screen ();
     void test();
 
-    uint16 getCurrentOffset ();
+    uint16 get_current_offset ();
 }

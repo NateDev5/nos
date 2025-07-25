@@ -9,8 +9,8 @@ namespace Devices::PS2 {
         // perform self test
         outb(PS2_COMMAND_REGISTER, PS2_SELFTEST_SEND);
         ioWait();
-        uint8 selfTestResult = inb(PS2_DATA_PORT);
-        Kernel::assert(selfTestResult == PS2_SELFTEST_RECEIVE, "PS2 Controller self test failed");
+        uint8 self_test_result = inb(PS2_DATA_PORT);
+        Kernel::assert(self_test_result == PS2_SELFTEST_RECEIVE, "PS2 Controller self test failed");
 
         // tell the controller the next byte written to data port is the keyboard command byte
         outb(PS2_COMMAND_REGISTER, PS2_WRITE_COMMAND_BYTE);
