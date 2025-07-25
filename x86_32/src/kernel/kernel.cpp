@@ -14,7 +14,7 @@
 extern "C" void kmain()
 {
     Drivers::VGA::disable_cursor();
-    Drivers::VGA::init();
+    //Drivers::VGA::init();
 
     // testing
     Testing::test_kernel();
