@@ -93,10 +93,12 @@ namespace Drivers::VGA {
 
     void popchar ();
 
-    void removechar_at (IN uint16 offset);
+    void remove_char_at (IN uint16 offset);
 
     void set_background_color (IN uint8 color);
     void set_foreground_color (IN uint8 color);
+
+    void scroll_up ();
 
     void clear_screen ();
     void test();

@@ -29,7 +29,7 @@ namespace Interrupts::IDT {
         uint32 base; // base address of IDT
     } __attribute__((packed)) IDTR;
 
-    void setup(IN bool verbose);
+    void setup();
     void set_IDT_entry (IN uint8 vector, IN PTR handler, IN uint8 attributes);
     
     typedef struct InterruptFrame {

@@ -1,0 +1,30 @@
+\doxysection{ps2.\+h}
+\hypertarget{ps2_8h_source}{}\label{ps2_8h_source}\index{x86\_32/src/kernel/devices/io/ps2.h@{x86\_32/src/kernel/devices/io/ps2.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{//https://oe7twj.at/images/6/6a/PS2\_Keyboard.pdf}}
+\DoxyCodeLine{00002\ \textcolor{comment}{//https://wiki.osdev.org/PS/2\_Keyboard}}
+\DoxyCodeLine{00003\ }
+\DoxyCodeLine{00004\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00005\ }
+\DoxyCodeLine{00006\ \textcolor{preprocessor}{\#include\ <utils/types.h>}}
+\DoxyCodeLine{00007\ }
+\DoxyCodeLine{00008\ \textcolor{preprocessor}{\#define\ PS2\_DATA\_PORT\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ 0x60}}
+\DoxyCodeLine{00009\ \textcolor{preprocessor}{\#define\ PS2\_STATUS\_REGISTER\ \ \ \ \ \ \ \ \ \ 0x64}}
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#define\ PS2\_COMMAND\_REGISTER\ \ \ \ \ \ \ \ \ 0x64}}
+\DoxyCodeLine{00011\ }
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#define\ PS2\_SELFTEST\_SEND\ \ \ \ \ \ \ \ \ \ \ \ 0xAA}}
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#define\ PS2\_SELFTEST\_RECEIVE\ \ \ \ \ \ \ \ \ 0x55}}
+\DoxyCodeLine{00014\ }
+\DoxyCodeLine{00015\ \textcolor{preprocessor}{\#define\ PS2\_ACK\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ 0xFA}}
+\DoxyCodeLine{00016\ \textcolor{preprocessor}{\#define\ PS2\_RESEND\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ 0xFE}}
+\DoxyCodeLine{00017\ }
+\DoxyCodeLine{00018\ \textcolor{preprocessor}{\#define\ PS2\_READ\_COMMAND\_BYTE\ \ \ \ \ \ \ \ 0x20}}
+\DoxyCodeLine{00019\ \textcolor{preprocessor}{\#define\ PS2\_WRITE\_COMMAND\_BYTE\ \ \ \ \ \ \ 0x60}}
+\DoxyCodeLine{00020\ }
+\DoxyCodeLine{00021\ \textcolor{keyword}{namespace\ }Devices::PS2\ \{}
+\DoxyCodeLine{00022\ \ \ \ \ \textcolor{keywordtype}{void}\ init\ ();}
+\DoxyCodeLine{00023\ \ \ \ \ uint8\ poll\ ();}
+\DoxyCodeLine{00024\ \}}
+
+\end{DoxyCode}

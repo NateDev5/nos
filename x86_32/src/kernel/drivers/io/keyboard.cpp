@@ -6,6 +6,7 @@
 #include <kernel/interrupts/pic.h>
 
 #include <kernel/library/log.h>
+#include <kernel/library/debug.h>
 
 #include <kernel/devices/io/ps2.h>
 
@@ -22,11 +23,10 @@ namespace Drivers::Keyboard {
     bool next_interrupt_break_code = false;
     bool next_interrupt_extended_code = false;
 
-    void init(IN bool verbose)
+    void init()
     {
         Devices::PS2::init();
-        if (verbose)
-            Library::fprintln("(OK) Keyboard initialized", Drivers::VGA::LGREEN);
+        Debug::fprintln("(OK) Keyboard initialized");
     }
 
     KeypressInfo read_key()

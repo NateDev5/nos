@@ -1,0 +1,121 @@
+\doxysection{keycodes.\+h}
+\hypertarget{keycodes_8h_source}{}\label{keycodes_8h_source}\index{x86\_32/src/kernel/drivers/io/keycodes.h@{x86\_32/src/kernel/drivers/io/keycodes.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00002\ }
+\DoxyCodeLine{00003\ \textcolor{preprocessor}{\#define\ KEYCODE\_INVALID\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ 0x00}}
+\DoxyCodeLine{00004\ }
+\DoxyCodeLine{00005\ \textcolor{preprocessor}{\#define\ KEYCODE\_A\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ 0x01}}
+\DoxyCodeLine{00006\ \textcolor{preprocessor}{\#define\ KEYCODE\_B\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ 0x02}}
+\DoxyCodeLine{00007\ \textcolor{preprocessor}{\#define\ KEYCODE\_C\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ 0x03}}
+\DoxyCodeLine{00008\ \textcolor{preprocessor}{\#define\ KEYCODE\_D\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ 0x04}}
+\DoxyCodeLine{00009\ \textcolor{preprocessor}{\#define\ KEYCODE\_E\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ 0x05}}
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#define\ KEYCODE\_F\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ 0x06}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#define\ KEYCODE\_G\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ 0x07}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#define\ KEYCODE\_H\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ 0x08}}
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#define\ KEYCODE\_I\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ 0x09}}
+\DoxyCodeLine{00014\ \textcolor{preprocessor}{\#define\ KEYCODE\_J\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ 0x0A}}
+\DoxyCodeLine{00015\ \textcolor{preprocessor}{\#define\ KEYCODE\_K\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ 0x0B}}
+\DoxyCodeLine{00016\ \textcolor{preprocessor}{\#define\ KEYCODE\_L\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ 0x0C}}
+\DoxyCodeLine{00017\ \textcolor{preprocessor}{\#define\ KEYCODE\_M\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ 0x0D}}
+\DoxyCodeLine{00018\ \textcolor{preprocessor}{\#define\ KEYCODE\_N\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ 0x0E}}
+\DoxyCodeLine{00019\ \textcolor{preprocessor}{\#define\ KEYCODE\_O\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ 0x0F}}
+\DoxyCodeLine{00020\ \textcolor{preprocessor}{\#define\ KEYCODE\_P\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ 0x10}}
+\DoxyCodeLine{00021\ \textcolor{preprocessor}{\#define\ KEYCODE\_Q\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ 0x11}}
+\DoxyCodeLine{00022\ \textcolor{preprocessor}{\#define\ KEYCODE\_R\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ 0x12}}
+\DoxyCodeLine{00023\ \textcolor{preprocessor}{\#define\ KEYCODE\_S\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ 0x13}}
+\DoxyCodeLine{00024\ \textcolor{preprocessor}{\#define\ KEYCODE\_T\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ 0x14}}
+\DoxyCodeLine{00025\ \textcolor{preprocessor}{\#define\ KEYCODE\_U\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ 0x15}}
+\DoxyCodeLine{00026\ \textcolor{preprocessor}{\#define\ KEYCODE\_V\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ 0x16}}
+\DoxyCodeLine{00027\ \textcolor{preprocessor}{\#define\ KEYCODE\_W\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ 0x17}}
+\DoxyCodeLine{00028\ \textcolor{preprocessor}{\#define\ KEYCODE\_X\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ 0x18}}
+\DoxyCodeLine{00029\ \textcolor{preprocessor}{\#define\ KEYCODE\_Y\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ 0x19}}
+\DoxyCodeLine{00030\ \textcolor{preprocessor}{\#define\ KEYCODE\_Z\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ 0x1A}}
+\DoxyCodeLine{00031\ }
+\DoxyCodeLine{00032\ \textcolor{preprocessor}{\#define\ KEYCODE\_0\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ 0x1B}}
+\DoxyCodeLine{00033\ \textcolor{preprocessor}{\#define\ KEYCODE\_1\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ 0x1C}}
+\DoxyCodeLine{00034\ \textcolor{preprocessor}{\#define\ KEYCODE\_2\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ 0x1D}}
+\DoxyCodeLine{00035\ \textcolor{preprocessor}{\#define\ KEYCODE\_3\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ 0x1E}}
+\DoxyCodeLine{00036\ \textcolor{preprocessor}{\#define\ KEYCODE\_4\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ 0x1F}}
+\DoxyCodeLine{00037\ \textcolor{preprocessor}{\#define\ KEYCODE\_5\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ 0x20}}
+\DoxyCodeLine{00038\ \textcolor{preprocessor}{\#define\ KEYCODE\_6\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ 0x21}}
+\DoxyCodeLine{00039\ \textcolor{preprocessor}{\#define\ KEYCODE\_7\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ 0x22}}
+\DoxyCodeLine{00040\ \textcolor{preprocessor}{\#define\ KEYCODE\_8\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ 0x23}}
+\DoxyCodeLine{00041\ \textcolor{preprocessor}{\#define\ KEYCODE\_9\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ 0x24}}
+\DoxyCodeLine{00042\ }
+\DoxyCodeLine{00043\ \textcolor{preprocessor}{\#define\ KEYCODE\_TILDE\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ 0x25}}
+\DoxyCodeLine{00044\ \textcolor{preprocessor}{\#define\ KEYCODE\_MINUS\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ 0x26}}
+\DoxyCodeLine{00045\ \textcolor{preprocessor}{\#define\ KEYCODE\_EQUAL\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ 0x27}}
+\DoxyCodeLine{00046\ \textcolor{preprocessor}{\#define\ KEYCODE\_LBRACKET\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ 0x28}}
+\DoxyCodeLine{00047\ \textcolor{preprocessor}{\#define\ KEYCODE\_RBRACKET\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ 0x29}}
+\DoxyCodeLine{00048\ \textcolor{preprocessor}{\#define\ KEYCODE\_BACK\_SLASH\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ 0x2A}}
+\DoxyCodeLine{00049\ \textcolor{preprocessor}{\#define\ KEYCODE\_SEMICOLON\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ 0x2B}}
+\DoxyCodeLine{00050\ \textcolor{preprocessor}{\#define\ KEYCODE\_APOSTROPHE\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ 0x2C}}
+\DoxyCodeLine{00051\ \textcolor{preprocessor}{\#define\ KEYCODE\_COMMA\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ 0x2D}}
+\DoxyCodeLine{00052\ \textcolor{preprocessor}{\#define\ KEYCODE\_PERIOD\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ 0x2E}}
+\DoxyCodeLine{00053\ \textcolor{preprocessor}{\#define\ KEYCODE\_FORWARD\_SLASH\ \ \ \ \ \ \ \ \ \ \ \ 0x2F}}
+\DoxyCodeLine{00054\ }
+\DoxyCodeLine{00055\ \textcolor{preprocessor}{\#define\ KEYCODE\_F1\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ 0x30}}
+\DoxyCodeLine{00056\ \textcolor{preprocessor}{\#define\ KEYCODE\_F2\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ 0x31}}
+\DoxyCodeLine{00057\ \textcolor{preprocessor}{\#define\ KEYCODE\_F3\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ 0x32}}
+\DoxyCodeLine{00058\ \textcolor{preprocessor}{\#define\ KEYCODE\_F4\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ 0x33}}
+\DoxyCodeLine{00059\ \textcolor{preprocessor}{\#define\ KEYCODE\_F5\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ 0x34}}
+\DoxyCodeLine{00060\ \textcolor{preprocessor}{\#define\ KEYCODE\_F6\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ 0x35}}
+\DoxyCodeLine{00061\ \textcolor{preprocessor}{\#define\ KEYCODE\_F7\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ 0x36}}
+\DoxyCodeLine{00062\ \textcolor{preprocessor}{\#define\ KEYCODE\_F8\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ 0x37}}
+\DoxyCodeLine{00063\ \textcolor{preprocessor}{\#define\ KEYCODE\_F9\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ 0x38}}
+\DoxyCodeLine{00064\ \textcolor{preprocessor}{\#define\ KEYCODE\_F10\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ 0x39}}
+\DoxyCodeLine{00065\ \textcolor{preprocessor}{\#define\ KEYCODE\_F11\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ 0x3A}}
+\DoxyCodeLine{00066\ \textcolor{preprocessor}{\#define\ KEYCODE\_F12\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ 0x3B}}
+\DoxyCodeLine{00067\ }
+\DoxyCodeLine{00068\ \textcolor{preprocessor}{\#define\ KEYCODE\_BACKSPACE\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ 0x3C}}
+\DoxyCodeLine{00069\ \textcolor{preprocessor}{\#define\ KEYCODE\_SPACE\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ 0x3D}}
+\DoxyCodeLine{00070\ \textcolor{preprocessor}{\#define\ KEYCODE\_TAB\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ 0x3E}}
+\DoxyCodeLine{00071\ \textcolor{preprocessor}{\#define\ KEYCODE\_CAPS\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ 0x3F}}
+\DoxyCodeLine{00072\ \textcolor{preprocessor}{\#define\ KEYCODE\_LSHFT\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ 0x40}}
+\DoxyCodeLine{00073\ \textcolor{preprocessor}{\#define\ KEYCODE\_RSHFT\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ 0x41}}
+\DoxyCodeLine{00074\ \textcolor{preprocessor}{\#define\ KEYCODE\_LCTRL\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ 0x42}}
+\DoxyCodeLine{00075\ \textcolor{preprocessor}{\#define\ KEYCODE\_RCTRL\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ 0x43}}
+\DoxyCodeLine{00076\ \textcolor{preprocessor}{\#define\ KEYCODE\_LALT\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ 0x44}}
+\DoxyCodeLine{00077\ \textcolor{preprocessor}{\#define\ KEYCODE\_RALT\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ 0x45}}
+\DoxyCodeLine{00078\ \textcolor{preprocessor}{\#define\ KEYCODE\_LWIN\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ 0x46}}
+\DoxyCodeLine{00079\ \textcolor{preprocessor}{\#define\ KEYCODE\_RWIN\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ 0x47}}
+\DoxyCodeLine{00080\ \textcolor{preprocessor}{\#define\ KEYCODE\_ENTER\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ 0x48}}
+\DoxyCodeLine{00081\ \textcolor{preprocessor}{\#define\ KEYCODE\_ESC\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ 0x49}}
+\DoxyCodeLine{00082\ \textcolor{preprocessor}{\#define\ KEYCODE\_INSERT\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ 0x4A}}
+\DoxyCodeLine{00083\ \textcolor{preprocessor}{\#define\ KEYCODE\_DELETE\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ 0x4B}}
+\DoxyCodeLine{00084\ \textcolor{preprocessor}{\#define\ KEYCODE\_HOME\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ 0x4C}}
+\DoxyCodeLine{00085\ \textcolor{preprocessor}{\#define\ KEYCODE\_END\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ 0x4D}}
+\DoxyCodeLine{00086\ \textcolor{preprocessor}{\#define\ KEYCODE\_PGUP\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ 0x4E}}
+\DoxyCodeLine{00087\ \textcolor{preprocessor}{\#define\ KEYCODE\_PGDN\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ 0x4F}}
+\DoxyCodeLine{00088\ \textcolor{preprocessor}{\#define\ KEYCODE\_UARROW\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ 0x50}}
+\DoxyCodeLine{00089\ \textcolor{preprocessor}{\#define\ KEYCODE\_LARROW\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ 0x51}}
+\DoxyCodeLine{00090\ \textcolor{preprocessor}{\#define\ KEYCODE\_DARROW\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ 0x52}}
+\DoxyCodeLine{00091\ \textcolor{preprocessor}{\#define\ KEYCODE\_RARROW\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ 0x53}}
+\DoxyCodeLine{00092\ \textcolor{preprocessor}{\#define\ KEYCODE\_NUM\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ 0x54}}
+\DoxyCodeLine{00093\ }
+\DoxyCodeLine{00094\ \textcolor{comment}{/*}}
+\DoxyCodeLine{00095\ \textcolor{comment}{\#define\ KEYCODE\_KP/\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ 0x}}
+\DoxyCodeLine{00096\ \textcolor{comment}{\#define\ KEYCODE\_KP*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ 0x}}
+\DoxyCodeLine{00097\ \textcolor{comment}{\#define\ KEYCODE\_KP-\/\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ 0x}}
+\DoxyCodeLine{00098\ \textcolor{comment}{\#define\ KEYCODE\_KP+\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ 0x}}
+\DoxyCodeLine{00099\ \textcolor{comment}{\#define\ KEYCODE\_KPEN\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ 0x}}
+\DoxyCodeLine{00100\ \textcolor{comment}{\#define\ KEYCODE\_KP.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ 0x}}
+\DoxyCodeLine{00101\ \textcolor{comment}{\#define\ KEYCODE\_KP0\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ 0x}}
+\DoxyCodeLine{00102\ \textcolor{comment}{\#define\ KEYCODE\_KP1\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ 0x}}
+\DoxyCodeLine{00103\ \textcolor{comment}{\#define\ KEYCODE\_KP2\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ 0x}}
+\DoxyCodeLine{00104\ \textcolor{comment}{\#define\ KEYCODE\_KP3\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ 0x}}
+\DoxyCodeLine{00105\ \textcolor{comment}{\#define\ KEYCODE\_KP4\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ 0x}}
+\DoxyCodeLine{00106\ \textcolor{comment}{\#define\ KEYCODE\_KP5\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ 0x}}
+\DoxyCodeLine{00107\ \textcolor{comment}{\#define\ KEYCODE\_KP6\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ 0x}}
+\DoxyCodeLine{00108\ \textcolor{comment}{\#define\ KEYCODE\_KP7\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ 0x}}
+\DoxyCodeLine{00109\ \textcolor{comment}{\#define\ KEYCODE\_KP8\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ 0x}}
+\DoxyCodeLine{00110\ \textcolor{comment}{\#define\ KEYCODE\_KP9\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ 0x}}
+\DoxyCodeLine{00111\ \textcolor{comment}{\#define\ KEYCODE\_APPS\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ 0x}}
+\DoxyCodeLine{00112\ \textcolor{comment}{\#define\ KEYCODE\_PRNTSCRN\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ 0x}}
+\DoxyCodeLine{00113\ \textcolor{comment}{\#define\ KEYCODE\_SCROLL\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ 0x}}
+\DoxyCodeLine{00114\ \textcolor{comment}{\#define\ KEYCODE\_PAUSE\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ 0x}}
+\DoxyCodeLine{00115\ \textcolor{comment}{*/}}
+
+\end{DoxyCode}

@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['nos_0',['nos',['../md_README.html',1,'']]]
+  ['gcc_5fcross_20compiler_0',['https://wiki.osdev.org/GCC_Cross-Compiler',['../md_useful.html',1,'']]]
 ];

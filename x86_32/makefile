@@ -13,12 +13,13 @@ LD					=  ld#/usr/bin/ld
 # -mgeneral-regs-only 
 # -Werror
 # -fno-stack-protector (stack overflows wont be found and it might find bugs if enabled)
-GCC_FLAGS			=  -m32 -ffreestanding -fno-pic -fno-pie -fno-exceptions -fno-rtti -fno-stack-protector -Werror -Wall -mgeneral-regs-only
-GCC_FLAGS_DBG		=  -m32 -ffreestanding -fno-pic -fno-pie -fno-exceptions -Werror -g
+GCC_FLAGS			=  -m32 -ffreestanding -fno-pic -fno-pie -fno-exceptions -fno-rtti -fno-stack-protector -Werror -Wall -mgeneral-regs-only -DUSE_DEBUG
+GCC_FLAGS_DBG		=  $(GCC_FLAGS) -g
 LD_FLAGS			=  -melf_i386 -Ttext 0x8000 -e kmain -nostdlib --oformat elf32-i386
 
 # debug interrupts
 QEMU_FLAG_DBG_INT	=  -d int
+QEMU_FLAG_SERIAL	=  -serial stdio
 
 # Source files
 BOOTLOADER_SRC 		=  $(BOOT_FOLDER)/bootloader.nasm
@@ -85,8 +86,10 @@ $(BUILD_FOLDER)/%.sym: $(BUILD_FOLDER)/%.dbg.o
 	objcopy --strip-debug $<
 
 $(KERNEL_BIN_DBG): $(CPP_OBJ_DBG) $(NASM_OBJ) $(DBG_SYMBOLS)
-	$(LD) $(LD_FLAGS) $(KERNEL_OBJ_DBG) ${OTHER_OBJ_DBG} $(NASM_OBJ) -o $@ 
-	truncate -s 5120 $@
+	$(LD) $(LD_FLAGS) $(KERNEL_OBJ_DBG) ${OTHER_OBJ_DBG} $(NASM_OBJ) -o $@.elf
+	cp $@.elf $@.raw
+	objcopy -O binary $@.elf $@
+	truncate -s 65536 $@
 
 $(OS_IMAGE_DBG): $(BUILD_FOLDER) $(BOOTLOADER_BIN) $(KERNEL_BIN_DBG)
 	cat $(BOOTLOADER_BIN) $(KERNEL_BIN_DBG) > $@
@@ -95,7 +98,7 @@ clean:
 	rm -rf $(BUILD_FOLDER)
 
 run: $(OS_IMAGE)
-	qemu-system-i386 $< 
+	qemu-system-i386 $(QEMU_FLAG_SERIAL) $< 
 	make clean
 
 dbg: $(OS_IMAGE_DBG)

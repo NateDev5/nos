@@ -1,0 +1,125 @@
+\doxysection{keymap.\+h}
+\hypertarget{keymap_8h_source}{}\label{keymap_8h_source}\index{x86\_32/src/kernel/drivers/io/keymap.h@{x86\_32/src/kernel/drivers/io/keymap.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00002\ }
+\DoxyCodeLine{00003\ \textcolor{preprocessor}{\#include\ <utils/types.h>}}
+\DoxyCodeLine{00004\ }
+\DoxyCodeLine{00005\ \textcolor{preprocessor}{\#include\ <kernel/devices/io/ps2\_scancodes.h>}}
+\DoxyCodeLine{00006\ \textcolor{preprocessor}{\#include\ <kernel/drivers/io/keycodes.h>}}
+\DoxyCodeLine{00007\ }
+\DoxyCodeLine{00008\ \textcolor{preprocessor}{\#define\ KEYCODE\_MAP\_LEN\ \ \ \ \ \ \ \ \ \ \ \ \ \ 85}}
+\DoxyCodeLine{00009\ \textcolor{preprocessor}{\#define\ KEYCODE\_MAP\_EXTENDED\_LEN\ \ \ \ \ 17}}
+\DoxyCodeLine{00010\ }
+\DoxyCodeLine{00011\ \textcolor{keyword}{namespace\ }Drivers::Keyboard\ \{}
+\DoxyCodeLine{00012\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{constexpr}\ uint8\ keycode\_map[][2]\ =\ \{}
+\DoxyCodeLine{00013\ \ \ \ \ \ \ \ \ \{PS2\_SCANCODE\_A,\ KEYCODE\_A\},}
+\DoxyCodeLine{00014\ \ \ \ \ \ \ \ \ \{PS2\_SCANCODE\_B,\ KEYCODE\_B\},}
+\DoxyCodeLine{00015\ \ \ \ \ \ \ \ \ \{PS2\_SCANCODE\_C,\ KEYCODE\_C\},}
+\DoxyCodeLine{00016\ \ \ \ \ \ \ \ \ \{PS2\_SCANCODE\_D,\ KEYCODE\_D\},}
+\DoxyCodeLine{00017\ \ \ \ \ \ \ \ \ \{PS2\_SCANCODE\_E,\ KEYCODE\_E\},}
+\DoxyCodeLine{00018\ \ \ \ \ \ \ \ \ \{PS2\_SCANCODE\_F,\ KEYCODE\_F\},}
+\DoxyCodeLine{00019\ \ \ \ \ \ \ \ \ \{PS2\_SCANCODE\_G,\ KEYCODE\_G\},}
+\DoxyCodeLine{00020\ \ \ \ \ \ \ \ \ \{PS2\_SCANCODE\_H,\ KEYCODE\_H\},}
+\DoxyCodeLine{00021\ \ \ \ \ \ \ \ \ \{PS2\_SCANCODE\_I,\ KEYCODE\_I\},}
+\DoxyCodeLine{00022\ \ \ \ \ \ \ \ \ \{PS2\_SCANCODE\_J,\ KEYCODE\_J\},}
+\DoxyCodeLine{00023\ \ \ \ \ \ \ \ \ \{PS2\_SCANCODE\_K,\ KEYCODE\_K\},}
+\DoxyCodeLine{00024\ \ \ \ \ \ \ \ \ \{PS2\_SCANCODE\_L,\ KEYCODE\_L\},}
+\DoxyCodeLine{00025\ \ \ \ \ \ \ \ \ \{PS2\_SCANCODE\_M,\ KEYCODE\_M\},}
+\DoxyCodeLine{00026\ \ \ \ \ \ \ \ \ \{PS2\_SCANCODE\_N,\ KEYCODE\_N\},}
+\DoxyCodeLine{00027\ \ \ \ \ \ \ \ \ \{PS2\_SCANCODE\_O,\ KEYCODE\_O\},}
+\DoxyCodeLine{00028\ \ \ \ \ \ \ \ \ \{PS2\_SCANCODE\_P,\ KEYCODE\_P\},}
+\DoxyCodeLine{00029\ \ \ \ \ \ \ \ \ \{PS2\_SCANCODE\_Q,\ KEYCODE\_Q\},}
+\DoxyCodeLine{00030\ \ \ \ \ \ \ \ \ \{PS2\_SCANCODE\_R,\ KEYCODE\_R\},}
+\DoxyCodeLine{00031\ \ \ \ \ \ \ \ \ \{PS2\_SCANCODE\_S,\ KEYCODE\_S\},}
+\DoxyCodeLine{00032\ \ \ \ \ \ \ \ \ \{PS2\_SCANCODE\_T,\ KEYCODE\_T\},}
+\DoxyCodeLine{00033\ \ \ \ \ \ \ \ \ \{PS2\_SCANCODE\_U,\ KEYCODE\_U\},}
+\DoxyCodeLine{00034\ \ \ \ \ \ \ \ \ \{PS2\_SCANCODE\_V,\ KEYCODE\_V\},}
+\DoxyCodeLine{00035\ \ \ \ \ \ \ \ \ \{PS2\_SCANCODE\_W,\ KEYCODE\_W\},}
+\DoxyCodeLine{00036\ \ \ \ \ \ \ \ \ \{PS2\_SCANCODE\_X,\ KEYCODE\_X\},}
+\DoxyCodeLine{00037\ \ \ \ \ \ \ \ \ \{PS2\_SCANCODE\_Y,\ KEYCODE\_Y\},}
+\DoxyCodeLine{00038\ \ \ \ \ \ \ \ \ \{PS2\_SCANCODE\_Z,\ KEYCODE\_Z\},}
+\DoxyCodeLine{00039\ \ \ \ \ \ \ \ \ \{PS2\_SCANCODE\_0,\ KEYCODE\_0\},}
+\DoxyCodeLine{00040\ \ \ \ \ \ \ \ \ \{PS2\_SCANCODE\_1,\ KEYCODE\_1\},}
+\DoxyCodeLine{00041\ \ \ \ \ \ \ \ \ \{PS2\_SCANCODE\_2,\ KEYCODE\_2\},}
+\DoxyCodeLine{00042\ \ \ \ \ \ \ \ \ \{PS2\_SCANCODE\_3,\ KEYCODE\_3\},}
+\DoxyCodeLine{00043\ \ \ \ \ \ \ \ \ \{PS2\_SCANCODE\_4,\ KEYCODE\_4\},}
+\DoxyCodeLine{00044\ \ \ \ \ \ \ \ \ \{PS2\_SCANCODE\_5,\ KEYCODE\_5\},}
+\DoxyCodeLine{00045\ \ \ \ \ \ \ \ \ \{PS2\_SCANCODE\_6,\ KEYCODE\_6\},}
+\DoxyCodeLine{00046\ \ \ \ \ \ \ \ \ \{PS2\_SCANCODE\_7,\ KEYCODE\_7\},}
+\DoxyCodeLine{00047\ \ \ \ \ \ \ \ \ \{PS2\_SCANCODE\_8,\ KEYCODE\_8\},}
+\DoxyCodeLine{00048\ \ \ \ \ \ \ \ \ \{PS2\_SCANCODE\_9,\ KEYCODE\_9\},}
+\DoxyCodeLine{00049\ \ \ \ \ \ \ \ \ \{PS2\_SCANCODE\_F1,\ KEYCODE\_F1\},}
+\DoxyCodeLine{00050\ \ \ \ \ \ \ \ \ \{PS2\_SCANCODE\_F2,\ KEYCODE\_F2\},}
+\DoxyCodeLine{00051\ \ \ \ \ \ \ \ \ \{PS2\_SCANCODE\_F3,\ KEYCODE\_F3\},}
+\DoxyCodeLine{00052\ \ \ \ \ \ \ \ \ \{PS2\_SCANCODE\_F4,\ KEYCODE\_F4\},}
+\DoxyCodeLine{00053\ \ \ \ \ \ \ \ \ \{PS2\_SCANCODE\_F5,\ KEYCODE\_F5\},}
+\DoxyCodeLine{00054\ \ \ \ \ \ \ \ \ \{PS2\_SCANCODE\_F6,\ KEYCODE\_F6\},}
+\DoxyCodeLine{00055\ \ \ \ \ \ \ \ \ \{PS2\_SCANCODE\_F7,\ KEYCODE\_F7\},}
+\DoxyCodeLine{00056\ \ \ \ \ \ \ \ \ \{PS2\_SCANCODE\_F8,\ KEYCODE\_F8\},}
+\DoxyCodeLine{00057\ \ \ \ \ \ \ \ \ \{PS2\_SCANCODE\_F9,\ KEYCODE\_F9\},}
+\DoxyCodeLine{00058\ \ \ \ \ \ \ \ \ \{PS2\_SCANCODE\_F10,\ KEYCODE\_F10\},}
+\DoxyCodeLine{00059\ \ \ \ \ \ \ \ \ \{PS2\_SCANCODE\_F11,\ KEYCODE\_F11\},}
+\DoxyCodeLine{00060\ \ \ \ \ \ \ \ \ \{PS2\_SCANCODE\_F12,\ KEYCODE\_F12\},}
+\DoxyCodeLine{00061\ \ \ \ \ \ \ \ \ \{PS2\_SCANCODE\_TILDE,\ KEYCODE\_TILDE\},}
+\DoxyCodeLine{00062\ \ \ \ \ \ \ \ \ \{PS2\_SCANCODE\_MINUS,\ KEYCODE\_MINUS\},}
+\DoxyCodeLine{00063\ \ \ \ \ \ \ \ \ \{PS2\_SCANCODE\_EQUAL,\ KEYCODE\_EQUAL\},}
+\DoxyCodeLine{00064\ \ \ \ \ \ \ \ \ \{PS2\_SCANCODE\_LBRACKET,\ KEYCODE\_LBRACKET\},}
+\DoxyCodeLine{00065\ \ \ \ \ \ \ \ \ \{PS2\_SCANCODE\_RBRACKET,\ KEYCODE\_RBRACKET\},}
+\DoxyCodeLine{00066\ \ \ \ \ \ \ \ \ \{PS2\_SCANCODE\_BACK\_SLASH,\ KEYCODE\_BACK\_SLASH\},}
+\DoxyCodeLine{00067\ \ \ \ \ \ \ \ \ \{PS2\_SCANCODE\_SEMICOLON,\ KEYCODE\_SEMICOLON\},}
+\DoxyCodeLine{00068\ \ \ \ \ \ \ \ \ \{PS2\_SCANCODE\_APOSTROPHE,\ KEYCODE\_APOSTROPHE\},}
+\DoxyCodeLine{00069\ \ \ \ \ \ \ \ \ \{PS2\_SCANCODE\_COMMA,\ KEYCODE\_COMMA\},}
+\DoxyCodeLine{00070\ \ \ \ \ \ \ \ \ \{PS2\_SCANCODE\_PERIOD,\ KEYCODE\_PERIOD\},}
+\DoxyCodeLine{00071\ \ \ \ \ \ \ \ \ \{PS2\_SCANCODE\_FORWARD\_SLASH,\ KEYCODE\_FORWARD\_SLASH\},}
+\DoxyCodeLine{00072\ \ \ \ \ \ \ \ \ \{PS2\_SCANCODE\_BACKSPACE,\ KEYCODE\_BACKSPACE\},}
+\DoxyCodeLine{00073\ \ \ \ \ \ \ \ \ \{PS2\_SCANCODE\_SPACE,\ KEYCODE\_SPACE\},}
+\DoxyCodeLine{00074\ \ \ \ \ \ \ \ \ \{PS2\_SCANCODE\_TAB,\ KEYCODE\_TAB\},}
+\DoxyCodeLine{00075\ \ \ \ \ \ \ \ \ \{PS2\_SCANCODE\_CAPS,\ KEYCODE\_CAPS\},}
+\DoxyCodeLine{00076\ \ \ \ \ \ \ \ \ \{PS2\_SCANCODE\_LSHFT,\ KEYCODE\_LSHFT\},}
+\DoxyCodeLine{00077\ \ \ \ \ \ \ \ \ \{PS2\_SCANCODE\_RSHFT,\ KEYCODE\_RSHFT\},}
+\DoxyCodeLine{00078\ \ \ \ \ \ \ \ \ \{PS2\_SCANCODE\_LCTRL,\ KEYCODE\_LCTRL\},}
+\DoxyCodeLine{00079\ \ \ \ \ \ \ \ \ \{PS2\_SCANCODE\_LALT,\ KEYCODE\_LALT\},}
+\DoxyCodeLine{00080\ \ \ \ \ \ \ \ \ \{PS2\_SCANCODE\_ENTER,\ KEYCODE\_ENTER\},}
+\DoxyCodeLine{00081\ \ \ \ \ \ \ \ \ \{PS2\_SCANCODE\_ESC,\ KEYCODE\_ESC\},}
+\DoxyCodeLine{00082\ \ \ \ \ \ \ \ \ \{PS2\_SCANCODE\_NUM,\ KEYCODE\_NUM\},}
+\DoxyCodeLine{00083\ \ \ \ \ \ \ \ \ \{PS2\_SCANCODE\_KP\_MULT,\ KEYCODE\_INVALID\},}
+\DoxyCodeLine{00084\ \ \ \ \ \ \ \ \ \{PS2\_SCANCODE\_KP\_MINUS,\ KEYCODE\_INVALID\},}
+\DoxyCodeLine{00085\ \ \ \ \ \ \ \ \ \{PS2\_SCANCODE\_KP\_PLUS,\ KEYCODE\_INVALID\},}
+\DoxyCodeLine{00086\ \ \ \ \ \ \ \ \ \{PS2\_SCANCODE\_KP\_PERIOD,\ KEYCODE\_INVALID\},}
+\DoxyCodeLine{00087\ \ \ \ \ \ \ \ \ \{PS2\_SCANCODE\_KP0,\ KEYCODE\_INVALID\},}
+\DoxyCodeLine{00088\ \ \ \ \ \ \ \ \ \{PS2\_SCANCODE\_KP1,\ KEYCODE\_INVALID\},}
+\DoxyCodeLine{00089\ \ \ \ \ \ \ \ \ \{PS2\_SCANCODE\_KP2,\ KEYCODE\_INVALID\},}
+\DoxyCodeLine{00090\ \ \ \ \ \ \ \ \ \{PS2\_SCANCODE\_KP3,\ KEYCODE\_INVALID\},}
+\DoxyCodeLine{00091\ \ \ \ \ \ \ \ \ \{PS2\_SCANCODE\_KP4,\ KEYCODE\_INVALID\},}
+\DoxyCodeLine{00092\ \ \ \ \ \ \ \ \ \{PS2\_SCANCODE\_KP5,\ KEYCODE\_INVALID\},}
+\DoxyCodeLine{00093\ \ \ \ \ \ \ \ \ \{PS2\_SCANCODE\_KP6,\ KEYCODE\_INVALID\},}
+\DoxyCodeLine{00094\ \ \ \ \ \ \ \ \ \{PS2\_SCANCODE\_KP7,\ KEYCODE\_INVALID\},}
+\DoxyCodeLine{00095\ \ \ \ \ \ \ \ \ \{PS2\_SCANCODE\_KP8,\ KEYCODE\_INVALID\},}
+\DoxyCodeLine{00096\ \ \ \ \ \ \ \ \ \{PS2\_SCANCODE\_KP9,\ KEYCODE\_INVALID\},}
+\DoxyCodeLine{00097\ \ \ \ \ \ \ \ \ \{PS2\_SCANCODE\_SCROLL,\ KEYCODE\_INVALID\}}
+\DoxyCodeLine{00098\ \ \ \ \ \};}
+\DoxyCodeLine{00099\ }
+\DoxyCodeLine{00100\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{constexpr}\ uint8\ keycode\_map\_extended\ [][2]\ =\ \{}
+\DoxyCodeLine{00101\ \ \ \ \ \ \ \ \ \{PS2\_SCANCODE\_RCTRL,\ KEYCODE\_RCTRL\},}
+\DoxyCodeLine{00102\ \ \ \ \ \ \ \ \ \{PS2\_SCANCODE\_RALT,\ KEYCODE\_RALT\},}
+\DoxyCodeLine{00103\ \ \ \ \ \ \ \ \ \{PS2\_SCANCODE\_LWIN,\ KEYCODE\_LWIN\},}
+\DoxyCodeLine{00104\ \ \ \ \ \ \ \ \ \{PS2\_SCANCODE\_RWIN,\ KEYCODE\_RWIN\},}
+\DoxyCodeLine{00105\ \ \ \ \ \ \ \ \ \{PS2\_SCANCODE\_INSERT,\ KEYCODE\_INSERT\},}
+\DoxyCodeLine{00106\ \ \ \ \ \ \ \ \ \{PS2\_SCANCODE\_DELETE,\ KEYCODE\_DELETE\},}
+\DoxyCodeLine{00107\ \ \ \ \ \ \ \ \ \{PS2\_SCANCODE\_HOME,\ KEYCODE\_HOME\},}
+\DoxyCodeLine{00108\ \ \ \ \ \ \ \ \ \{PS2\_SCANCODE\_END,\ KEYCODE\_END\},}
+\DoxyCodeLine{00109\ \ \ \ \ \ \ \ \ \{PS2\_SCANCODE\_PGUP,\ KEYCODE\_PGUP\},}
+\DoxyCodeLine{00110\ \ \ \ \ \ \ \ \ \{PS2\_SCANCODE\_PGDN,\ KEYCODE\_PGDN\},}
+\DoxyCodeLine{00111\ \ \ \ \ \ \ \ \ \{PS2\_SCANCODE\_UARROW,\ KEYCODE\_UARROW\},}
+\DoxyCodeLine{00112\ \ \ \ \ \ \ \ \ \{PS2\_SCANCODE\_LARROW,\ KEYCODE\_LARROW\},}
+\DoxyCodeLine{00113\ \ \ \ \ \ \ \ \ \{PS2\_SCANCODE\_DARROW,\ KEYCODE\_DARROW\},}
+\DoxyCodeLine{00114\ \ \ \ \ \ \ \ \ \{PS2\_SCANCODE\_RARROW,\ KEYCODE\_RARROW\},}
+\DoxyCodeLine{00115\ \ \ \ \ \ \ \ \ \{PS2\_SCANCODE\_KP\_FORWARD\_SLASH,\ KEYCODE\_INVALID\},}
+\DoxyCodeLine{00116\ \ \ \ \ \ \ \ \ \{PS2\_SCANCODE\_KPEN,\ KEYCODE\_INVALID\},}
+\DoxyCodeLine{00117\ \ \ \ \ \ \ \ \ \{PS2\_SCANCODE\_APPS,\ KEYCODE\_INVALID\},}
+\DoxyCodeLine{00118\ \ \ \ \ \};}
+\DoxyCodeLine{00119\ \}}
+
+\end{DoxyCode}

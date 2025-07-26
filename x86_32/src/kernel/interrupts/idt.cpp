@@ -7,6 +7,7 @@
 
 #include <kernel/library/log.h>
 #include <kernel/library/panic.h>
+#include <kernel/library/debug.h>
 
 #include <utils/asm.h>
 #include <utils/math.h>
@@ -19,7 +20,7 @@ namespace Interrupts::IDT {
     static IDT_ENTRY idt[256]; // the actual idt;
     static IDTR idtr;
 
-    void setup(IN bool verbose)
+    void setup()
     {
         PIC::init();
 
@@ -38,7 +39,7 @@ namespace Interrupts::IDT {
         __asm__ volatile("lidt %0" : : "m"(idtr));
         sti();
 
-        if(verbose) Library::fprintln("(OK) IDT initialized", Drivers::VGA::Color::LGREEN);
+        Debug::fprintln("(OK) IDT initialized");
     }
 
     void set_IDT_entry(IN uint8 vector, IN PTR handler, IN uint8 attributes)

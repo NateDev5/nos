@@ -1,0 +1,21 @@
+\doxysection{terminal.\+h}
+\hypertarget{terminal_8h_source}{}\label{terminal_8h_source}\index{x86\_32/src/kernel/terminal.h@{x86\_32/src/kernel/terminal.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00002\ }
+\DoxyCodeLine{00003\ \textcolor{preprocessor}{\#include\ <utils/types.h>}}
+\DoxyCodeLine{00004\ }
+\DoxyCodeLine{00005\ \textcolor{preprocessor}{\#include\ <kernel/drivers/io/keyboard.h>}}
+\DoxyCodeLine{00006\ }
+\DoxyCodeLine{00007\ \textcolor{preprocessor}{\#define\ TERMINAL\_BUFFER\_SIZE\ \ \ \ 256}}
+\DoxyCodeLine{00008\ }
+\DoxyCodeLine{00009\ \textcolor{keyword}{namespace\ }Kernel::Terminal\ \{}
+\DoxyCodeLine{00010\ \ \ \ \ \textcolor{keywordtype}{void}\ run();}
+\DoxyCodeLine{00011\ \ \ \ \ \textcolor{keywordtype}{void}\ handle\_keypress\ (IN\ Drivers::Keyboard::KeypressInfo\ keypress);}
+\DoxyCodeLine{00012\ \ \ \ \ \textcolor{keywordtype}{void}\ display\_character(IN\ int8\ \_char);}
+\DoxyCodeLine{00013\ \ \ \ \ \textcolor{keywordtype}{void}\ new\_entry\ ();}
+\DoxyCodeLine{00014\ \ \ \ \ \textcolor{keywordtype}{void}\ handle\_buffer\ ();}
+\DoxyCodeLine{00015\ \}}
+
+\end{DoxyCode}

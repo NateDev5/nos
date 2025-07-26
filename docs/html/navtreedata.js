@@ -25,19 +25,19 @@
 var NAVTREE =
 [
   [ "nos", "index.html", [
-    [ "Table of content", "md_DOCS.html", [
-      [ "Interrupts", "md_DOCS.html#autotoc_md1", null ]
+    [ "Classes", "annotated.html", [
+      [ "Class List", "annotated.html", "annotated_dup" ],
+      [ "Class Index", "classes.html", null ]
     ] ],
-    [ "nos", "md_README.html", [
-      [ "Documentation", "md_README.html#autotoc_md3", null ]
-    ] ],
-    [ "useful", "md_useful.html", null ]
+    [ "Files", "files.html", [
+      [ "File List", "files.html", "files_dup" ]
+    ] ]
   ] ]
 ];
 
 var NAVTREEINDEX =
 [
-"index.html"
+"annotated.html"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronization';

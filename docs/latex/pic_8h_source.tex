@@ -1,0 +1,39 @@
+\doxysection{pic.\+h}
+\hypertarget{pic_8h_source}{}\label{pic_8h_source}\index{x86\_32/src/kernel/interrupts/pic.h@{x86\_32/src/kernel/interrupts/pic.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00002\ }
+\DoxyCodeLine{00003\ \textcolor{comment}{//https://pdos.csail.mit.edu/6.828/2014/readings/hardware/8259A.pdf}}
+\DoxyCodeLine{00004\ \textcolor{comment}{//https://wiki.osdev.org/8259\_PIC}}
+\DoxyCodeLine{00005\ \textcolor{comment}{//https://www.geeksforgeeks.org/computer-\/organization-\/architecture/operating-\/modes-\/of-\/8259-\/pic/}}
+\DoxyCodeLine{00006\ }
+\DoxyCodeLine{00007\ \textcolor{preprocessor}{\#include\ <utils/types.h>}}
+\DoxyCodeLine{00008\ }
+\DoxyCodeLine{00009\ \textcolor{preprocessor}{\#define\ PIC1\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ 0x20}}
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#define\ PIC2\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ 0xA0}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#define\ PIC1\_COMMAND\ \ \ \ \ \ \ \ \ \ \ \ \ \ PIC1}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#define\ PIC1\_DATA\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ PIC1+1}}
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#define\ PIC2\_COMMAND\ \ \ \ \ \ \ \ \ \ \ \ \ \ PIC2}}
+\DoxyCodeLine{00014\ \textcolor{preprocessor}{\#define\ PIC2\_DATA\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ PIC2+1}}
+\DoxyCodeLine{00015\ }
+\DoxyCodeLine{00016\ \textcolor{preprocessor}{\#define\ EXTERNAL\_INTERRUPTS\_START\ 0x20}}
+\DoxyCodeLine{00017\ }
+\DoxyCodeLine{00018\ \textcolor{comment}{//\ ICW1\ is\ init}}
+\DoxyCodeLine{00019\ \textcolor{comment}{//\ ICW2\ is\ the\ offset\ of\ the\ vector}}
+\DoxyCodeLine{00020\ \textcolor{comment}{//\ ICW3\ is\ to\ tell\ how\ the\ master\ and\ slave\ are\ wired}}
+\DoxyCodeLine{00021\ \textcolor{comment}{//\ ICW4\ is\ for\ providing\ additional\ info}}
+\DoxyCodeLine{00022\ }
+\DoxyCodeLine{00023\ \textcolor{preprocessor}{\#define\ ICW1\ \ \ \ \ \ \ \ \ 0x10\ }\textcolor{comment}{//\ init\ command}}
+\DoxyCodeLine{00024\ \textcolor{preprocessor}{\#define\ ICW4\ \ \ \ \ \ \ \ \ 0x01}}
+\DoxyCodeLine{00025\ \textcolor{preprocessor}{\#define\ ICW4\_8086\ \ \ \ 0x01\ }\textcolor{comment}{//\ 8086\ mode}}
+\DoxyCodeLine{00026\ }
+\DoxyCodeLine{00027\ \textcolor{comment}{//\ end\ of\ interrupt}}
+\DoxyCodeLine{00028\ \textcolor{preprocessor}{\#define\ PIC\_EOI\ \ \ \ \ \ 0x20}}
+\DoxyCodeLine{00029\ }
+\DoxyCodeLine{00030\ \textcolor{keyword}{namespace\ }Interrupts::PIC\ \{}
+\DoxyCodeLine{00031\ \ \ \ \ \textcolor{keywordtype}{void}\ init\ ();}
+\DoxyCodeLine{00032\ \ \ \ \ \textcolor{keywordtype}{void}\ send\_EOI\ (IN\ uint8\ irq);}
+\DoxyCodeLine{00033\ \}}
+
+\end{DoxyCode}

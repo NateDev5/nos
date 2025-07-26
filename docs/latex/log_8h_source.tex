@@ -1,0 +1,41 @@
+\doxysection{log.\+h}
+\hypertarget{log_8h_source}{}\label{log_8h_source}\index{x86\_32/src/kernel/library/log.h@{x86\_32/src/kernel/library/log.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00002\ }
+\DoxyCodeLine{00003\ \textcolor{preprocessor}{\#include\ <utils/types.h>}}
+\DoxyCodeLine{00004\ }
+\DoxyCodeLine{00005\ \textcolor{preprocessor}{\#include\ <kernel/drivers/video/vga.h>}}
+\DoxyCodeLine{00006\ }
+\DoxyCodeLine{00007\ \textcolor{preprocessor}{\#include\ <kernel/library/stdarg.h>}}
+\DoxyCodeLine{00008\ }
+\DoxyCodeLine{00009\ \textcolor{keyword}{namespace\ }Library\ \{}
+\DoxyCodeLine{00010\ \ \ \ \ \textcolor{comment}{/*}}
+\DoxyCodeLine{00011\ \textcolor{comment}{\ \ \ \ \%s\ for\ a\ string}}
+\DoxyCodeLine{00012\ \textcolor{comment}{\ \ \ \ \%c\ for\ a\ char}}
+\DoxyCodeLine{00013\ \textcolor{comment}{\ \ \ \ \%i\ for\ an\ int}}
+\DoxyCodeLine{00014\ \textcolor{comment}{\ \ \ \ \%b\ for\ a\ binary\ representation\ of\ an\ int}}
+\DoxyCodeLine{00015\ \textcolor{comment}{\ \ \ \ \%h\ for\ an\ hexadecimal\ representation\ of\ an\ int}}
+\DoxyCodeLine{00016\ \textcolor{comment}{\ \ \ \ */}}
+\DoxyCodeLine{00017\ \ \ \ \ \textcolor{keywordtype}{void}\ vfprintf(IN\ cstr\ format,\ IN\ uint8\ color\_format,\ IN\ va\_list\ args);}
+\DoxyCodeLine{00018\ }
+\DoxyCodeLine{00019\ \ \ \ \ \textcolor{keywordtype}{void}\ fprintf(IN\ cstr\ format,\ IN\ uint8\ color\_format,\ IN\ ...);}
+\DoxyCodeLine{00020\ \ \ \ \ \textcolor{keywordtype}{void}\ printf(IN\ cstr\ format,\ IN\ ...);}
+\DoxyCodeLine{00021\ }
+\DoxyCodeLine{00022\ \ \ \ \ \textcolor{keywordtype}{void}\ fprintf\_ln(IN\ cstr\ format,\ IN\ uint8\ color\_format,\ IN\ ...);}
+\DoxyCodeLine{00023\ \ \ \ \ \textcolor{keywordtype}{void}\ printf\_ln(IN\ cstr\ format,\ IN\ ...);}
+\DoxyCodeLine{00024\ }
+\DoxyCodeLine{00025\ \ \ \ \ \textcolor{keywordtype}{void}\ fprint(IN\ cstr\ message,\ IN\ uint8\ color\_format);}
+\DoxyCodeLine{00026\ \ \ \ \ \textcolor{keywordtype}{void}\ print(IN\ cstr\ message);}
+\DoxyCodeLine{00027\ }
+\DoxyCodeLine{00028\ \ \ \ \ \textcolor{keywordtype}{void}\ fprintln\ (IN\ cstr\ message,\ IN\ uint8\ color\_format);}
+\DoxyCodeLine{00029\ \ \ \ \ \textcolor{keywordtype}{void}\ println\ (IN\ cstr\ message);}
+\DoxyCodeLine{00030\ }
+\DoxyCodeLine{00031\ \ \ \ \ \textcolor{keywordtype}{void}\ fprintc\ (IN\ int8\ \_char,\ IN\ uint8\ color\_format);}
+\DoxyCodeLine{00032\ \ \ \ \ \textcolor{keywordtype}{void}\ printc\ (IN\ int8\ \_char);}
+\DoxyCodeLine{00033\ }
+\DoxyCodeLine{00034\ \ \ \ \ \textcolor{keywordtype}{void}\ clear\ ();}
+\DoxyCodeLine{00035\ \}}
+
+\end{DoxyCode}

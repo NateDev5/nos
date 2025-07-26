@@ -1,4 +1,4 @@
 .PHONY: docs
 
 docs:
-	doxygen ".doxygen"
+	doxygen "Doxyfile"

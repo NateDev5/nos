@@ -4,7 +4,7 @@
 
 #include <kernel/drivers/io/keyboard.h>
 
-#define TERMINAL_BUFFER_SIZE    256
+#define TERMINAL_BUFFER_SIZE    30
 
 namespace Kernel::Terminal {
     void run();

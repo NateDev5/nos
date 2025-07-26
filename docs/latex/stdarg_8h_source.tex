@@ -1,0 +1,13 @@
+\doxysection{stdarg.\+h}
+\hypertarget{stdarg_8h_source}{}\label{stdarg_8h_source}\index{x86\_32/src/kernel/library/stdarg.h@{x86\_32/src/kernel/library/stdarg.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00002\ }
+\DoxyCodeLine{00003\ \textcolor{preprocessor}{\#define\ va\_start(ap,\ last)\ \ \_\_builtin\_va\_start((ap),\ last)}}
+\DoxyCodeLine{00004\ \textcolor{preprocessor}{\#define\ va\_end(ap)\ \ \ \ \ \ \ \ \ \ \_\_builtin\_va\_end((ap))}}
+\DoxyCodeLine{00005\ \textcolor{preprocessor}{\#define\ va\_arg(ap,\ type)\ \ \ \ \_\_builtin\_va\_arg((ap),\ type)}}
+\DoxyCodeLine{00006\ }
+\DoxyCodeLine{00007\ \textcolor{keyword}{typedef}\ \_\_builtin\_va\_list\ \ \ va\_list;}
+
+\end{DoxyCode}

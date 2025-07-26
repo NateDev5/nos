@@ -1,0 +1,19 @@
+\doxysection{string.\+h}
+\hypertarget{string_8h_source}{}\label{string_8h_source}\index{x86\_32/src/kernel/library/string.h@{x86\_32/src/kernel/library/string.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00002\ }
+\DoxyCodeLine{00003\ \textcolor{preprocessor}{\#include\ <kernel/library/stdarg.h>}}
+\DoxyCodeLine{00004\ \textcolor{preprocessor}{\#include\ <utils/types.h>}}
+\DoxyCodeLine{00005\ }
+\DoxyCodeLine{00006\ \textcolor{preprocessor}{\#define\ STR\_MAX\_LEN\ 512}}
+\DoxyCodeLine{00007\ }
+\DoxyCodeLine{00008\ \textcolor{keyword}{namespace\ }Library\ \{}
+\DoxyCodeLine{00009\ uint16\ strlen(IN\ cstr\ in\_str);}
+\DoxyCodeLine{00010\ \textcolor{keywordtype}{bool}\ strcmp(IN\ cstr\ in\_str1,\ IN\ cstr\ in\_str2);}
+\DoxyCodeLine{00011\ \textcolor{keywordtype}{void}\ strcpy(IN\ str\ in\_str,\ OUT\ str\ out\_str);}
+\DoxyCodeLine{00012\ \textcolor{keywordtype}{void}\ strcat(IN\ str\ in\_str,\ IN\_OUT\ str\ out\_str);}
+\DoxyCodeLine{00013\ \}\ \textcolor{comment}{//\ namespace\ Library}}
+
+\end{DoxyCode}

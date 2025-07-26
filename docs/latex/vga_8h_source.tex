@@ -1,0 +1,111 @@
+\doxysection{vga.\+h}
+\hypertarget{vga_8h_source}{}\label{vga_8h_source}\index{x86\_32/src/kernel/drivers/video/vga.h@{x86\_32/src/kernel/drivers/video/vga.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00002\ }
+\DoxyCodeLine{00003\ \textcolor{preprocessor}{\#include\ <utils/types.h>}}
+\DoxyCodeLine{00004\ \textcolor{comment}{//\ http://www.osdever.net/FreeVGA/home.htm}}
+\DoxyCodeLine{00005\ \textcolor{comment}{//\ http://www.osdever.net/FreeVGA/vga/crtcreg.htm\#0A}}
+\DoxyCodeLine{00006\ \textcolor{comment}{//\ http://www.osdever.net/FreeVGA/vga/vgareg.htm}}
+\DoxyCodeLine{00007\ }
+\DoxyCodeLine{00008\ \textcolor{preprocessor}{\#define\ START\_VID\_MEM\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ 0xA0000}}
+\DoxyCodeLine{00009\ \textcolor{preprocessor}{\#define\ BASE\_VID\_MEM\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ 0xB8000}}
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#define\ END\_VID\_MEM\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ 0xC0000}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#define\ SCRN\_WIDTH\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ 80}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#define\ SCRN\_HEIGHT\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ 25}}
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#define\ SCRN\_SIZE\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ SCRN\_HEIGHT\ *\ SCRN\_WIDTH}}
+\DoxyCodeLine{00014\ \textcolor{preprocessor}{\#define\ VID\_MEM\_BOUNDS\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ (uint32)(BASE\_VID\_MEM\ +\ (SCRN\_SIZE\ *\ 2))}}
+\DoxyCodeLine{00015\ }
+\DoxyCodeLine{00016\ \textcolor{preprocessor}{\#define\ ADDRESS\_REGISTER\_PORT\ \ \ \ \ \ \ \ \ \ \ 0x3D4}}
+\DoxyCodeLine{00017\ \textcolor{preprocessor}{\#define\ DATA\_REGISTER\_PORT\ \ \ \ \ \ \ \ \ \ \ \ \ \ 0x3D5}}
+\DoxyCodeLine{00018\ }
+\DoxyCodeLine{00019\ \textcolor{preprocessor}{\#define\ MAX\_SCAN\_LINE\_REGISTER\ \ \ \ \ \ \ \ \ \ 0x09}}
+\DoxyCodeLine{00020\ \textcolor{preprocessor}{\#define\ CURSOR\_START\_REGISTER\ \ \ \ \ \ \ \ \ \ \ 0x0A}}
+\DoxyCodeLine{00021\ \textcolor{preprocessor}{\#define\ CURSOR\_END\_REGISTER\ \ \ \ \ \ \ \ \ \ \ \ \ 0x0B}}
+\DoxyCodeLine{00022\ \textcolor{preprocessor}{\#define\ CURSOR\_LOCATION\_HIGH\_REGISTER\ \ \ 0x0E}}
+\DoxyCodeLine{00023\ \textcolor{preprocessor}{\#define\ CURSOR\_LOCATION\_LOW\_REGISTER\ \ \ \ 0x0F}}
+\DoxyCodeLine{00024\ }
+\DoxyCodeLine{00025\ \textcolor{preprocessor}{\#define\ CURSOR\_DISABLED\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ 0x20}}
+\DoxyCodeLine{00026\ }
+\DoxyCodeLine{00027\ \textcolor{preprocessor}{\#define\ FIRST\_5\_BIT\_MASK\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ 0x1F}}
+\DoxyCodeLine{00028\ }
+\DoxyCodeLine{00029\ \textcolor{comment}{//\ shift\ 4\ bits\ to\ the\ left\ so\ the\ first\ 4\ bits\ are\ the\ first\ color\ and\ then\ mask\ the\ last\ 4\ bits\ to\ the\ second\ color}}
+\DoxyCodeLine{00030\ \textcolor{preprocessor}{\#define\ FORMAT(back,fore)\ (back\ <<\ 4)\ |\ (fore)}}
+\DoxyCodeLine{00031\ }
+\DoxyCodeLine{00032\ \textcolor{preprocessor}{\#define\ BASE\_FMT\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ FORMAT(0x0,0xF)}}
+\DoxyCodeLine{00033\ }
+\DoxyCodeLine{00034\ \textcolor{comment}{/*}}
+\DoxyCodeLine{00035\ \textcolor{comment}{\#define\ BLACK\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ 0x0}}
+\DoxyCodeLine{00036\ \textcolor{comment}{\#define\ BLUE\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ 0x1}}
+\DoxyCodeLine{00037\ \textcolor{comment}{\#define\ GREEN\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ 0x2}}
+\DoxyCodeLine{00038\ \textcolor{comment}{\#define\ CYAN\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ 0x3}}
+\DoxyCodeLine{00039\ \textcolor{comment}{\#define\ RED\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ 0x4}}
+\DoxyCodeLine{00040\ \textcolor{comment}{\#define\ MAGENTA\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ 0x5}}
+\DoxyCodeLine{00041\ \textcolor{comment}{\#define\ BROWN\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ 0x6}}
+\DoxyCodeLine{00042\ \textcolor{comment}{\#define\ WHITE\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ 0x7}}
+\DoxyCodeLine{00043\ \textcolor{comment}{\#define\ GRAY\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ 0x8}}
+\DoxyCodeLine{00044\ \textcolor{comment}{\#define\ LBLUE\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ 0x9}}
+\DoxyCodeLine{00045\ \textcolor{comment}{\#define\ LGREEN\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ 0xA}}
+\DoxyCodeLine{00046\ \textcolor{comment}{\#define\ LCYAN\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ 0xB}}
+\DoxyCodeLine{00047\ \textcolor{comment}{\#define\ LRED\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ 0xC}}
+\DoxyCodeLine{00048\ \textcolor{comment}{\#define\ LMAGENTA\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ 0xD}}
+\DoxyCodeLine{00049\ \textcolor{comment}{\#define\ YELLOW\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ 0xE}}
+\DoxyCodeLine{00050\ \textcolor{comment}{\#define\ BWHITE\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ 0xF}}
+\DoxyCodeLine{00051\ \textcolor{comment}{*/}}
+\DoxyCodeLine{00052\ }
+\DoxyCodeLine{00053\ \textcolor{keyword}{namespace\ }Drivers::VGA\ \{}
+\DoxyCodeLine{00054\ \ \ \ \ \textcolor{keyword}{enum}\ Color\ \{}
+\DoxyCodeLine{00055\ \ \ \ \ \ \ \ \ BLACK\ \ \ \ =\ \ 0x0,}
+\DoxyCodeLine{00056\ \ \ \ \ \ \ \ \ BLUE\ \ \ \ \ =\ \ 0x1,}
+\DoxyCodeLine{00057\ \ \ \ \ \ \ \ \ GREEN\ \ \ \ =\ \ 0x2,}
+\DoxyCodeLine{00058\ \ \ \ \ \ \ \ \ CYAN\ \ \ \ \ =\ \ 0x3,}
+\DoxyCodeLine{00059\ \ \ \ \ \ \ \ \ RED\ \ \ \ \ \ =\ \ 0x4,}
+\DoxyCodeLine{00060\ \ \ \ \ \ \ \ \ MAGENTA\ \ =\ \ 0x5,}
+\DoxyCodeLine{00061\ \ \ \ \ \ \ \ \ BROWN\ \ \ \ =\ \ 0x6,}
+\DoxyCodeLine{00062\ \ \ \ \ \ \ \ \ WHITE\ \ \ \ =\ \ 0x7,}
+\DoxyCodeLine{00063\ \ \ \ \ \ \ \ \ GRAY\ \ \ \ \ =\ \ 0x8,}
+\DoxyCodeLine{00064\ \ \ \ \ \ \ \ \ LBLUE\ \ \ \ =\ \ 0x9,}
+\DoxyCodeLine{00065\ \ \ \ \ \ \ \ \ LGREEN\ \ \ =\ \ 0xA,}
+\DoxyCodeLine{00066\ \ \ \ \ \ \ \ \ LCYAN\ \ \ \ =\ \ 0xB,}
+\DoxyCodeLine{00067\ \ \ \ \ \ \ \ \ LRED\ \ \ \ \ =\ \ 0xC,}
+\DoxyCodeLine{00068\ \ \ \ \ \ \ \ \ LMAGENTA\ =\ \ 0xD,}
+\DoxyCodeLine{00069\ \ \ \ \ \ \ \ \ YELLOW\ \ \ =\ \ 0xE,}
+\DoxyCodeLine{00070\ \ \ \ \ \ \ \ \ BWHITE\ \ \ =\ \ 0xF}
+\DoxyCodeLine{00071\ \ \ \ \ \};}
+\DoxyCodeLine{00072\ }
+\DoxyCodeLine{00073\ \ \ \ \ \textcolor{keyword}{enum}\ CursorStyle\ \{}
+\DoxyCodeLine{00074\ \ \ \ \ \ \ \ \ UNDER,}
+\DoxyCodeLine{00075\ \ \ \ \ \ \ \ \ LARGE}
+\DoxyCodeLine{00076\ \ \ \ \ \};}
+\DoxyCodeLine{00077\ }
+\DoxyCodeLine{00078\ \ \ \ \ \textcolor{keywordtype}{void}\ init\ ();}
+\DoxyCodeLine{00079\ }
+\DoxyCodeLine{00080\ \ \ \ \ \textcolor{keywordtype}{void}\ modify\_register\ (IN\ uint8\ reg,\ IN\ uint8\ data);}
+\DoxyCodeLine{00081\ }
+\DoxyCodeLine{00082\ \ \ \ \ \textcolor{keywordtype}{void}\ enable\_cursor\ (IN\ CursorStyle\ cursor\_style);}
+\DoxyCodeLine{00083\ \ \ \ \ \textcolor{keywordtype}{void}\ disable\_cursor\ ();}
+\DoxyCodeLine{00084\ \ \ \ \ \textcolor{keywordtype}{void}\ set\_cursor\_pos\ (IN\ uint16\ offset);}
+\DoxyCodeLine{00085\ \ \ \ \ }
+\DoxyCodeLine{00086\ \ \ \ \ \textcolor{keywordtype}{void}\ putchar\ (IN\ int8\ \_char);}
+\DoxyCodeLine{00087\ \ \ \ \ \textcolor{keywordtype}{void}\ fputchar\ (IN\ int8\ \_char,\ IN\ uint8\ format);}
+\DoxyCodeLine{00088\ }
+\DoxyCodeLine{00089\ \ \ \ \ \textcolor{keywordtype}{void}\ putstr\ (IN\ cstr\ \textcolor{keywordtype}{string});}
+\DoxyCodeLine{00090\ \ \ \ \ \textcolor{keywordtype}{void}\ fputstr\ (IN\ cstr\ \textcolor{keywordtype}{string},\ IN\ uint8\ format);}
+\DoxyCodeLine{00091\ }
+\DoxyCodeLine{00092\ \ \ \ \ \textcolor{keywordtype}{void}\ fputchar\_at\ (IN\ int8\ \_char,\ IN\ uint16\ offset);}
+\DoxyCodeLine{00093\ }
+\DoxyCodeLine{00094\ \ \ \ \ \textcolor{keywordtype}{void}\ popchar\ ();}
+\DoxyCodeLine{00095\ }
+\DoxyCodeLine{00096\ \ \ \ \ \textcolor{keywordtype}{void}\ removechar\_at\ (IN\ uint16\ offset);}
+\DoxyCodeLine{00097\ }
+\DoxyCodeLine{00098\ \ \ \ \ \textcolor{keywordtype}{void}\ set\_background\_color\ (IN\ uint8\ color);}
+\DoxyCodeLine{00099\ \ \ \ \ \textcolor{keywordtype}{void}\ set\_foreground\_color\ (IN\ uint8\ color);}
+\DoxyCodeLine{00100\ }
+\DoxyCodeLine{00101\ \ \ \ \ \textcolor{keywordtype}{void}\ clear\_screen\ ();}
+\DoxyCodeLine{00102\ \ \ \ \ \textcolor{keywordtype}{void}\ test();}
+\DoxyCodeLine{00103\ }
+\DoxyCodeLine{00104\ \ \ \ \ uint16\ get\_current\_offset\ ();}
+\DoxyCodeLine{00105\ \}}
+
+\end{DoxyCode}

@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['of_20content_0',['Table of content',['../md_DOCS.html',1,'']]]
+  ['https_3a_20wiki_20osdev_20org_20gcc_5fcross_20compiler_0',['https://wiki.osdev.org/GCC_Cross-Compiler',['../md_useful.html',1,'']]]
 ];

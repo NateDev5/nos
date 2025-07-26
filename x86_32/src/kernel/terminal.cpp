@@ -1,6 +1,7 @@
 #include <kernel/terminal.h>
 
 #include <kernel/library/arrayutils.h>
+#include <kernel/library/debug.h>
 #include <kernel/library/log.h>
 #include <kernel/library/string.h>
 
@@ -34,29 +35,27 @@ static constexpr int8 character_map[][KEYCODE_MAP_LEN] = {
      // other
      0 /* back space */, ' ' /* space */, 0 /* tab */, 0, 0, 0, 0,
      0 /* enter */, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-    {
-        0,
-        // a-z
-        'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N',
-        'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z',
+    {0,
+     // a-z
+     'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O',
+     'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z',
 
-        // 0-9
-        ')', '!', '@', '#', '$', '%', '^', '&', '*', '(',
+     // 0-9
+     ')', '!', '@', '#', '$', '%', '^', '&', '*', '(',
 
-        // special characters
-        '~', '_', '+', '{', '}', '|', ':', '"', '<', '>', '?',
+     // special characters
+     '~', '_', '+', '{', '}', '|', ':', '"', '<', '>', '?',
 
-        // f keys
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+     // f keys
+     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 
-        // other
-        0 /* back space */, ' ' /* space */, 0 /* tab */, 0, 0, 0, 0,
-        0 /* enter */, 0, 0, 0 //,0,0,0,0,0,0,0,0,0,0,0,0,0,0
-    }};
+     // other
+     0 /* back space */, ' ' /* space */, 0 /* tab */, 0, 0, 0, 0,
+     0 /* enter */, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}};
 
-static uint16 currentOffset = 0;
-static uint16 minOffset = 0;
-static uint16 maxOffset = 0;
+static uint16 current_offset = 0;
+static uint16 min_offset = 0;
+static uint16 max_offset = 0;
 
 static int8 terminal_buffer[TERMINAL_BUFFER_SIZE];
 static uint8 terminal_buffer_pos = 0;
@@ -76,7 +75,6 @@ void handle_keypress(IN Drivers::Keyboard::KeypressInfo keypress) {
     if (keypress.flags & Drivers::Keyboard::KEYDOWN &&
         keypress.scancode != SCANCODE_INVALID) {
         if (keypress.keycode == KEYCODE_ENTER) {
-            // uint16 currentLine = (currentOffset / SCRN_WIDTH) + 1;
             Library::print("\n");
             handle_buffer();
             new_entry();
@@ -88,33 +86,34 @@ void handle_keypress(IN Drivers::Keyboard::KeypressInfo keypress) {
                 return;
 
             // - 2 because at the start of every entry there is "> "
-            uint16 currentCursorPos = currentOffset % SCRN_WIDTH - 2;
-            if (currentCursorPos == 0)
+            uint16 cur_cursor_pos = current_offset % SCRN_WIDTH - 2;
+            if (cur_cursor_pos == 0)
                 return;
+
             terminal_buffer_pos =
                 Library::remove_at(terminal_buffer, TERMINAL_BUFFER_SIZE,
-                                   terminal_buffer_pos, currentCursorPos - 1);
+                                   terminal_buffer_pos, cur_cursor_pos - 1);
 
-            currentOffset--;
+            current_offset--;
 
-            Drivers::VGA::removechar_at(currentOffset * 2);
+            Drivers::VGA::remove_char_at(current_offset * 2);
 
-            Drivers::VGA::set_cursor_pos(currentOffset);
+            Drivers::VGA::set_cursor_pos(current_offset);
         }
 
         if (keypress.flags & Drivers::Keyboard::EXTENDED &&
             keypress.scancode == SCANCODE_ARROW_LEFT &&
-            currentOffset > minOffset) {
-            currentOffset--;
-            Drivers::VGA::set_cursor_pos(currentOffset);
+            current_offset > min_offset) {
+            current_offset--;
+            Drivers::VGA::set_cursor_pos(current_offset);
             return;
         }
 
         if (keypress.flags & Drivers::Keyboard::EXTENDED &&
             keypress.scancode == SCANCODE_ARROW_RIGHT &&
-            currentOffset < maxOffset) {
-            currentOffset++;
-            Drivers::VGA::set_cursor_pos(currentOffset);
+            current_offset < max_offset) {
+            current_offset++;
+            Drivers::VGA::set_cursor_pos(current_offset);
             return;
         }
 
@@ -139,24 +138,22 @@ void display_character(IN int8 _char) {
         return;
     if (terminal_buffer_pos > TERMINAL_BUFFER_SIZE)
         return;
+    uint16 cur_cursor_pos = current_offset % SCRN_WIDTH - 2;
 
-    Library::printc(_char);
-    terminal_buffer[terminal_buffer_pos] = _char;
-    terminal_buffer_pos++;
+    Drivers::VGA::fputchar_at(_char, current_offset *2);
+    terminal_buffer_pos = Library::add_at(terminal_buffer, TERMINAL_BUFFER_SIZE, terminal_buffer_pos, cur_cursor_pos, _char);
 
-    currentOffset++;
-    maxOffset++;
-    Drivers::VGA::set_cursor_pos(currentOffset);
+    current_offset++;
+    max_offset++;
+    Drivers::VGA::set_cursor_pos(current_offset);
 }
 
 void new_entry() {
     Library::print("> ");
-
-    currentOffset = Drivers::VGA::get_current_offset() / 2;
-    minOffset = currentOffset;
-    maxOffset = currentOffset;
-
-    Drivers::VGA::set_cursor_pos(currentOffset);
+    current_offset = Drivers::VGA::get_current_offset() / 2;
+    min_offset = current_offset;
+    max_offset = current_offset;
+    Drivers::VGA::set_cursor_pos(current_offset);
 }
 
 void handle_buffer() {
@@ -164,10 +161,13 @@ void handle_buffer() {
         Library::clear();
     else if (Library::strcmp(terminal_buffer, "vgatest"))
         Drivers::VGA::test();
+    else if (Library::strcmp(terminal_buffer, "nos")) {
+        Library::fprintln(" /$$   /$$  /$$$$$$   /$$$$$$\n| $$$ | $$ /$$__  $$ /$$__  $$\n| $$$$| $$| $$  \\ $$| $$  \\__/\n| $$ $$ $$| $$  | $$|  $$$$$$ \n| $$  $$$$| $$  | $$ \\____  $$\n| $$\\  $$$| $$  | $$ /$$  \\ $$\n| $$ \\  $$|  $$$$$$/|  $$$$$$/\n|__/  \\__/ \\______/  \\______/", Drivers::VGA::CYAN);
+    }
     else
         Library::fprintf_ln("'%s' is not a valid command", Drivers::VGA::LRED,
                             terminal_buffer);
-
+    
     Memory::memset(terminal_buffer, 0, TERMINAL_BUFFER_SIZE);
     terminal_buffer_pos = 0;
 }

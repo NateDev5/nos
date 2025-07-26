@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['table_20of_20content_0',['Table of content',['../md_DOCS.html',1,'']]]
+  ['int_5ftable_20html_0',['https://stanislavs.org/helppc/int_table.html',['../md_useful.html#autotoc_md4',1,'']]]
 ];

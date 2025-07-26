@@ -3,6 +3,7 @@
 #include <kernel/memory/mem.h>
 
 #include <kernel/library/arrayutils.h>
+#include <kernel/library/debug.h>
 #include <kernel/library/panic.h>
 #include <kernel/library/stdarg.h>
 #include <kernel/library/string.h>
@@ -52,11 +53,14 @@ void fputchar(IN int8 _char, IN uint8 format) {
         Kernel::panic("(putcharf) _char is null");
 
     if (current_offset >= SCRN_SIZE * 2)
-        return;
+        scroll_up();
 
     if (_char == '\n') {
-        //uint16 cur_line = current_offset % SCRN_WIDTH;
-        
+        uint16 cur_line = (current_offset / 2) / SCRN_WIDTH + 1;
+        if(cur_line == SCRN_HEIGHT) {
+            scroll_up();
+            return;
+        }
         uint32 offset_for_new_line = current_offset % (SCRN_WIDTH * 2);
         current_offset += (SCRN_WIDTH * 2) - offset_for_new_line;
         return;
@@ -81,7 +85,24 @@ void fputstr(IN cstr string, IN uint8 format) {
 }
 void putstr(IN cstr string) { fputstr(string, BWHITE); }
 
-void fputcharAt(IN int8 _char, IN uint16 offset) {}
+void fputchar_at(IN int8 _char, IN uint16 offset) {
+    if (offset > SCRN_SIZE * 2) {
+        Debug::fprintln("(ERROR) fputchar_at: offset is bigger than screen size (Offset : %i)", offset);
+        return;
+    }
+
+    uint8 *video_mem = (uint8 *)BASE_VID_MEM;
+   
+    for (uint16 i = current_offset; i > offset - 2; i -= 2) {
+        video_mem[i + 2] = video_mem[i];
+        video_mem[i + 3] = video_mem[i + 1];
+    }
+
+    video_mem[offset] = _char;
+    video_mem[offset + 1] = BASE_FMT;
+    
+    current_offset += 2;
+}
 
 void popchar() {
     uint8 *video_mem = (uint8 *)BASE_VID_MEM;
@@ -90,9 +111,11 @@ void popchar() {
     current_offset -= 2;
 }
 
-void removechar_at(IN uint16 offset) {
-    if (offset > SCRN_SIZE)
+void remove_char_at(IN uint16 offset) {
+    if (offset > SCRN_SIZE * 2) {
+        Debug::fprintln("(ERROR) removechar_at: offset is bigger than screen size (Offset : %i)", offset);
         return;
+    }
 
     uint8 *video_mem = (uint8 *)BASE_VID_MEM;
 
@@ -147,6 +170,17 @@ void test() {
         video_mem[i * 2] = 'A' + i;
         video_mem[i * 2 + 1] = i;
     }
+}
+
+void scroll_up() {
+    uint16 buf_len = SCRN_SIZE * 2;
+    uint8 cur_vid_buf[buf_len];
+    
+    Memory::memcpy((PTRMEM)(BASE_VID_MEM + (SCRN_WIDTH*2)), (PTRMEM)&cur_vid_buf[0], buf_len);
+    
+    Memory::memcpy((PTRMEM)&cur_vid_buf[0], (PTRMEM)BASE_VID_MEM, buf_len);
+
+    current_offset = (SCRN_SIZE - SCRN_WIDTH) * 2;
 }
 
 uint16 get_current_offset() { return current_offset; }
