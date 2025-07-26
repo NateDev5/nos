@@ -7,72 +7,69 @@
 #include <kernel/library/panic.h>
 
 namespace Library {
-    template<typename T, uint32 data_size>
-    class List
-    {
-        private:
-            uint32 lise_size = data_size;
-            uint32 list_pos = 0;
-            T data[data_size];
-        public:
-            List() {
-                Memory::memset(data, 0, lise_size);
-            }
+template <typename T, uint32_t data_size> class List {
+  private:
+    uint32_t lise_size = data_size;
+    uint32_t list_pos = 0;
+    T        data[data_size];
 
-            ~List() {}
+  public:
+    List() { Memory::memset(data, 0, lise_size); }
 
-            void add(IN T element) {
-                if(list_pos > lise_size) return;
-                data[list_pos] = element;
-                list_pos++;
-            }
+    ~List() {}
 
-            void pop () {
-                if(list_pos == 0) return;
-                list_pos--;
-                data[list_pos] = NULL;
-            }
-            
-            T& head () {
-                return data[list_pos - 1];
-            }
+    void add(IN T element) {
+        if (list_pos > lise_size)
+            return;
+        data[list_pos] = element;
+        list_pos++;
+    }
 
-            void remove_at (IN uint32 index) {
-                if(index > list_pos - 1) Kernel::panic("(List::removeAt) List index out of bounds");
+    void pop() {
+        if (list_pos == 0)
+            return;
+        list_pos--;
+        data[list_pos] = NULL;
+    }
 
-                for(uint32 i = index; i < list_pos; i++) {
-                    data[i] = data[i+1];
-                    data[i+1] = NULL;
-                }
-                
-                list_pos--;
-            }
+    T   &head() { return data[list_pos - 1]; }
 
-            void clear() {
-                Memory::memset(data, 0, lise_size);
-                list_pos = 0;
-            }
+    void remove_at(IN uint32_t index) {
+        if (index > list_pos - 1)
+            Kernel::panic("(List::removeAt) List index out of bounds");
 
-            uint32 length () {
-                if(list_pos > lise_size) return lise_size;
+        for (uint32_t i = index; i < list_pos; i++) {
+            data[i] = data[i + 1];
+            data[i + 1] = NULL;
+        }
 
-                for(uint32 size = 0; size < lise_size; size++)
-                    if(data[size] == NULL) return size;
+        list_pos--;
+    }
 
-                return lise_size;
-            }
+    void clear() {
+        Memory::memset(data, 0, lise_size);
+        list_pos = 0;
+    }
 
-            T& operator[] (IN uint32 index) {
-                if(index > list_pos - 1) Kernel::panic("List index out of bounds");
-                return data[index];
-            } 
+    uint32_t length() {
+        if (list_pos > lise_size)
+            return lise_size;
 
-            uint32 max_size () {
-                return lise_size;
-            }
+        for (uint32_t size = 0; size < lise_size; size++)
+            if (data[size] == NULL)
+                return size;
 
-            T* raw_data () {
-                return data;
-            }
-    };
-}
+        return lise_size;
+    }
+
+    T &operator[](IN uint32_t index) {
+        if (index > list_pos - 1)
+            Kernel::panic("List index out of bounds");
+        return data[index];
+    }
+
+    uint32_t max_size() { return lise_size; }
+
+    T       *raw_data() { return data; }
+};
+} // namespace Library

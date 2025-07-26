@@ -1,22 +1,21 @@
 #include <kernel/testing/regression_test_kernel.h>
 
-#include <kernel/drivers/io/keyboard.h>
 #include <kernel/drivers/hardware/pit.h>
-#include <kernel/drivers/video/vga.h>
+#include <kernel/drivers/io/keyboard.h>
 #include <kernel/drivers/serial/uart.h>
+#include <kernel/drivers/video/vga.h>
 
 #include <kernel/interrupts/idt.h>
 
-#include <kernel/library/string.h>
-#include <kernel/library/log.h>
 #include <kernel/library/debug.h>
+#include <kernel/library/log.h>
+#include <kernel/library/string.h>
 
 #include <kernel/terminal.h>
 
-extern "C" void kmain()
-{
+extern "C" void kmain() {
     Drivers::VGA::disable_cursor();
-    //Drivers::VGA::init();
+    // Drivers::VGA::init();
 
     // for debugging
     Drivers::UART::init_port(COM_PORT_1);
@@ -35,15 +34,9 @@ extern "C" void kmain()
 
     // terminal
     Kernel::Terminal::run();
-    //Drivers::VGA::offsetScreen();
-   
-    while (true)
-    {
-        /*
-        for (uint16 i = 0; i < 25; i++) {
-            Library::printc('A' + i);
-            Drivers::PIT::sleep(1);
-        }
-        */
+    // Drivers::VGA::offsetScreen();
+
+    while (true) {
+        
     }
 }

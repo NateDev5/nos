@@ -6,29 +6,29 @@
 
 #include <utils/types.h>
 
-#define INPUT_BUFFER_SIZE 10
+#define INPUT_BUFFER_SIZE    10
 
-#define SCANCODE_INVALID 0x0
-#define SCANCODE_ALT 0x11
-#define SCANCODE_CTRL 0x14
-#define SCANCODE_SHIFT 0x12
-#define SCANCODE_CAPS 0x58
-#define SCANCODE_ENTER 0x5A
+#define SCANCODE_INVALID     0x0
+#define SCANCODE_ALT         0x11
+#define SCANCODE_CTRL        0x14
+#define SCANCODE_SHIFT       0x12
+#define SCANCODE_CAPS        0x58
+#define SCANCODE_ENTER       0x5A
 
-#define SCANCODE_ARROW_UP 0x75
-#define SCANCODE_ARROW_DOWN 0x72
-#define SCANCODE_ARROW_LEFT 0x6B
+#define SCANCODE_ARROW_UP    0x75
+#define SCANCODE_ARROW_DOWN  0x72
+#define SCANCODE_ARROW_LEFT  0x6B
 #define SCANCODE_ARROW_RIGHT 0x74
 
-#define BREAK_CODE 0xF0
-#define EXTENDED_CODE 0xE0
+#define BREAK_CODE           0xF0
+#define EXTENDED_CODE        0xE0
 
 namespace Drivers::Keyboard {
 typedef struct KeypressInfo {
-    uint8 scancode;
-    uint8 keycode;
+    uint8_t scancode;
+    uint8_t keycode;
     // EXTENDED, CAPS, SHIFT, CTRL, ALT, PRESSED
-    uint8 flags;
+    uint8_t flags;
 
 } KeypressInfo;
 
@@ -42,7 +42,7 @@ enum KeypressInfoFlags {
 };
 
 void init();
-uint8 get_keycode(IN uint8 scancode, IN bool extended);
+uint8_t get_keycode(IN uint8_t scancode, IN bool extended);
 void process_scancode();
 
 KeypressInfo read_key();

@@ -1,6 +1,6 @@
 let nixpkgs = import <nixpkgs> { };
 in with nixpkgs;
-stdenv.mkDerivation {
+nixpkgs.multiStdenv.mkDerivation {
   name = "nos-env";
-  buildInputs = [ libgcc nasm gnumake qemu clang clang-tools bear tinyxxd python313 ];
+  buildInputs = [ glibc_multi libgcc nasm gnumake qemu clang-tools bear tinyxxd python313 ];
 }

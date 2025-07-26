@@ -5,113 +5,114 @@
 #include <utils/math.h>
 
 namespace Library {
-void vfprintf(IN cstr format, IN uint8 color_format, IN va_list args) {
+void vfprintf(IN CONST_CHAR_PTR format, IN uint8_t color, IN va_list args) {
     if (format == NULL)
         Kernel::panic("(vfprintf) Format is null");
 
-    uint16 format_len = strlen(format);
-    for (uint16 pos = 0; pos < format_len; pos++) {
+    uint32_t format_len = strlen(format);
+    for (uint32_t pos = 0; pos < format_len; pos++) {
         if (format[pos] == '%' && (pos + 1) < format_len) {
             pos++;
 
             // string
             if (format[pos] == 's') {
-                str string = va_arg(args, str);
-                Drivers::VGA::fputstr(string, color_format);
+                CHAR_PTR string = va_arg(args, CHAR_PTR);
+                Drivers::VGA::f_put_str(string, color);
                 continue;
             }
 
             // char
             if (format[pos] == 'c') {
-                int32 _char = va_arg(args, int32);
-                Drivers::VGA::fputchar((int8)_char, color_format);
+                int32_t _char = va_arg(args, int32_t);
+                Drivers::VGA::f_put_char((int8_t)_char, color);
                 continue;
             }
 
             // int
             if (format[pos] == 'i') {
-                int32 value = va_arg(args, int32);
-                int8 temp_str[STR_MAX_LEN];
+                int32_t value = va_arg(args, int32_t);
+                char temp_str[11]; // int32_max 4,...,...,... , 10 characters +
+                                   // 1 null
                 Math::itoa(value, temp_str, 10);
-                Drivers::VGA::fputstr(temp_str, color_format);
+                Drivers::VGA::f_put_str(temp_str, color);
                 continue;
             }
 
             // binary
             if (format[pos] == 'b') {
-                int32 value = va_arg(args, int32);
-                int8 temp_str[STR_MAX_LEN];
+                int32_t value = va_arg(args, int32_t);
+                char temp_str[STR_MAX_LEN];
                 Math::itoa(value, temp_str, 2);
-                Drivers::VGA::fputstr(temp_str, color_format);
+                Drivers::VGA::f_put_str(temp_str, color);
                 continue;
             }
 
             // hex
             if (format[pos] == 'h') {
-                int32 value = va_arg(args, int32);
-                int8 temp_str[STR_MAX_LEN];
+                int32_t value = va_arg(args, int32_t);
+                char temp_str[STR_MAX_LEN];
                 Math::itoa(value, temp_str, 16);
-                Drivers::VGA::fputstr(temp_str, color_format);
+                Drivers::VGA::f_put_str(temp_str, color);
                 continue;
             }
         }
 
-        Drivers::VGA::fputchar(format[pos], color_format);
+        Drivers::VGA::f_put_char(format[pos], color);
     }
 }
 
-void fprintf(IN cstr format, IN uint8 color_format, IN...) {
+void fprintf(IN CONST_CHAR_PTR format, IN uint8_t color, IN...) {
     va_list args;
-    va_start(args, color_format);
-    vfprintf(format, color_format, args);
+    va_start(args, color);
+    vfprintf(format, color, args);
     va_end(args);
 }
 
-void printf(IN cstr format, IN...) {
-    va_list args;
-    va_start(args, format);
-    vfprintf(format, Drivers::VGA::BWHITE, args);
-    va_end(args);
-}
-
-void fprintf_ln(IN cstr format, IN uint8 color_format, IN...) {
-    va_list args;
-    va_start(args, color_format);
-    vfprintf(format, color_format, args);
-    va_end(args);
-    Drivers::VGA::putchar('\n');
-}
-
-void printf_ln(IN cstr format, IN...) {
+void printf(IN CONST_CHAR_PTR format, IN...) {
     va_list args;
     va_start(args, format);
     vfprintf(format, Drivers::VGA::BWHITE, args);
     va_end(args);
-    Drivers::VGA::putchar('\n');
 }
 
-void fprint(IN cstr message, IN uint8 color_format) {
+void fprintf_ln(IN CONST_CHAR_PTR format, IN uint8_t color, IN...) {
+    va_list args;
+    va_start(args, color);
+    vfprintf(format, color, args);
+    va_end(args);
+    Drivers::VGA::put_char('\n');
+}
+
+void printf_ln(IN CONST_CHAR_PTR format, IN...) {
+    va_list args;
+    va_start(args, format);
+    vfprintf(format, Drivers::VGA::BWHITE, args);
+    va_end(args);
+    Drivers::VGA::put_char('\n');
+}
+
+void fprint(IN CONST_CHAR_PTR message, IN uint8_t color) {
     if (message == NULL)
         Kernel::panic("(fprint) Message is null");
-    Drivers::VGA::fputstr(message, color_format);
+    Drivers::VGA::f_put_str(message, color);
 }
 
-void print(IN cstr message) { fprint(message, Drivers::VGA::BWHITE); }
+void print(IN CONST_CHAR_PTR message) { fprint(message, Drivers::VGA::BWHITE); }
 
-void fprintln(IN cstr message, IN uint8 format) {
+void fprintln(IN CONST_CHAR_PTR message, IN uint8_t format) {
     if (message == NULL)
         Kernel::panic("(fprintln) Message is null");
-    Drivers::VGA::fputstr(message, format);
-    Drivers::VGA::putchar('\n');
+    Drivers::VGA::f_put_str(message, format);
+    Drivers::VGA::put_char('\n');
 }
 
-void println(IN cstr message) { fprintln(message, Drivers::VGA::BWHITE); }
+void println(IN CONST_CHAR_PTR message) { fprintln(message, Drivers::VGA::BWHITE); }
 
-void fprintc(IN int8 _char, IN uint8 color_format) {
-    Drivers::VGA::fputchar(_char, color_format);
+void fprintc(IN char _char, IN uint8_t color) {
+    Drivers::VGA::f_put_char(_char, color);
 }
 
-void printc(IN int8 _char) { fprintc(_char, Drivers::VGA::BWHITE); }
+void printc(IN char _char) { fprintc(_char, Drivers::VGA::BWHITE); }
 
 void clear() { Drivers::VGA::clear_screen(); }
 } // namespace Library

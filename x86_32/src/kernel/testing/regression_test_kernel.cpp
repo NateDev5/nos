@@ -31,19 +31,19 @@ void test_kernel() {
 void test_memory() {
     PTRMEM test_add = (PTRMEM)0x100000;
     Memory::memset(test_add, 69, 100);
-    for (uint8 i = 0; i < 69; i++)
+    for (uint8_t i = 0; i < 69; i++)
         Kernel::assert(test_add[i] == 69, "memset error 1");
 }
 
 void test_string() {
     // strlen
-    cstr test_str = "Test str";
-    uint16 str_len_test_str = Library::strlen(test_str);
+    CONST_CHAR_PTR test_str = "Test str";
+    uint32_t str_len_test_str = Library::strlen(test_str);
     Kernel::assert(str_len_test_str == 8, "strlen error 1");
 
     // strcmp
-    cstr test_str_cmp1 = "String to compare 1";
-    cstr test_str_cmp2 = "String to compare 2";
+    CONST_CHAR_PTR test_str_cmp1 = "String to compare 1";
+    CONST_CHAR_PTR test_str_cmp2 = "String to compare 2";
     bool str_cmp_result = Library::strcmp(test_str_cmp1, test_str_cmp2);
     Kernel::assert(!str_cmp_result, "strcmp error 2");
 
@@ -51,24 +51,24 @@ void test_string() {
     Kernel::assert(str_cmp_result, "strcmp error 3");
 
     // strcpy
-    str test_str_to_cpy = (str) "String to copy";
-    int8 target_string[STR_MAX_LEN];
+    CHAR_PTR test_str_to_cpy = (CHAR_PTR) "String to copy";
+    char target_string[STR_MAX_LEN];
     Library::strcpy(test_str_to_cpy, target_string);
 
     str_cmp_result = Library::strcmp(test_str_to_cpy, target_string);
     Kernel::assert(str_cmp_result, "strcpy error 4");
 
     // strcat
-    cstr test_str_to_cat = "String 2";
-    int8 out_str_cat[STR_MAX_LEN] = "String 1 + ";
-    Library::strcat((str)test_str_to_cat, out_str_cat);
+    CONST_CHAR_PTR test_str_to_cat = "String 2";
+    char out_str_cat[STR_MAX_LEN] = "String 1 + ";
+    Library::strcat((CHAR_PTR)test_str_to_cat, out_str_cat);
 
     str_cmp_result = Library::strcmp("String 1 + String 2", out_str_cat);
     Kernel::assert(str_cmp_result, out_str_cat);
 }
 
 void test_list() {
-    Library::List<int8, 20> list;
+    Library::List<int8_t, 20> list;
 
     Kernel::assert(list.length() == 0, "list error 1");
     Kernel::assert(list.max_size() == 20, "list error 2");
@@ -95,7 +95,7 @@ void test_list() {
     Kernel::assert(list.length() == 0, "list error 10");
     Kernel::assert(list.max_size() == 20, "list error 11");
 
-    for (uint8 i = 0; i < 25; i++)
+    for (uint8_t i = 0; i < 25; i++)
         list.add(i);
 
     Kernel::assert(list.length() == 20, "list error 12");
@@ -134,20 +134,20 @@ void test_list() {
 }
 
 void test_array_utils() {
-    uint8 test_array_len = 20;
-    int8 test_array[test_array_len];
-    uint8 test_array_pos = 0;
+    uint8_t test_array_len = 20;
+    int8_t test_array[test_array_len];
+    uint8_t test_array_pos = 0;
 
-    for (uint8 i = 0; i < 10; i++) {
+    for (uint8_t i = 0; i < 10; i++) {
         test_array[i] = i;
         test_array_pos = i;
     }
 
     test_array_pos =
-        Library::remove_at<int8>(test_array, test_array_len, test_array_pos, 5);
+        Library::remove_at<int8_t>(test_array, test_array_len, test_array_pos, 5);
     Kernel::assert(test_array[5] == 6, "arrayutils error 1");
- 
-    test_array_pos = Library::add_at<int8>(test_array, test_array_len,
+
+    test_array_pos = Library::add_at<int8_t>(test_array, test_array_len,
                                            test_array_pos, 1, 69);
     Kernel::assert(test_array[1] == 69, "arrayutils error 2");
     Kernel::assert(test_array[2] == 1, "arrayutils error 3");

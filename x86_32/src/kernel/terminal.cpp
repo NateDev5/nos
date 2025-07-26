@@ -12,12 +12,12 @@
 #include <kernel/memory/mem.h>
 
 namespace Kernel::Terminal {
-static constexpr int8 character_map_caps[] = {
+static constexpr char character_map_caps[] = {
     0,   'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M',
     'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z',
 };
 
-static constexpr int8 character_map[][KEYCODE_MAP_LEN] = {
+static constexpr char character_map[][KEYCODE_MAP_LEN] = {
     {0,
      // a-z
      'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o',
@@ -53,12 +53,12 @@ static constexpr int8 character_map[][KEYCODE_MAP_LEN] = {
      0 /* back space */, ' ' /* space */, 0 /* tab */, 0, 0, 0, 0,
      0 /* enter */, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}};
 
-static uint16 current_offset = 0;
-static uint16 min_offset = 0;
-static uint16 max_offset = 0;
+static uint16_t current_offset = 0;
+static uint16_t min_offset = 0;
+static uint16_t max_offset = 0;
 
-static int8 terminal_buffer[TERMINAL_BUFFER_SIZE];
-static uint8 terminal_buffer_pos = 0;
+static char terminal_buffer[TERMINAL_BUFFER_SIZE];
+static uint8_t terminal_buffer_pos = 0;
 
 void run() {
     Drivers::VGA::enable_cursor(Drivers::VGA::UNDER);
@@ -86,7 +86,7 @@ void handle_keypress(IN Drivers::Keyboard::KeypressInfo keypress) {
                 return;
 
             // - 2 because at the start of every entry there is "> "
-            uint16 cur_cursor_pos = current_offset % SCRN_WIDTH - 2;
+            uint16_t cur_cursor_pos = current_offset % Drivers::VGA::get_screen_size() - 2;
             if (cur_cursor_pos == 0)
                 return;
 
@@ -98,14 +98,14 @@ void handle_keypress(IN Drivers::Keyboard::KeypressInfo keypress) {
 
             Drivers::VGA::remove_char_at(current_offset * 2);
 
-            Drivers::VGA::set_cursor_pos(current_offset);
+            Drivers::VGA::set_cursor_offset(current_offset);
         }
 
         if (keypress.flags & Drivers::Keyboard::EXTENDED &&
             keypress.scancode == SCANCODE_ARROW_LEFT &&
             current_offset > min_offset) {
             current_offset--;
-            Drivers::VGA::set_cursor_pos(current_offset);
+            Drivers::VGA::set_cursor_offset(current_offset);
             return;
         }
 
@@ -113,7 +113,7 @@ void handle_keypress(IN Drivers::Keyboard::KeypressInfo keypress) {
             keypress.scancode == SCANCODE_ARROW_RIGHT &&
             current_offset < max_offset) {
             current_offset++;
-            Drivers::VGA::set_cursor_pos(current_offset);
+            Drivers::VGA::set_cursor_offset(current_offset);
             return;
         }
 
@@ -125,27 +125,29 @@ void handle_keypress(IN Drivers::Keyboard::KeypressInfo keypress) {
                 return;
             }
 
-            uint8 tableIndex =
+            uint8_t tableIndex =
                 keypress.flags & Drivers::Keyboard::SHIFT ? 1 : 0;
-            int8 _char = character_map[tableIndex][keypress.keycode];
+            int8_t _char = character_map[tableIndex][keypress.keycode];
             display_character(_char);
         }
     }
 }
 
-void display_character(IN int8 _char) {
+void display_character(IN char _char) {
     if (_char == NULL)
         return;
     if (terminal_buffer_pos > TERMINAL_BUFFER_SIZE)
         return;
-    uint16 cur_cursor_pos = current_offset % SCRN_WIDTH - 2;
+    uint16_t cur_cursor_pos = current_offset % Drivers::VGA::get_screen_size() - 2;
 
-    Drivers::VGA::fputchar_at(_char, current_offset *2);
-    terminal_buffer_pos = Library::add_at(terminal_buffer, TERMINAL_BUFFER_SIZE, terminal_buffer_pos, cur_cursor_pos, _char);
+    Drivers::VGA::f_insert_char_at(_char, current_offset * 2);
+    terminal_buffer_pos =
+        Library::add_at<char>(terminal_buffer, TERMINAL_BUFFER_SIZE,
+                        terminal_buffer_pos, cur_cursor_pos, _char);
 
     current_offset++;
     max_offset++;
-    Drivers::VGA::set_cursor_pos(current_offset);
+    Drivers::VGA::set_cursor_offset(current_offset);
 }
 
 void new_entry() {
@@ -153,7 +155,7 @@ void new_entry() {
     current_offset = Drivers::VGA::get_current_offset() / 2;
     min_offset = current_offset;
     max_offset = current_offset;
-    Drivers::VGA::set_cursor_pos(current_offset);
+    Drivers::VGA::set_cursor_offset(current_offset);
 }
 
 void handle_buffer() {
@@ -162,13 +164,18 @@ void handle_buffer() {
     else if (Library::strcmp(terminal_buffer, "vgatest"))
         Drivers::VGA::test();
     else if (Library::strcmp(terminal_buffer, "nos")) {
-        Library::fprintln(" /$$   /$$  /$$$$$$   /$$$$$$\n| $$$ | $$ /$$__  $$ /$$__  $$\n| $$$$| $$| $$  \\ $$| $$  \\__/\n| $$ $$ $$| $$  | $$|  $$$$$$ \n| $$  $$$$| $$  | $$ \\____  $$\n| $$\\  $$$| $$  | $$ /$$  \\ $$\n| $$ \\  $$|  $$$$$$/|  $$$$$$/\n|__/  \\__/ \\______/  \\______/", Drivers::VGA::CYAN);
-    }
-    else
+        Library::fprintln(
+            " /$$   /$$  /$$$$$$   /$$$$$$\n| $$$ | $$ /$$__  $$ /$$__  $$\n| "
+            "$$$$| $$| $$  \\ $$| $$  \\__/\n| $$ $$ $$| $$  | $$|  $$$$$$ \n| "
+            "$$  $$$$| $$  | $$ \\____  $$\n| $$\\  $$$| $$  | $$ /$$  \\ "
+            "$$\n| $$ \\  $$|  $$$$$$/|  $$$$$$/\n|__/  \\__/ \\______/  "
+            "\\______/",
+            Drivers::VGA::CYAN);
+    } else
         Library::fprintf_ln("'%s' is not a valid command", Drivers::VGA::LRED,
                             terminal_buffer);
-    
-    Memory::memset(terminal_buffer, 0, TERMINAL_BUFFER_SIZE);
+
+    Memory::memset((PTRMEM)terminal_buffer, 0, TERMINAL_BUFFER_SIZE);
     terminal_buffer_pos = 0;
 }
 } // namespace Kernel::Terminal

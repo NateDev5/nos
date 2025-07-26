@@ -7,16 +7,16 @@
 
 #include <utils/types.h>
 
-#define PIT_CHANNEL_0 0x40
+#define PIT_CHANNEL_0        0x40
 #define PIT_COMMAND_REGISTER 0x43
 
 namespace Drivers::PIT {
 ///
 /// Setup the Programmable Interrupt Timer
-/// Sets the mod and the inteval at which an interrupt is triggered 
+/// Sets the mod and the inteval at which an interrupt is triggered
 ///
 void init();
-void sleep(IN uint32 milliseconds);
+void sleep(IN uint32_t milliseconds);
 } // namespace Drivers::PIT
 
 __attribute__((interrupt)) void

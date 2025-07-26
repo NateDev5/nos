@@ -7,8 +7,8 @@
 
 namespace Library {
 template <typename T>
-uint32 remove_at(IN_OUT T *array, IN uint32 array_len, IN uint32 array_pos,
-                 IN uint32 index) {
+uint32_t remove_at(IN_OUT T *array, IN uint32_t array_len, IN uint32_t array_pos,
+                 IN uint32_t index) {
     if (array == NULL)
         Kernel::panic("(arrayutils::remove_at) Array is null");
     if (index > array_pos)
@@ -21,7 +21,7 @@ uint32 remove_at(IN_OUT T *array, IN uint32 array_len, IN uint32 array_pos,
         return array_pos;
     }
 
-    for (uint32 i = index; i < array_pos; i++) {
+    for (uint32_t i = index; i < array_pos; i++) {
         array[i] = array[i + 1];
         array[i + 1] = NULL;
     }
@@ -32,20 +32,20 @@ uint32 remove_at(IN_OUT T *array, IN uint32 array_len, IN uint32 array_pos,
 }
 
 template <typename T>
-uint32 add_at(IN_OUT T *array, IN uint32 array_len, IN uint32 array_pos,
-              IN uint32 index, IN T to_add) {
+uint32_t add_at(IN_OUT T *array, IN uint32_t array_len, IN uint32_t array_pos,
+              IN uint32_t index, IN T to_add) {
     if (array == NULL)
         Kernel::panic("(arrayutils::add_at) Array is null");
-    if(to_add == NULL)
+    if (to_add == NULL)
         Kernel::panic("(arrayutils::add_at) to_add is null");
 
     if (index > array_pos)
         Kernel::panic("(arrayutils::add_at) Index out of bounds 1");
 
-    if(array_pos + 1 >= array_len)
+    if (array_pos + 1 >= array_len)
         Kernel::panic("(arrayutils::add_at) Index out of bounds 2");
 
-    for (uint32 i = array_pos; i > index - 1; i--)
+    for (uint32_t i = array_pos; i > index - 1; i--)
         array[i + 1] = array[i];
 
     array[index] = to_add;

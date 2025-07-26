@@ -1,8 +1,8 @@
 #include <kernel/drivers/hardware/pit.h>
 #include <kernel/drivers/video/vga.h>
 
-#include <kernel/library/log.h>
 #include <kernel/library/debug.h>
+#include <kernel/library/log.h>
 
 #include <kernel/interrupts/pic.h>
 
@@ -17,16 +17,16 @@ void init() {
          0x36); // send command byte to set the mode and such of the PIT
 
     // this will generate an interrupt every 0.001 second aka 1 millisecond
-    uint16 divisor = 1193182 / 1000;
+    uint16_t divisor = 1193182 / 1000;
     outb(PIT_CHANNEL_0, divisor & 0xFF);
     outb(PIT_CHANNEL_0, divisor >> 8);
 
     Debug::fprintln("(OK) PIT initialized");
 }
 
-static uint32 cur_milliseconds;
+static uint32_t cur_milliseconds;
 
-void sleep(IN uint32 milliseconds) {
+void sleep(IN uint32_t milliseconds) {
     cur_milliseconds = milliseconds;
 
     while (cur_milliseconds > 0)

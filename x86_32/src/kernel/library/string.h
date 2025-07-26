@@ -1,13 +1,13 @@
 #pragma once
 
-#include <kernel/library/stdarg.h>
+#include <stdarg.h>
 #include <utils/types.h>
 
-#define STR_MAX_LEN 512
+// #define STR_MAX_LEN 512
 
 namespace Library {
-uint16 strlen(IN cstr in_str);
-bool strcmp(IN cstr in_str1, IN cstr in_str2);
-void strcpy(IN str in_str, OUT str out_str);
-void strcat(IN str in_str, IN_OUT str out_str);
+uint32_t strlen(IN CONST_CHAR_PTR in_str);
+bool strcmp(IN CONST_CHAR_PTR in_str1, IN CONST_CHAR_PTR in_str2);
+void strcpy(IN CHAR_PTR in_str, OUT CHAR_PTR out_str);
+void strcat(IN CHAR_PTR in_str, IN_OUT CHAR_PTR out_str);
 } // namespace Library
