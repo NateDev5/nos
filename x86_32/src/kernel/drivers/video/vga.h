@@ -52,7 +52,7 @@ enum Color {
     BWHITE = 0xF
 };
 
-enum CursorStyle { UNDER, LARGE };
+enum CursorStyle { UNDERSCORE, LARGE };
 
 void modify_register(IN uint8_t reg, IN uint8_t data);
 
@@ -72,8 +72,8 @@ void f_insert_char_at(IN char _char, IN uint16_t offset);
 
 void remove_char_at(IN uint16_t offset);
 
-void set_background_color(IN uint8_t color);
-void set_foreground_color(IN uint8_t color);
+void set_screen_back_color(IN uint8_t color);
+void set_screen_fore_color(IN uint8_t color);
 
 void scroll_up();
 

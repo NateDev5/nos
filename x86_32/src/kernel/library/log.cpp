@@ -1,3 +1,4 @@
+#include <kernel/library/assert.h>
 #include <kernel/library/log.h>
 #include <kernel/library/panic.h>
 #include <kernel/library/string.h>
@@ -6,8 +7,7 @@
 
 namespace Library {
 void vfprintf(IN CONST_CHAR_PTR format, IN uint8_t color, IN va_list args) {
-    if (format == NULL)
-        Kernel::panic("(vfprintf) Format is null");
+    ASSERT(format != NULL, "format is null")
 
     uint32_t format_len = strlen(format);
     for (uint32_t pos = 0; pos < format_len; pos++) {
@@ -41,7 +41,7 @@ void vfprintf(IN CONST_CHAR_PTR format, IN uint8_t color, IN va_list args) {
             // binary
             if (format[pos] == 'b') {
                 int32_t value = va_arg(args, int32_t);
-                char temp_str[STR_MAX_LEN];
+                char    temp_str[STR_MAX_LEN];
                 Math::itoa(value, temp_str, 2);
                 Drivers::VGA::f_put_str(temp_str, color);
                 continue;
@@ -50,7 +50,7 @@ void vfprintf(IN CONST_CHAR_PTR format, IN uint8_t color, IN va_list args) {
             // hex
             if (format[pos] == 'h') {
                 int32_t value = va_arg(args, int32_t);
-                char temp_str[STR_MAX_LEN];
+                char    temp_str[STR_MAX_LEN];
                 Math::itoa(value, temp_str, 16);
                 Drivers::VGA::f_put_str(temp_str, color);
                 continue;
@@ -92,21 +92,21 @@ void printf_ln(IN CONST_CHAR_PTR format, IN...) {
 }
 
 void fprint(IN CONST_CHAR_PTR message, IN uint8_t color) {
-    if (message == NULL)
-        Kernel::panic("(fprint) Message is null");
+    ASSERT(message != NULL, "message is null")
     Drivers::VGA::f_put_str(message, color);
 }
 
 void print(IN CONST_CHAR_PTR message) { fprint(message, Drivers::VGA::BWHITE); }
 
 void fprintln(IN CONST_CHAR_PTR message, IN uint8_t format) {
-    if (message == NULL)
-        Kernel::panic("(fprintln) Message is null");
+    ASSERT(message != NULL, "message is null")
     Drivers::VGA::f_put_str(message, format);
     Drivers::VGA::put_char('\n');
 }
 
-void println(IN CONST_CHAR_PTR message) { fprintln(message, Drivers::VGA::BWHITE); }
+void println(IN CONST_CHAR_PTR message) {
+    fprintln(message, Drivers::VGA::BWHITE);
+}
 
 void fprintc(IN char _char, IN uint8_t color) {
     Drivers::VGA::f_put_char(_char, color);

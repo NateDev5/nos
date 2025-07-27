@@ -1,5 +1,6 @@
 #pragma once
 
+#include <kernel/library/assert.h>
 #include <kernel/library/debug.h>
 #include <utils/types.h>
 
@@ -7,12 +8,10 @@
 
 namespace Library {
 template <typename T>
-uint32_t remove_at(IN_OUT T *array, IN uint32_t array_len, IN uint32_t array_pos,
-                 IN uint32_t index) {
-    if (array == NULL)
-        Kernel::panic("(arrayutils::remove_at) Array is null");
-    if (index > array_pos)
-        Kernel::panic("(arrayutils::remove_at) Index out of bounds");
+uint32_t remove_at(IN_OUT T *array, IN uint32_t array_len,
+                   IN uint32_t array_pos, IN uint32_t index) {
+    ASSERT_RETURN(array != NULL, "array is null", array_pos)
+    ASSERT_RETURN(index < array_pos, "index out of bounds", array_pos)
 
     if (index == array_len - 1) {
         array[index] = NULL;
@@ -33,17 +32,11 @@ uint32_t remove_at(IN_OUT T *array, IN uint32_t array_len, IN uint32_t array_pos
 
 template <typename T>
 uint32_t add_at(IN_OUT T *array, IN uint32_t array_len, IN uint32_t array_pos,
-              IN uint32_t index, IN T to_add) {
-    if (array == NULL)
-        Kernel::panic("(arrayutils::add_at) Array is null");
-    if (to_add == NULL)
-        Kernel::panic("(arrayutils::add_at) to_add is null");
-
-    if (index > array_pos)
-        Kernel::panic("(arrayutils::add_at) Index out of bounds 1");
-
-    if (array_pos + 1 >= array_len)
-        Kernel::panic("(arrayutils::add_at) Index out of bounds 2");
+                IN uint32_t index, IN T to_add) {
+    ASSERT_RETURN(array != NULL, "array is null", array_pos)
+    ASSERT_RETURN(to_add != NULL, "to_add is null", array_pos)
+    ASSERT_RETURN(index <= array_pos, "index out of bounds 1", array_pos)
+    ASSERT_RETURN(array_pos + 1 <= array_len, "index out of bounds 2", array_pos)
 
     for (uint32_t i = array_pos; i > index - 1; i--)
         array[i + 1] = array[i];

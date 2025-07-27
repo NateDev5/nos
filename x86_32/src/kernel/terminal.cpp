@@ -8,6 +8,7 @@
 #include <kernel/drivers/io/keycodes.h>
 #include <kernel/drivers/io/keymap.h>
 #include <kernel/drivers/video/vga.h>
+#include <kernel/drivers/hardware/pit.h>
 
 #include <kernel/memory/mem.h>
 
@@ -57,17 +58,19 @@ static uint16_t current_offset = 0;
 static uint16_t min_offset = 0;
 static uint16_t max_offset = 0;
 
-static char terminal_buffer[TERMINAL_BUFFER_SIZE];
+static char    terminal_buffer[TERMINAL_BUFFER_SIZE];
 static uint8_t terminal_buffer_pos = 0;
 
 void run() {
-    Drivers::VGA::enable_cursor(Drivers::VGA::UNDER);
+    Drivers::VGA::enable_cursor(Drivers::VGA::UNDERSCORE);
+
     new_entry();
 
     while (true) {
         Drivers::Keyboard::KeypressInfo keypress =
             Drivers::Keyboard::read_key();
         handle_keypress(keypress);
+        Drivers::PIT::sleep(1);
     }
 }
 
@@ -86,12 +89,14 @@ void handle_keypress(IN Drivers::Keyboard::KeypressInfo keypress) {
                 return;
 
             // - 2 because at the start of every entry there is "> "
-            uint16_t cur_cursor_pos = current_offset % Drivers::VGA::get_screen_size() - 2;
+            uint16_t cur_cursor_pos =
+                current_offset % Drivers::VGA::get_screen_width() - 2;
+
             if (cur_cursor_pos == 0)
                 return;
 
             terminal_buffer_pos =
-                Library::remove_at(terminal_buffer, TERMINAL_BUFFER_SIZE,
+                Library::remove_at<char>(terminal_buffer, TERMINAL_BUFFER_SIZE,
                                    terminal_buffer_pos, cur_cursor_pos - 1);
 
             current_offset--;
@@ -99,6 +104,7 @@ void handle_keypress(IN Drivers::Keyboard::KeypressInfo keypress) {
             Drivers::VGA::remove_char_at(current_offset * 2);
 
             Drivers::VGA::set_cursor_offset(current_offset);
+            return;
         }
 
         if (keypress.flags & Drivers::Keyboard::EXTENDED &&
@@ -134,16 +140,17 @@ void handle_keypress(IN Drivers::Keyboard::KeypressInfo keypress) {
 }
 
 void display_character(IN char _char) {
-    if (_char == NULL)
+    if (terminal_buffer_pos == TERMINAL_BUFFER_SIZE)
         return;
-    if (terminal_buffer_pos > TERMINAL_BUFFER_SIZE)
-        return;
-    uint16_t cur_cursor_pos = current_offset % Drivers::VGA::get_screen_size() - 2;
 
+    uint16_t cur_cursor_pos =
+        current_offset % Drivers::VGA::get_screen_width() - 2;
+   
     Drivers::VGA::f_insert_char_at(_char, current_offset * 2);
+
     terminal_buffer_pos =
         Library::add_at<char>(terminal_buffer, TERMINAL_BUFFER_SIZE,
-                        terminal_buffer_pos, cur_cursor_pos, _char);
+                              terminal_buffer_pos, cur_cursor_pos, _char);
 
     current_offset++;
     max_offset++;
@@ -159,11 +166,11 @@ void new_entry() {
 }
 
 void handle_buffer() {
-    if (Library::strcmp(terminal_buffer, "clear"))
+    if (Library::strcmp(terminal_buffer, "clear") == 0)
         Library::clear();
-    else if (Library::strcmp(terminal_buffer, "vgatest"))
+    else if (Library::strcmp(terminal_buffer, "vgatest") == 0)
         Drivers::VGA::test();
-    else if (Library::strcmp(terminal_buffer, "nos")) {
+    else if (Library::strcmp(terminal_buffer, "nos") == 0) {
         Library::fprintln(
             " /$$   /$$  /$$$$$$   /$$$$$$\n| $$$ | $$ /$$__  $$ /$$__  $$\n| "
             "$$$$| $$| $$  \\ $$| $$  \\__/\n| $$ $$ $$| $$  | $$|  $$$$$$ \n| "

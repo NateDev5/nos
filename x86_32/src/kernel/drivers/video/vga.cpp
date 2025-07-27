@@ -18,7 +18,7 @@ static uint16_t current_offset = 0;
 
 static uint16_t screen_width = TEXT_MODE_SCREEN_WIDTH;
 static uint16_t screen_height = TEXT_MODE_SCREEN_HEIGHT;
-static uint16_t screen_size = TEXT_MODE_SCREEN_HEIGHT;
+static uint16_t screen_size = TEXT_MODE_SCREEN_SIZE;
 
 void modify_register(uint8_t reg, uint8_t data) {
     outb(ADDRESS_REGISTER_PORT, reg);
@@ -29,7 +29,7 @@ void enable_cursor(IN CursorStyle cursor_style) {
     uint8_t max_scan_lines = inb(MAX_SCAN_LINE_REGISTER);
     max_scan_lines &= FIRST_5_BIT_MASK;
     switch (cursor_style) {
-    case UNDER:
+    case UNDERSCORE:
         modify_register(CURSOR_START_REGISTER, 0xD);
         modify_register(CURSOR_END_REGISTER, max_scan_lines);
         break;
@@ -48,9 +48,7 @@ void set_cursor_offset(IN uint16_t offset) {
     modify_register(CURSOR_LOCATION_LOW_REGISTER, offset & 0xFF);
 }
 
-void set_cursor_pos(IN uint16_t x, IN uint16_t y) {
-    set_cursor_offset(x * y);
-}
+void set_cursor_pos(IN uint16_t x, IN uint16_t y) { set_cursor_offset(x * y); }
 
 void f_put_char(IN char _char, IN uint8_t color) {
     if (current_offset >= screen_size * 2)
@@ -71,50 +69,34 @@ void f_put_char(IN char _char, IN uint8_t color) {
     video_mem[current_offset] = _char;
     video_mem[current_offset + 1] = color;
     current_offset += 2;
-
-    // setCursorPos(current_offset / 2);
 }
 
 void put_char(IN char _char) { f_put_char(_char, BWHITE); }
 
 void f_put_str(IN CONST_CHAR_PTR string, IN uint8_t color) {
-    // assert(string != NULL, "(f_put_str) string is null");
-    if (string == NULL)
-        return;
-    
+    ASSERT(string != NULL, "string is null");
+
     for (uint32_t i = 0; string[i] != 0; i++)
         f_put_char(string[i], color);
 }
 void put_str(IN CONST_CHAR_PTR string) { f_put_str(string, BWHITE); }
 
 void f_insert_char_at(IN char _char, IN uint16_t offset) {
-    if (offset > screen_size * 2) {
-        Debug::fprintln("(ERROR) f_put_char_at: offset is bigger than screen "
-                        "size (Offset : %i)",
-                        offset);
-        return;
-    }
+    ASSERT(offset < screen_size * 2, "offset is bigger than screen");
 
     uint8_t *video_mem = (uint8_t *)BASE_VID_MEM;
 
-    for (uint16_t i = current_offset; i > offset - 2; i -= 2) {
-        video_mem[i + 2] = video_mem[i];
-        video_mem[i + 3] = video_mem[i + 1];
-    }
+    uint16_t size = screen_size - offset - 2;
 
+    Memory::memcpy((PTRMEM)&video_mem[offset], (PTRMEM)&video_mem[offset + 2],
+                   size * 2, true);
     video_mem[offset] = _char;
     video_mem[offset + 1] = BASE_FMT;
-
     current_offset += 2;
 }
 
 void remove_char_at(IN uint16_t offset) {
-    if (offset > screen_size * 2) {
-        Debug::fprintln("(ERROR) removechar_at: offset is bigger than screen "
-                        "size (Offset : %i)",
-                        offset);
-        return;
-    }
+    ASSERT(offset < screen_size * 2, "offset is bigger than screen");
 
     uint8_t *video_mem = (uint8_t *)BASE_VID_MEM;
 
@@ -129,7 +111,7 @@ void remove_char_at(IN uint16_t offset) {
     current_offset -= 2;
 }
 
-void set_background_color(IN uint8_t color) {
+void set_screen_back_color(IN uint8_t color) {
     uint8_t *video_mem = (uint8_t *)BASE_VID_MEM;
 
     for (uint32_t i = 0; i <= screen_size; i++) {
@@ -140,7 +122,7 @@ void set_background_color(IN uint8_t color) {
     }
 }
 
-void set_foreground_color(IN uint8_t color) {
+void set_screen_fore_color(IN uint8_t color) {
     uint8_t *video_mem = (uint8_t *)BASE_VID_MEM;
     for (uint32_t i = 0; i <= screen_size; i++) {
         // 0x0F is a mask for 11110000 so applying a logical AND will get only
@@ -173,7 +155,7 @@ void test() {
 
 void scroll_up() {
     uint16_t buf_len = screen_size * 2;
-    uint8_t cur_vid_buf[buf_len];
+    uint8_t  cur_vid_buf[buf_len];
 
     Memory::memcpy((PTRMEM)(BASE_VID_MEM + (screen_width * 2)),
                    (PTRMEM)&cur_vid_buf[0], buf_len);

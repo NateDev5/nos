@@ -15,8 +15,8 @@
 
 namespace Drivers::Keyboard {
 KeypressInfo input_buffer[INPUT_BUFFER_SIZE];
-uint8_t buffer_pos = 0;
-uint8_t buffer_tail = 0;
+uint8_t      buffer_pos = 0;
+uint8_t      buffer_tail = 0;
 
 uint8_t key_flags = 0x0;
 
@@ -25,7 +25,7 @@ bool next_interrupt_extended_code = false;
 
 void init() {
     Devices::PS2::init();
-    Debug::fprintln("(OK) Keyboard initialized");
+    DEBUG_PRINT("(OK) Keyboard initialized");
 }
 
 KeypressInfo read_key() {

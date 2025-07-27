@@ -2,7 +2,7 @@
 
 namespace Math {
 // from https://wiki.osdev.org/Printing_To_Screen
-CHAR_PTR itoa(IN uint32_t value, OUT CHAR_PTR outStr, IN uint8_t base) {
+CHAR_PTR itoa(IN int32_t value, OUT CHAR_PTR outStr, IN uint8_t base) {
     CHAR_PTR rc;
     CHAR_PTR ptr;
     CHAR_PTR low;

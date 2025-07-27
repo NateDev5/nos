@@ -19,6 +19,6 @@
 #define PS2_WRITE_COMMAND_BYTE 0x60
 
 namespace Devices::PS2 {
-void init();
+void    init();
 uint8_t poll();
 } // namespace Devices::PS2

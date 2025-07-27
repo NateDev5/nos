@@ -1,3 +1,4 @@
+#include "kernel/library/assert.h"
 #include <kernel/testing/regression_test_kernel.h>
 
 #include <kernel/drivers/hardware/pit.h>
@@ -14,11 +15,12 @@
 #include <kernel/terminal.h>
 
 extern "C" void kmain() {
-    Drivers::VGA::disable_cursor();
-    // Drivers::VGA::init();
 
     // for debugging
     Drivers::UART::init_port(COM_PORT_1);
+
+    Drivers::VGA::disable_cursor();
+    // Drivers::VGA::init();
 
     // testing
     Testing::test_kernel();
@@ -37,6 +39,5 @@ extern "C" void kmain() {
     // Drivers::VGA::offsetScreen();
 
     while (true) {
-        
     }
 }

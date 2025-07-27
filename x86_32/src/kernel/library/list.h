@@ -32,7 +32,7 @@ template <typename T, uint32_t data_size> class List {
         data[list_pos] = NULL;
     }
 
-    T   &head() { return data[list_pos - 1]; }
+    T &head() { return data[list_pos - 1]; }
 
     void remove_at(IN uint32_t index) {
         if (index > list_pos - 1)
@@ -70,6 +70,6 @@ template <typename T, uint32_t data_size> class List {
 
     uint32_t max_size() { return lise_size; }
 
-    T       *raw_data() { return data; }
+    T *raw_data() { return data; }
 };
 } // namespace Library

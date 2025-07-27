@@ -19,7 +19,7 @@ void error_screen(IN CONST_CHAR_PTR error_msg) {
     // Library::clear();
     Library::print("ERROR: ");
     Library::println(error_msg);
-    Drivers::VGA::set_background_color(Drivers::VGA::LRED);
-    Drivers::VGA::set_foreground_color(Drivers::VGA::BLACK);
+    Drivers::VGA::set_screen_back_color(Drivers::VGA::LRED);
+    Drivers::VGA::set_screen_fore_color(Drivers::VGA::BLACK);
 }
 } // namespace Kernel

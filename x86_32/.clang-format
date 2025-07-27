@@ -19,10 +19,10 @@ AlignConsecutiveBitFields:
   PadOperators:    false
 AlignConsecutiveDeclarations:
   Enabled:         true
-  AcrossEmptyLines: true
+  AcrossEmptyLines: false
   AcrossComments:  true
-  AlignCompound:   true
-  AlignFunctionPointers: true
+  AlignCompound:   false
+  AlignFunctionPointers: false
   PadOperators:    false
 AlignConsecutiveMacros:
   Enabled:         true

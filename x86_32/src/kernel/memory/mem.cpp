@@ -1,21 +1,28 @@
 #include <kernel/memory/mem.h>
 
+#include <kernel/library/assert.h>
+
 namespace Memory {
 void memset(IN PTRMEM address, IN uint8_t data, IN uint32_t size) {
-    if (address == NULL)
-        return;
+    ASSERT(address != NULL, "memory address is null")
 
-    for (uint32_t ui = 0; ui < size; ui++)
-        address[ui] = data;
+    for (uint32_t i = 0; i < size; i++)
+        address[i] = data;
 }
 
-void memcpy(IN PTRMEM base_address, IN PTRMEM target_address, IN uint32_t size) {
-    if (base_address == NULL)
-        return;
-    if (target_address == NULL)
-        return;
+void memcpy(IN PTRMEM base_address, IN PTRMEM target_address, IN uint32_t size,
+            IN bool reversed) {
+    ASSERT(base_address != NULL, "base memory address is null")
+    ASSERT(target_address != NULL, "target memory address is null")
 
-    for (uint32_t ui = 0; ui <= size; ui++)
-        target_address[ui] = base_address[ui];
+    if (reversed) {
+        for (uint32_t i = size; i != 0; i--)
+            target_address[i] = base_address[i];
+
+        target_address[0] = base_address[0];
+    } else {
+        for (uint32_t i = 0; i <= size; i++)
+            target_address[i] = base_address[i];
+    }
 }
 } // namespace Memory

@@ -17,7 +17,7 @@ extern PTR timer_handler;
 
 namespace Interrupts::IDT {
 static IDT_ENTRY idt[256]; // the actual idt;
-static IDTR idtr;
+static IDTR      idtr;
 
 void setup() {
     PIC::init();
@@ -39,7 +39,7 @@ void setup() {
     __asm__ volatile("lidt %0" : : "m"(idtr));
     sti();
 
-    Debug::fprintln("(OK) IDT initialized");
+    DEBUG_PRINT("(OK) IDT initialized")
 }
 
 void set_IDT_entry(IN uint8_t vector, IN PTR handler, IN uint8_t attributes) {
@@ -71,56 +71,56 @@ extern "C" void handle_exception(IN uint32_t vector, IN uint32_t error_code) {
     case 8:
         Kernel::error_screen("Double fault");
         Library::printf("Error code : %h", error_code);
-        Drivers::VGA::set_background_color(Drivers::VGA::LRED);
-        Drivers::VGA::set_foreground_color(Drivers::VGA::BLACK);
+        Drivers::VGA::set_screen_back_color(Drivers::VGA::LRED);
+        Drivers::VGA::set_screen_fore_color(Drivers::VGA::BLACK);
         break;
     case 10:
         Kernel::error_screen("Invalid TSS");
         Library::printf("Error code : %h", error_code);
-        Drivers::VGA::set_background_color(Drivers::VGA::LRED);
-        Drivers::VGA::set_foreground_color(Drivers::VGA::BLACK);
+        Drivers::VGA::set_screen_back_color(Drivers::VGA::LRED);
+        Drivers::VGA::set_screen_fore_color(Drivers::VGA::BLACK);
         break;
     case 11:
         Kernel::error_screen("Segment Not Present");
         Library::printf("Error code : %h", error_code);
-        Drivers::VGA::set_background_color(Drivers::VGA::LRED);
-        Drivers::VGA::set_foreground_color(Drivers::VGA::BLACK);
+        Drivers::VGA::set_screen_back_color(Drivers::VGA::LRED);
+        Drivers::VGA::set_screen_fore_color(Drivers::VGA::BLACK);
         break;
     case 12:
         Kernel::error_screen("Stack-segment fault");
         Library::printf("Error code : %h", error_code);
-        Drivers::VGA::set_background_color(Drivers::VGA::LRED);
-        Drivers::VGA::set_foreground_color(Drivers::VGA::BLACK);
+        Drivers::VGA::set_screen_back_color(Drivers::VGA::LRED);
+        Drivers::VGA::set_screen_fore_color(Drivers::VGA::BLACK);
         break;
     case 13:
         Kernel::error_screen("General protection fault");
         Library::printf("Error code : %h", error_code);
-        Drivers::VGA::set_background_color(Drivers::VGA::LRED);
-        Drivers::VGA::set_foreground_color(Drivers::VGA::BLACK);
+        Drivers::VGA::set_screen_back_color(Drivers::VGA::LRED);
+        Drivers::VGA::set_screen_fore_color(Drivers::VGA::BLACK);
         break;
     case 14:
         Kernel::error_screen("Page fault");
         Library::printf("Error code : %h", error_code);
-        Drivers::VGA::set_background_color(Drivers::VGA::LRED);
-        Drivers::VGA::set_foreground_color(Drivers::VGA::BLACK);
+        Drivers::VGA::set_screen_back_color(Drivers::VGA::LRED);
+        Drivers::VGA::set_screen_fore_color(Drivers::VGA::BLACK);
         break;
     case 17:
         Kernel::error_screen("Alignment check");
         Library::printf("Error code : %h", error_code);
-        Drivers::VGA::set_background_color(Drivers::VGA::LRED);
-        Drivers::VGA::set_foreground_color(Drivers::VGA::BLACK);
+        Drivers::VGA::set_screen_back_color(Drivers::VGA::LRED);
+        Drivers::VGA::set_screen_fore_color(Drivers::VGA::BLACK);
         break;
     case 21:
         Kernel::error_screen("Control protection exception");
         Library::printf("Error code : %h", error_code);
-        Drivers::VGA::set_background_color(Drivers::VGA::LRED);
-        Drivers::VGA::set_foreground_color(Drivers::VGA::BLACK);
+        Drivers::VGA::set_screen_back_color(Drivers::VGA::LRED);
+        Drivers::VGA::set_screen_fore_color(Drivers::VGA::BLACK);
         break;
     default:
         Kernel::error_screen("Unknown error");
         Library::printf("Code : %h\nError code : %h", vector, error_code);
-        Drivers::VGA::set_background_color(Drivers::VGA::LRED);
-        Drivers::VGA::set_foreground_color(Drivers::VGA::BLACK);
+        Drivers::VGA::set_screen_back_color(Drivers::VGA::LRED);
+        Drivers::VGA::set_screen_fore_color(Drivers::VGA::BLACK);
         break;
     }
     cli();

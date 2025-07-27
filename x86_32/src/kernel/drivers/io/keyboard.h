@@ -41,12 +41,12 @@ enum KeypressInfoFlags {
     EXTENDED = 0x20
 };
 
-void init();
+void    init();
 uint8_t get_keycode(IN uint8_t scancode, IN bool extended);
-void process_scancode();
+void    process_scancode();
 
 KeypressInfo read_key();
-void read_line(OUT KeypressInfo *buffer);
+void         read_line(OUT KeypressInfo *buffer);
 } // namespace Drivers::Keyboard
 
 __attribute__((interrupt)) void

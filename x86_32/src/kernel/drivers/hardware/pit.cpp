@@ -21,7 +21,7 @@ void init() {
     outb(PIT_CHANNEL_0, divisor & 0xFF);
     outb(PIT_CHANNEL_0, divisor >> 8);
 
-    Debug::fprintln("(OK) PIT initialized");
+    DEBUG_PRINT("(OK) PIT initialized");
 }
 
 static uint32_t cur_milliseconds;

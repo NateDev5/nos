@@ -49,7 +49,7 @@ ifeq ($(DEBUG), 1)
 	GCC_FLAGS += $(GCC_FLAGS_DBG)
 endif
 
-.PHONY: all clean run
+.PHONY: all clean run run-dbg format gdb
 
 all: $(OS_IMAGE)
 
@@ -89,9 +89,15 @@ $(BUILD_FOLDER)/%.sym: $(BUILD_FOLDER)/%.o
 clean: 
 	rm -rf $(BUILD_FOLDER)
 
+format:
+	find $(SRC_FOLDER) -regex '.*\.\(cpp\|h\).*' | xargs -r clang-format -i
+
 run: $(OS_IMAGE)
 	qemu-system-i386 $(QEMU_FLAG_SERIAL) $< 
 	make clean
+
+run-dbg:
+	make run DEBUG=1
 
 gdb:
 	make DEBUG=1

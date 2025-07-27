@@ -37,7 +37,7 @@ void vprintf(IN CONST_CHAR_PTR format, IN va_list args) {
             // int
             if (format[pos] == 'i') {
                 int32_t value = va_arg(args, int32_t);
-                char temp_str[STR_MAX_LEN];
+                char    temp_str[STR_MAX_LEN];
                 Math::itoa(value, temp_str, 10);
                 putstr(temp_str);
                 continue;
@@ -46,7 +46,7 @@ void vprintf(IN CONST_CHAR_PTR format, IN va_list args) {
             // binary
             if (format[pos] == 'b') {
                 int32_t value = va_arg(args, int32_t);
-                char temp_str[STR_MAX_LEN];
+                char    temp_str[STR_MAX_LEN];
                 Math::itoa(value, temp_str, 2);
                 putstr(temp_str);
                 continue;
@@ -55,7 +55,7 @@ void vprintf(IN CONST_CHAR_PTR format, IN va_list args) {
             // hex
             if (format[pos] == 'h') {
                 int32_t value = va_arg(args, int32_t);
-                char temp_str[STR_MAX_LEN];
+                char    temp_str[STR_MAX_LEN];
                 Math::itoa(value, temp_str, 16);
                 putstr(temp_str);
                 continue;
