@@ -1,5 +1,21 @@
 #pragma once
 
+/**
+ * VGA color:
+ *   size: 1 byte
+ *   first 4 bits: background
+ *   last 4 bits: foreground
+ *
+ * Text mode default screen:
+ *   width: 80
+ *   height: 25
+ *
+ * VGA has many registers that can be written to to modify certain aspects
+ *  To modify:
+ *    1. Write the desired register to the Address register port
+ *    2. Write the desired data to the Data register port
+ */
+
 #include <utils/types.h>
 // http://www.osdever.net/FreeVGA/home.htm
 // http://www.osdever.net/FreeVGA/vga/crtcreg.htm#0A
@@ -34,22 +50,22 @@
 
 namespace Drivers::VGA {
 enum Color {
-    BLACK = 0x0,
-    BLUE = 0x1,
-    GREEN = 0x2,
-    CYAN = 0x3,
-    RED = 0x4,
-    MAGENTA = 0x5,
-    BROWN = 0x6,
-    WHITE = 0x7,
-    GRAY = 0x8,
-    LBLUE = 0x9,
-    LGREEN = 0xA,
-    LCYAN = 0xB,
-    LRED = 0xC,
+    BLACK    = 0x0,
+    BLUE     = 0x1,
+    GREEN    = 0x2,
+    CYAN     = 0x3,
+    RED      = 0x4,
+    MAGENTA  = 0x5,
+    BROWN    = 0x6,
+    WHITE    = 0x7,
+    GRAY     = 0x8,
+    LBLUE    = 0x9,
+    LGREEN   = 0xA,
+    LCYAN    = 0xB,
+    LRED     = 0xC,
     LMAGENTA = 0xD,
-    YELLOW = 0xE,
-    BWHITE = 0xF
+    YELLOW   = 0xE,
+    BWHITE   = 0xF
 };
 
 enum CursorStyle { UNDERSCORE, LARGE };

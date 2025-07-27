@@ -16,9 +16,9 @@
 namespace Drivers::VGA {
 static uint16_t current_offset = 0;
 
-static uint16_t screen_width = TEXT_MODE_SCREEN_WIDTH;
+static uint16_t screen_width  = TEXT_MODE_SCREEN_WIDTH;
 static uint16_t screen_height = TEXT_MODE_SCREEN_HEIGHT;
-static uint16_t screen_size = TEXT_MODE_SCREEN_SIZE;
+static uint16_t screen_size   = TEXT_MODE_SCREEN_SIZE;
 
 void modify_register(uint8_t reg, uint8_t data) {
     outb(ADDRESS_REGISTER_PORT, reg);
@@ -65,8 +65,8 @@ void f_put_char(IN char _char, IN uint8_t color) {
         return;
     }
 
-    uint8_t *video_mem = (uint8_t *)BASE_VID_MEM;
-    video_mem[current_offset] = _char;
+    uint8_t *video_mem            = (uint8_t *)BASE_VID_MEM;
+    video_mem[current_offset]     = _char;
     video_mem[current_offset + 1] = color;
     current_offset += 2;
 }
@@ -88,9 +88,8 @@ void f_insert_char_at(IN char _char, IN uint16_t offset) {
 
     uint16_t size = screen_size - offset - 2;
 
-    Memory::memcpy((PTRMEM)&video_mem[offset], (PTRMEM)&video_mem[offset + 2],
-                   size * 2, true);
-    video_mem[offset] = _char;
+    Memory::memcpy((PTRMEM)&video_mem[offset], (PTRMEM)&video_mem[offset + 2], size * 2, true);
+    video_mem[offset]     = _char;
     video_mem[offset + 1] = BASE_FMT;
     current_offset += 2;
 }
@@ -101,7 +100,7 @@ void remove_char_at(IN uint16_t offset) {
     uint8_t *video_mem = (uint8_t *)BASE_VID_MEM;
 
     for (uint16_t i = offset; i < current_offset; i += 2) {
-        video_mem[i] = video_mem[i + 2];
+        video_mem[i]     = video_mem[i + 2];
         video_mem[i + 1] = video_mem[i + 3];
 
         video_mem[i + 2] = NULL;
@@ -118,7 +117,7 @@ void set_screen_back_color(IN uint8_t color) {
         // 0x0F is a mask for 00001111 so applying a logical AND will get only
         // the four bytes
         int8_t cur_fore_color = video_mem[i * 2 + 1] & 0x0F;
-        video_mem[i * 2 + 1] = color << 4 | cur_fore_color;
+        video_mem[i * 2 + 1]  = color << 4 | cur_fore_color;
     }
 }
 
@@ -128,7 +127,7 @@ void set_screen_fore_color(IN uint8_t color) {
         // 0x0F is a mask for 11110000 so applying a logical AND will get only
         // the four bytes
         int8_t cur_back_color = video_mem[i * 2 + 1] & 0xF0;
-        video_mem[i * 2 + 1] = cur_back_color | color;
+        video_mem[i * 2 + 1]  = cur_back_color | color;
     }
 }
 
@@ -148,7 +147,7 @@ void clear_screen() {
 void test() {
     uint8_t *video_mem = (uint8_t *)BASE_VID_MEM;
     for (uint32_t i = 0; i <= screen_size; i++) {
-        video_mem[i * 2] = 'A' + i;
+        video_mem[i * 2]     = 'A' + i;
         video_mem[i * 2 + 1] = i;
     }
 }
@@ -157,8 +156,7 @@ void scroll_up() {
     uint16_t buf_len = screen_size * 2;
     uint8_t  cur_vid_buf[buf_len];
 
-    Memory::memcpy((PTRMEM)(BASE_VID_MEM + (screen_width * 2)),
-                   (PTRMEM)&cur_vid_buf[0], buf_len);
+    Memory::memcpy((PTRMEM)(BASE_VID_MEM + (screen_width * 2)), (PTRMEM)&cur_vid_buf[0], buf_len);
 
     Memory::memcpy((PTRMEM)&cur_vid_buf[0], (PTRMEM)BASE_VID_MEM, buf_len);
 

@@ -15,12 +15,12 @@
 
 namespace Drivers::Keyboard {
 KeypressInfo input_buffer[INPUT_BUFFER_SIZE];
-uint8_t      buffer_pos = 0;
+uint8_t      buffer_pos  = 0;
 uint8_t      buffer_tail = 0;
 
 uint8_t key_flags = 0x0;
 
-bool next_interrupt_break_code = false;
+bool next_interrupt_break_code    = false;
 bool next_interrupt_extended_code = false;
 
 void init() {
@@ -32,10 +32,10 @@ KeypressInfo read_key() {
     if (input_buffer[buffer_tail].scancode == SCANCODE_INVALID)
         return {};
 
-    KeypressInfo info = input_buffer[buffer_tail];
+    KeypressInfo info                  = input_buffer[buffer_tail];
     input_buffer[buffer_tail].scancode = SCANCODE_INVALID;
-    input_buffer[buffer_tail].keycode = KEYCODE_INVALID;
-    input_buffer[buffer_tail].flags = 0;
+    input_buffer[buffer_tail].keycode  = KEYCODE_INVALID;
+    input_buffer[buffer_tail].flags    = 0;
 
     buffer_tail = (buffer_tail + 1) % INPUT_BUFFER_SIZE;
     return info;
@@ -56,7 +56,7 @@ uint8_t get_keycode(IN uint8_t scancode, IN bool extended) {
 }
 
 void process_scancode() {
-    uint8_t flags = 0x01 & !next_interrupt_break_code;
+    uint8_t flags    = 0x01 & !next_interrupt_break_code;
     uint8_t scancode = Devices::PS2::poll();
 
     if (scancode == EXTENDED_CODE) {
@@ -72,16 +72,13 @@ void process_scancode() {
     if (!next_interrupt_extended_code)
         switch (scancode) {
         case SCANCODE_ALT:
-            key_flags = next_interrupt_break_code ? (key_flags & ~ALT)
-                                                  : (key_flags | ALT);
+            key_flags = next_interrupt_break_code ? (key_flags & ~ALT) : (key_flags | ALT);
             break;
         case SCANCODE_CTRL:
-            key_flags = next_interrupt_break_code ? (key_flags & ~CTRL)
-                                                  : (key_flags | CTRL);
+            key_flags = next_interrupt_break_code ? (key_flags & ~CTRL) : (key_flags | CTRL);
             break;
         case SCANCODE_SHIFT:
-            key_flags = next_interrupt_break_code ? (key_flags & ~SHIFT)
-                                                  : (key_flags | SHIFT);
+            key_flags = next_interrupt_break_code ? (key_flags & ~SHIFT) : (key_flags | SHIFT);
             break;
         case SCANCODE_CAPS:
             if (next_interrupt_break_code)
@@ -98,13 +95,12 @@ void process_scancode() {
         flags |= EXTENDED;
 
     input_buffer[buffer_pos].scancode = scancode;
-    input_buffer[buffer_pos].flags = flags;
-    input_buffer[buffer_pos].keycode =
-        get_keycode(scancode, next_interrupt_extended_code);
+    input_buffer[buffer_pos].flags    = flags;
+    input_buffer[buffer_pos].keycode  = get_keycode(scancode, next_interrupt_extended_code);
 
     buffer_pos = (buffer_pos + 1) % INPUT_BUFFER_SIZE;
 
-    next_interrupt_break_code = false;
+    next_interrupt_break_code    = false;
     next_interrupt_extended_code = false;
 }
 } // namespace Drivers::Keyboard

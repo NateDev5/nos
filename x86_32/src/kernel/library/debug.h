@@ -5,8 +5,7 @@
 #include <stdarg.h>
 
 #ifdef __DEBUG__
-#define DEBUG_ERR(error)                                                       \
-    Debug::fprintln("(ERROR) [%s:%s]: %s", __FILE__, __func__, error);
+#define DEBUG_ERR(error)      Debug::fprintln("(ERROR) [%s:%s]: %s", __FILE__, __func__, error);
 
 #define DEBUG_PRINT(msg, ...) Debug::fprintln(msg, ##__VA_ARGS__);
 

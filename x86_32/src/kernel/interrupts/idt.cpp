@@ -23,17 +23,15 @@ void setup() {
     PIC::init();
 
     // the address of the first element of the idt
-    idtr.base = (uint32_t)&idt[0];
+    idtr.base  = (uint32_t)&idt[0];
     idtr.limit = sizeof(IDT_ENTRY) * 256 - 1;
 
     // set the first 32 vectors because they are reserved
     for (uint8_t vector = 0; vector < 32; vector++)
         set_IDT_entry(vector, stub_table[vector], INTERRUPT_GATE);
 
-    set_IDT_entry(32, reinterpret_cast<PTR>(IRQ0_timer_handler),
-                  INTERRUPT_GATE);
-    set_IDT_entry(33, reinterpret_cast<PTR>(IRQ1_keyboard_handler),
-                  INTERRUPT_GATE);
+    set_IDT_entry(32, reinterpret_cast<PTR>(IRQ0_timer_handler), INTERRUPT_GATE);
+    set_IDT_entry(33, reinterpret_cast<PTR>(IRQ1_keyboard_handler), INTERRUPT_GATE);
 
     // load the idt
     __asm__ volatile("lidt %0" : : "m"(idtr));
@@ -43,19 +41,16 @@ void setup() {
 }
 
 void set_IDT_entry(IN uint8_t vector, IN PTR handler, IN uint8_t attributes) {
-    IDT_ENTRY *descriptor = &idt[vector];
-    descriptor->isr_add_low =
-        ((uint32_t)handler) & 0xFFFF; // take the first 16 bits of the address
+    IDT_ENTRY *descriptor   = &idt[vector];
+    descriptor->isr_add_low = ((uint32_t)handler) & 0xFFFF; // take the first 16 bits of the address
 
     // https://wiki.osdev.org/Segment_Selector
-    descriptor->selector =
-        0x08; // code descriptor in GDT is at index 1 and we want Ring 0 access
+    descriptor->selector = 0x08; // code descriptor in GDT is at index 1 and we want Ring 0 access
 
-    descriptor->zero = 0;
+    descriptor->zero       = 0;
     descriptor->attributes = attributes;
 
-    descriptor->isr_add_high =
-        ((uint32_t)handler >> 16) & 0xFFFF; // take the last 16 bits
+    descriptor->isr_add_high = ((uint32_t)handler >> 16) & 0xFFFF; // take the last 16 bits
 }
 
 } // namespace Interrupts::IDT

@@ -1,3 +1,4 @@
+#include <kernel/library/debug.h>
 #include <kernel/library/log.h>
 #include <kernel/library/panic.h>
 
@@ -7,6 +8,7 @@
 
 namespace Kernel {
 void panic(IN CONST_CHAR_PTR msg) {
+    DEBUG_PRINT("(PANIC) %s", msg);
     error_screen(msg);
 
     cli();
@@ -16,7 +18,6 @@ void panic(IN CONST_CHAR_PTR msg) {
 
 void error_screen(IN CONST_CHAR_PTR error_msg) {
     Drivers::VGA::disable_cursor();
-    // Library::clear();
     Library::print("ERROR: ");
     Library::println(error_msg);
     Drivers::VGA::set_screen_back_color(Drivers::VGA::LRED);

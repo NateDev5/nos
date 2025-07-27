@@ -1,3 +1,23 @@
+/*
+ *
+ * PIC (Programmable Interrupt Controller)
+ * This controller is what manages harcware interrupts and sends them to the system
+ * It can accept multiple interrupts at a time
+ *
+ * This is CRUCIAL for this controller to be initialized before the IDT is loaded because without this interrupts wont work properly
+ * This device is also what need to be sent an 'End of Interrupt' to continue processing them
+ *
+ * The PIC has 2 chips (a master and a slave)
+ * This allows for having more inputs for interrupts
+ *
+ * The PIC has a design flaw that requires the base vector offset to be set to the start
+ * of the external interrupts in the IDT.
+ *   (This is crucial because if not the PIC will override the reserved 0-31 interrupts and
+ *   the system wont work correctly)
+ *
+ * If the irq is bigger than 8 then the slave also need an 'End of Interrupt' signal to be sent
+ */
+
 #pragma once
 
 // https://pdos.csail.mit.edu/6.828/2014/readings/hardware/8259A.pdf

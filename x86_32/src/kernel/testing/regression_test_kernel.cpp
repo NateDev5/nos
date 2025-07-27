@@ -53,14 +53,14 @@ void test_memory() {
 
 void test_string() {
     // strlen
-    CONST_CHAR_PTR test_str = "Test str";
+    CONST_CHAR_PTR test_str         = "Test str";
     uint32_t       str_len_test_str = Library::strlen(test_str);
     ASSERT_FATAL(str_len_test_str == 8, "strlen error 1")
 
     // strcmp
-    CONST_CHAR_PTR test_str_cmp1 = "String to compare 1";
-    CONST_CHAR_PTR test_str_cmp2 = "String to compare 2";
-    int32_t str_cmp_result = Library::strcmp(test_str_cmp1, test_str_cmp2);
+    CONST_CHAR_PTR test_str_cmp1  = "String to compare 1";
+    CONST_CHAR_PTR test_str_cmp2  = "String to compare 2";
+    int32_t        str_cmp_result = Library::strcmp(test_str_cmp1, test_str_cmp2);
     ASSERT_FATAL(str_cmp_result < 0, "strcmp error 1")
 
     str_cmp_result = Library::strcmp(test_str_cmp1, test_str_cmp1);
@@ -76,11 +76,10 @@ void test_string() {
 
     // strcat
     char     test_str_cat_target[STR_MAX_LEN] = "String 1 + ";
-    CHAR_PTR test_str_to_cat = (CHAR_PTR) "String 2";
+    CHAR_PTR test_str_to_cat                  = (CHAR_PTR) "String 2";
     Library::strcat(test_str_cat_target, test_str_to_cat);
 
-    str_cmp_result =
-        Library::strcmp("String 1 + String 2", test_str_cat_target);
+    str_cmp_result = Library::strcmp("String 1 + String 2", test_str_cat_target);
     ASSERT_FATAL(str_cmp_result == 0, "strcat error 1")
 }
 
@@ -156,16 +155,14 @@ void test_array_utils() {
     uint8_t test_array_pos = 0;
 
     for (uint8_t i = 0; i < 10; i++) {
-        test_array[i] = i;
+        test_array[i]  = i;
         test_array_pos = i;
     }
 
-    test_array_pos = Library::remove_at<int8_t>(test_array, test_array_len,
-                                                test_array_pos, 5);
+    test_array_pos = Library::remove_at<int8_t>(test_array, test_array_len, test_array_pos, 5);
     ASSERT_FATAL(test_array[5] == 6, "arrayutils error 1")
 
-    test_array_pos = Library::add_at<int8_t>(test_array, test_array_len,
-                                             test_array_pos, 1, 69);
+    test_array_pos = Library::add_at<int8_t>(test_array, test_array_len, test_array_pos, 1, 69);
     ASSERT_FATAL(test_array[1] == 69, "arrayutils error 2")
     ASSERT_FATAL(test_array[2] == 1, "arrayutils error 3")
 }

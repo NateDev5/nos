@@ -31,8 +31,8 @@ void vfprintf(IN CONST_CHAR_PTR format, IN uint8_t color, IN va_list args) {
             // int
             if (format[pos] == 'i') {
                 int32_t value = va_arg(args, int32_t);
-                char temp_str[11]; // int32_max 4,...,...,... , 10 characters +
-                                   // 1 null
+                char    temp_str[11]; // int32_max 4,...,...,... , 10 characters +
+                                      // 1 null
                 Math::itoa(value, temp_str, 10);
                 Drivers::VGA::f_put_str(temp_str, color);
                 continue;
@@ -104,13 +104,9 @@ void fprintln(IN CONST_CHAR_PTR message, IN uint8_t format) {
     Drivers::VGA::put_char('\n');
 }
 
-void println(IN CONST_CHAR_PTR message) {
-    fprintln(message, Drivers::VGA::BWHITE);
-}
+void println(IN CONST_CHAR_PTR message) { fprintln(message, Drivers::VGA::BWHITE); }
 
-void fprintc(IN char _char, IN uint8_t color) {
-    Drivers::VGA::f_put_char(_char, color);
-}
+void fprintc(IN char _char, IN uint8_t color) { Drivers::VGA::f_put_char(_char, color); }
 
 void printc(IN char _char) { fprintc(_char, Drivers::VGA::BWHITE); }
 

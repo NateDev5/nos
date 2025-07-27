@@ -32,14 +32,7 @@ typedef struct KeypressInfo {
 
 } KeypressInfo;
 
-enum KeypressInfoFlags {
-    KEYDOWN = 0x1,
-    ALT = 0x2,
-    CTRL = 0x4,
-    SHIFT = 0x8,
-    CAPS = 0x10,
-    EXTENDED = 0x20
-};
+enum KeypressInfoFlags { KEYDOWN = 0x1, ALT = 0x2, CTRL = 0x4, SHIFT = 0x8, CAPS = 0x10, EXTENDED = 0x20 };
 
 void    init();
 uint8_t get_keycode(IN uint8_t scancode, IN bool extended);
@@ -49,5 +42,4 @@ KeypressInfo read_key();
 void         read_line(OUT KeypressInfo *buffer);
 } // namespace Drivers::Keyboard
 
-__attribute__((interrupt)) void
-IRQ1_keyboard_handler(IN Interrupts::IDT::InterruptFrame *frame);
+__attribute__((interrupt)) void IRQ1_keyboard_handler(IN Interrupts::IDT::InterruptFrame *frame);

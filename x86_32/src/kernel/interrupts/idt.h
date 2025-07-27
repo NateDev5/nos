@@ -1,6 +1,50 @@
 // https://github.com/dreamportdev/Osdev-Notes/blob/master/02_Architecture/05_InterruptHandling.md
 // https://pdos.csail.mit.edu/6.828/2005/lec/lec8-slides.pdf
 
+/*
+ * IDT (Interrupt Descriptor Table)
+ * Crucial part for handling interrupt in protected mode
+ *
+ * Its a table that holds interrupts vectors and their corresponding handlers
+ *
+ * the 'lidt' instruction is used to load it
+ * the 'sti' instruction is used to re-enable interrupts
+ *
+ * The IDT consist of 3 parts:
+ *  - IDTR (Interrupt Descriptor Table Register) :
+ *      This struct contains the size of the IDT and its address in memory
+ *      This struct is what will be used with the 'lidt' instruction to load it
+ *
+ *      The struct needs to be packed to allow no space between the data
+ *      (needs to be that way to achieve the 6 byte (48 bits) size)
+ *
+ *  - IDT Entry (An entry of the IDT)
+ *      Contains:
+ *          the low and high address of the Interrupt service routine (The handler for the interrupt)
+ *          the selector (check intel manual for more info)
+ *          an empty byte
+ *          the attributes (gate type, cpu privilege, present bit)
+ *      The struct needs to be packed so there wont be any space between the data
+ *      (needs to be that way to achieve the 8 byte (64 bits) size)
+ *
+ *  - IDT (The IDT itself):
+ *      Consist of 256 entries (uint8 max) each containing an IDT Entry struct
+ *
+ *      Entry 0-31 are reserved by the system (they contain exceptions and other interrupts)
+ *      a stub for each entry from 0-31 is mandatory to catch exceptions and allow the system to work correctly
+ *
+ *      The rest needs to be defined by the kernel
+ *
+ *  ----
+ *
+ *  When an interrupt is called it needs to be handled by a function that is returned with the 'iret' instruction
+ *  either by writing a stub for it in assembly or using the __attribute__((interrupt)) on a function
+ *      - Writing it in assembly gives more control over what data is passed to the function and which registers are saved
+ *
+ *  This received functions receives registers as parameters
+ *  An 'End of interrupt' needs to be trigged at the end of the ISR by the 'PIC' to allow other interrupts to be triggered and handled
+ */
+
 #pragma once
 
 #include <utils/types.h>
@@ -24,9 +68,8 @@ struct IDT_ENTRY {
 
 // IDT register
 struct IDTR {
-    uint16_t
-        limit; // the size of the idt need to be one less than the actual size
-    uint32_t base; // base address of IDT
+    uint16_t limit; // the size of the idt need to be one less than the actual size
+    uint32_t base;  // base address of IDT
 } __attribute__((packed));
 
 void setup();

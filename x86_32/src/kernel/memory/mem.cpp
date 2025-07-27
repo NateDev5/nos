@@ -10,8 +10,7 @@ void memset(IN PTRMEM address, IN uint8_t data, IN uint32_t size) {
         address[i] = data;
 }
 
-void memcpy(IN PTRMEM base_address, IN PTRMEM target_address, IN uint32_t size,
-            IN bool reversed) {
+void memcpy(IN PTRMEM base_address, IN PTRMEM target_address, IN uint32_t size, IN bool reversed) {
     ASSERT(base_address != NULL, "base memory address is null")
     ASSERT(target_address != NULL, "target memory address is null")
 

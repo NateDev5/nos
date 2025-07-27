@@ -27,8 +27,7 @@ int32_t strcmp(IN CONST_CHAR_PTR in_str1, IN CONST_CHAR_PTR in_str2) {
 
     uint32_t pos = 0;
 
-    while (pos < STR_MAX_LEN && in_str1[pos] != '\0' && in_str2[pos] != '\0' &&
-           in_str1[pos] == in_str2[pos])
+    while (pos < STR_MAX_LEN && in_str1[pos] != '\0' && in_str2[pos] != '\0' && in_str1[pos] == in_str2[pos])
         pos++;
 
     return (int32_t)in_str1[pos] - (int32_t)in_str2[pos];

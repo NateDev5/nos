@@ -36,8 +36,8 @@ CHAR_PTR itoa(IN int32_t value, OUT CHAR_PTR outStr, IN uint8_t base) {
     // Invert the numbers.
     while (low < ptr) {
         char tmp = *low;
-        *low++ = *ptr;
-        *ptr-- = tmp;
+        *low++   = *ptr;
+        *ptr--   = tmp;
     }
 
     return rc;
