@@ -1,4 +1,3 @@
-#include "kernel/library/assert.h"
 #include <kernel/testing/regression_test_kernel.h>
 
 #include <kernel/drivers/hardware/pit.h>
