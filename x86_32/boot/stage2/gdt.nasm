@@ -1,3 +1,4 @@
+
 ; must be at the end of real mode code
 GDT_start:
     null_descriptor:
