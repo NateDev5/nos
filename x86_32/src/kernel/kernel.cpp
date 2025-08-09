@@ -13,8 +13,9 @@
 
 #include <kernel/terminal.h>
 
-extern "C" void kmain() {
+#include <boot/bootloader.h>
 
+extern "C" void kmain() {
     // for debugging
     Drivers::UART::init_port(COM_PORT_1);
 
