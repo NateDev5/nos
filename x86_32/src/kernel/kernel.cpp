@@ -14,7 +14,6 @@
 #include <kernel/terminal.h>
 
 extern "C" void kmain() {
-
     // for debugging
     Drivers::UART::init_port(COM_PORT_1);
 
@@ -32,7 +31,7 @@ extern "C" void kmain() {
 
     // welcome
     Library::fprintln("Welcome to NOS!", Drivers::VGA::CYAN);
-
+    
     // terminal
     Kernel::Terminal::run();
     // Drivers::VGA::offsetScreen();

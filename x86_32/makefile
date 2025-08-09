@@ -57,7 +57,7 @@ $(BUILD_FOLDER):
 	mkdir -p $(BUILD_FOLDER)
 
 $(BOOTLOADER_BIN): $(BOOTLOADER_SRC)
-	nasm -f bin -o $@ $<
+	nasm -i$(BOOT_FOLDER) -f bin -o $@ $<
 
 $(BUILD_FOLDER)/%.o: $(SRC_FOLDER)/%.cpp
 	mkdir -p $(dir $@)
