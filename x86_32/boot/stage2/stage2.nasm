@@ -23,6 +23,8 @@ read_disk:
 
     jc disk_error ; jump if the carry flag is set to 1 meaning it has an error
 
+%include "stage2/memory_map.nasm"
+
 %include "stage2/video.nasm"
 
 ; enter protected mode
@@ -46,6 +48,12 @@ disk_error:
 
     jmp $
 
+memory_map_error:
+    mov si, error_memory_map
+    call print_str
+
+    jmp $
+
 %include "utils/print_str.nasm"
 %include "stage2/gdt.nasm"
 
@@ -62,10 +70,17 @@ start_protected_mode:
     mov ebp, 0x90000		; 32 bit stack base pointer
 	mov esp, ebp           ; set stack ptr to base ptr
 
+    mov eax, [bootloader_info]
+
     jmp 0x9400 ; jump to where kernel is located
     jmp $
+
+section .data
+bootloader_info:
+    dd mmap_buffer
 
 log_loaded_second_stage db 'Successfully loaded second stage', 13, 10, 0
 
 error_failed_to_load_kernel db 'Failed to load kernel', 13, 10, 0
 error_reading_disk db 'Error while reading disk', 13, 10, 0
+error_memory_map db 'Error while getting memory map entry', 13, 10, 0

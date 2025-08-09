@@ -46,9 +46,12 @@ NASM_OBJ			:= $(patsubst $(SRC_FOLDER)/%.nasm,$(BUILD_FOLDER)/%.o,$(NASM_SRC))
 
 DBG_SYMBOLS			:= $(patsubst $(BUILD_FOLDER)/%.o,$(BUILD_FOLDER)/%.sym,$(CPP_OBJ))
 
-# hardcoded hell nah
-KERNEL_OBJ			:= $(BUILD_FOLDER)/kernel/kernel.o
-OTHER_OBJ			:= $(filter-out $(KERNEL_OBJ), $(CPP_OBJ))
+KERNEL_ENTRY_OBJ	=  $(BUILD_FOLDER)/kernel/kernel_entry.o
+KERNEL_OBJ			=  $(BUILD_FOLDER)/kernel/kernel.o
+OTHER_OBJ			:= $(filter-out $(KERNEL_OBJ), $(CPP_OBJ)) $(filter-out $(KERNEL_ENTRY_OBJ), $(NASM_OBJ))
+# KERNEL_OBJ		=  $(BUILD_FOLDER)/kernel/kernel.o
+# OTHER_OBJ			:= $(filter-out $(KERNEL_OBJ), $(CPP_OBJ))
+
 
 # Other
 KERNEL_SIZE			=  59904 # 65,536 - (512 + 5120) || 64KB - (Bootsector size + Bootloader stage 2 size)
@@ -80,7 +83,7 @@ $(KERNEL_BIN): $(CPP_OBJ) $(NASM_OBJ) $(DBG_SYMBOLS)
 else
 $(KERNEL_BIN): $(CPP_OBJ) $(NASM_OBJ)
 endif
-	$(LD) $(LD_FLAGS) $(KERNEL_OBJ) ${OTHER_OBJ} $(NASM_OBJ) -o $@.elf
+	$(LD) $(LD_FLAGS) $(KERNEL_ENTRY_OBJ) $(KERNEL_OBJ) ${OTHER_OBJ} -o $@.elf
 	cp $@.elf $@.raw
 	$(OBJCOPY) -O binary $@.elf $@
 	@echo "Current kernel size: `stat -L -c %s $@`"
@@ -105,6 +108,10 @@ run: $(OS_IMAGE)
 
 run-dbg:
 	$(MAKE) run DEBUG=1
+
+run-monitor: $(OS_IMAGE)
+	$(QEMU) -monitor stdio $<
+	$(MAKE) clean
 
 gdb:
 	$(MAKE) DEBUG=1

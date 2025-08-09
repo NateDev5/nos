@@ -4,7 +4,7 @@ LD						= ld
 OBJCOPY					= objcopy
 
 # Flags
-LD_FLAGS				= -melf_i386 -Ttext 0x8000 -nostdlib --oformat elf32-i386
+LD_FLAGS				= -melf_i386 -Ttext 0x8000
 
 # Folders
 INCLUDE_FOLDER			= ./

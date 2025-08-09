@@ -1,4 +1,3 @@
-
 ; must be at the end of real mode code
 GDT_start:
     null_descriptor:
@@ -28,4 +27,3 @@ GDT_end:
 GDT_descriptor:
     dw GDT_end - GDT_start - 1 ; size of gdt
     dd GDT_start ; start of gdt
-
