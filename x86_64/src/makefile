@@ -64,7 +64,7 @@ $(BUILD_FOLDER)/%.o: %.cpp
 
 $(BUILD_FOLDER)/%.o: %.nasm
 	mkdir -p $(dir $@)
-	$(NASM) -f elf32 -o $@ $<
+	$(NASM) -f elf64 -o $@ $<
 
 ifeq ($(DEBUG), 1)
 $(KERNEL_BIN): $(CPP_OBJ) $(NASM_OBJ) $(DBG_SYMBOLS)

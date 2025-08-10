@@ -1,13 +1,20 @@
+BITS 64
 ; %+ is to concantenate strings
 ; %1 is the argument number 1
-
 %macro interrupt_stub 1
 interrupt_stub_%+%1:
-    push %1
-    call handle_exception
-    add esp, 4
-    iret
+    ;push qword %1
+    jmp common_stub
+    ;add rsp, 8
 %endmacro
+
+common_stub:
+    push rax
+    push rbx
+    call handle_exception
+    pop rbx
+    pop rax
+    iret
 
 extern handle_exception
 
@@ -44,10 +51,11 @@ interrupt_stub 29
 interrupt_stub 30
 interrupt_stub 31
 
+section .data
 global stub_table
 stub_table:
 %assign i 0 
 %rep    32 
-    dd interrupt_stub_%+i
+    dq interrupt_stub_%+i
 %assign i i+1 
 %endrep

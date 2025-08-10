@@ -1,5 +1,5 @@
-#include "boot/limine/limine.h"
 #include "kernel/library/panic.h"
+#include "utils/asm.h"
 #include <kernel/testing/regression_test_kernel.h>
 
 #include <kernel/drivers/hardware/pit.h>
@@ -26,11 +26,7 @@ extern "C" void kmain() {
     if (framebuffer_request.response == NULLPTR || framebuffer_request.response->framebuffer_count < 1)
         Kernel::panic("Failed to get a framebuffer");
 
-    //limine_framebuffer *framebuffer = framebuffer_request.response->framebuffers[0];
-
-    DEBUG_PRINT("Hello from NOS!")
-    // Drivers::VGA::disable_cursor();
-    //  Drivers::VGA::init();
+    // limine_framebuffer *framebuffer = framebuffer_request.response->framebuffers[0];
 
     // testing
     // Testing::test_kernel();
@@ -38,8 +34,8 @@ extern "C" void kmain() {
     // setup
     // Drivers::Keyboard::init(); // before setting up interrupts
 
-    // Drivers::PIT::init();
-    // Interrupts::IDT::setup();
+    Drivers::PIT::init();
+    Interrupts::IDT::setup();
 
     // welcome
     // Library::fprintln("Welcome to NOS!", Drivers::VGA::CYAN);

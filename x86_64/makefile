@@ -40,7 +40,8 @@ else
 endif
 
 # Flags
-QEMU_FLAG_DBG_INT	= -d int
+QEMU_FLAGS			= -no-reboot
+QEMU_FLAG_DBG_INT	= -d int,cpu_reset
 QEMU_FLAG_SERIAL	= -serial stdio
 QEMU_FLAG_MONITOR	= -monitor stdio
 
@@ -75,24 +76,29 @@ ifeq ($(DEBUG),1)
 run: 
 	$(MAKE) DEBUG=1
 	@echo -e "\n>>> Running using QEMU (Debug + Serial) <<<\n"
-	$(QEMU) $(QEMU_FLAG_SERIAL) -cdrom $(OS_OUT)
+	$(QEMU) $(QEMU_FLAGS) $(QEMU_FLAG_SERIAL) -cdrom $(OS_OUT)
 
 monitor:
 	$(MAKE) DEBUG=1
 	@echo -e "\n>>> Running using QEMU (Debug + Monitor) <<<\n"
-	$(QEMU) $(QEMU_FLAG_MONITOR) -cdrom $(OS_OUT)
+	$(QEMU) $(QEMU_FLAGS) $(QEMU_FLAG_MONITOR) -cdrom $(OS_OUT)
 
 gdb:
 	$(MAKE) DEBUG=1
 	@echo -e "\n>>> Debugging using QEMU/GDB (Debug + Serial)"
-	$(QEMU) $(QEMU_FLAG_SERIAL) -cdrom $(OS_OUT) -s -S &
+	$(QEMU) $(QEMU_FLAGS) $(QEMU_FLAG_SERIAL) -cdrom $(OS_OUT) -s -S &
 	$(GDB) -q -iex "set auto-load safe-path /"
+
+int:
+	$(MAKE) DEBUG=1
+	@echo -e "\n>>> Running using QEMU (Debug + Interrupts)"
+	$(QEMU) $(QEMU_FLAGS) $(QEMU_FLAG_DBG_INT) -cdrom $(OS_OUT)
 
 else
 run:
 	$(MAKE) DEBUG=0
 	@echo -e "\n>>> Running using QEMU (Release) <<\n"
-	$(QEMU) -cdrom $(OS_OUT)
+	$(QEMU) $(QEMU_FLAGS) -cdrom $(OS_OUT)
 endif
 
 dbg:

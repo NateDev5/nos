@@ -105,7 +105,9 @@ void process_scancode() {
 }
 } // namespace Drivers::Keyboard
 
+/*
 void IRQ1_keyboard_handler(IN Interrupts::IDT::InterruptFrame *frame) {
     Drivers::Keyboard::process_scancode();
     Interrupts::PIC::send_EOI(1);
 }
+*/

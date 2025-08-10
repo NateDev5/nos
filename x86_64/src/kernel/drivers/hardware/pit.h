@@ -59,4 +59,4 @@ void init();
 void sleep(IN uint32_t milliseconds);
 } // namespace Drivers::PIT
 
-__attribute__((interrupt)) void IRQ0_timer_handler(IN Interrupts::IDT::InterruptFrame *frame);
+//__attribute__((interrupt)) void IRQ0_timer_handler(IN Interrupts::IDT::InterruptFrame *frame);

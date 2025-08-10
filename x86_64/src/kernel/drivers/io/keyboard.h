@@ -42,4 +42,4 @@ KeypressInfo read_key();
 void         read_line(OUT KeypressInfo *buffer);
 } // namespace Drivers::Keyboard
 
-__attribute__((interrupt)) void IRQ1_keyboard_handler(IN Interrupts::IDT::InterruptFrame *frame);
+//__attribute__((interrupt)) void IRQ1_keyboard_handler(IN Interrupts::IDT::InterruptFrame *frame);

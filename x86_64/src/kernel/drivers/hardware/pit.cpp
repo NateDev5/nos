@@ -34,9 +34,11 @@ void sleep(IN uint32_t milliseconds) {
 }
 } // namespace Drivers::PIT
 
+/*
 void IRQ0_timer_handler(IN Interrupts::IDT::InterruptFrame *frame) {
     if (Drivers::PIT::cur_milliseconds > 0)
         Drivers::PIT::cur_milliseconds--;
 
     Interrupts::PIC::send_EOI(0);
 }
+*/

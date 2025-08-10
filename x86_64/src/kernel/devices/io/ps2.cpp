@@ -8,7 +8,7 @@ namespace Devices::PS2 {
 void init() {
     // perform self test
     outb(PS2_COMMAND_REGISTER, PS2_SELFTEST_SEND);
-    ioWait();
+    io_wait();
     uint8_t self_test_result = inb(PS2_DATA_PORT);
     ASSERT(self_test_result == PS2_SELFTEST_RECEIVE, "PS2 Controller self test failed");
 

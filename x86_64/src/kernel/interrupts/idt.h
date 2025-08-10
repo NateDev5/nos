@@ -1,6 +1,8 @@
 // https://github.com/dreamportdev/Osdev-Notes/blob/master/02_Architecture/05_InterruptHandling.md
 // https://pdos.csail.mit.edu/6.828/2005/lec/lec8-slides.pdf
 
+// Old info (For 32 bits)
+// For 64 bit only the idt entry structure is different and the IDTR
 /*
  * IDT (Interrupt Descriptor Table)
  * Crucial part for handling interrupt in protected mode
@@ -22,7 +24,7 @@
  *      Contains:
  *          the low and high address of the Interrupt service routine (The handler for the interrupt)
  *          the selector (check intel manual for more info)
- *          an empty byte
+ *          an empty byt
  *          the attributes (gate type, cpu privilege, present bit)
  *      The struct needs to be packed so there wont be any space between the data
  *      (needs to be that way to achieve the 8 byte (64 bits) size)
@@ -44,14 +46,13 @@
  *  This received functions receives registers as parameters
  *  An 'End of interrupt' needs to be trigged at the end of the ISR by the 'PIC' to allow other interrupts to be triggered and handled
  */
-
+ 
 #pragma once
 
 #include <utils/types.h>
 
 #define INTERRUPT_GATE 0x8E // p=1, dpl=0, type=0xE
 #define TRAP_GATE      0x8F // p=1, dpl=0, type=0xF
-#define TASK_GATE      0x85 // p=1, dpl=0, type=0x5
 
 namespace Interrupts::IDT {
 // packed attribute used to ensure there are no extra bits
@@ -59,17 +60,18 @@ namespace Interrupts::IDT {
 // IDT entry
 struct IDT_ENTRY {
     uint16_t isr_add_low;
-    uint16_t selector;
-    uint8_t  zero;
-    uint8_t  attributes; // gate type, dpl (cpu privilege), P (present bit, must
-                         // be 1 for the descriptor to be valid)
-    uint16_t isr_add_high;
+    uint16_t segment_selector;
+    uint8_t  ist;
+    uint8_t  type_attributes; // gate type, dpl, p
+    uint16_t isr_add_med;
+    uint32_t isr_add_high;
+    uint32_t zero;
 } __attribute__((packed));
 
 // IDT register
 struct IDTR {
     uint16_t limit; // the size of the idt need to be one less than the actual size
-    uint32_t base;  // base address of IDT
+    uint64_t base;  // base address of IDT
 } __attribute__((packed));
 
 void setup();
@@ -84,4 +86,5 @@ struct InterruptFrame {
 };
 } // namespace Interrupts::IDT
 
-extern "C" void handle_exception(IN uint32_t vector, IN uint32_t error_code);
+extern "C" void handle_exception ();
+//extern "C" void handle_exception(IN uint32_t vector, IN uint32_t error_code);
