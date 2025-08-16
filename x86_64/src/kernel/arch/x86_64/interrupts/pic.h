@@ -47,7 +47,7 @@
 // end of interrupt
 #define PIC_EOI                   0x20
 
-namespace Interrupts::PIC {
-void init();
+namespace Arch::x86_64::PIC {
+void remap();
 void send_EOI(IN uint8_t irq);
-} // namespace Interrupts::PIC
+} // namespace Arch::x86_64::PIC

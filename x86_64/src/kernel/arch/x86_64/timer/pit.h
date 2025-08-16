@@ -43,20 +43,18 @@
 
 #pragma once
 
-#include <kernel/interrupts/idt.h>
-
 #include <utils/types.h>
 
 #define PIT_CHANNEL_0        0x40
 #define PIT_COMMAND_REGISTER 0x43
 
-namespace Drivers::PIT {
+namespace Arch::x86_64::PIT {
 ///
 /// Setup the Programmable Interrupt Timer
 /// Sets the mod and the inteval at which an interrupt is triggered
 ///
 void init();
 void sleep(IN uint32_t milliseconds);
-} // namespace Drivers::PIT
+} // namespace Arch::x86_64::PIT
 
 //__attribute__((interrupt)) void IRQ0_timer_handler(IN Interrupts::IDT::InterruptFrame *frame);

@@ -1,11 +1,9 @@
-#include <kernel/interrupts/pic.h>
-
-#include <kernel/drivers/video/vga.h>
+#include <kernel/arch/x86_64/interrupts/pic.h>
 
 #include <utils/asm.h>
 
-namespace Interrupts::PIC {
-void init() {
+namespace Arch::x86_64::PIC {
+void remap() {
     // ICW1
     outb(PIC1_COMMAND, ICW1 | ICW4); // begin init
     outb(PIC2_COMMAND, ICW1 | ICW4);
@@ -37,4 +35,4 @@ void send_EOI(IN uint8_t irq) {
 
     outb(PIC1_COMMAND, PIC_EOI);
 }
-} // namespace Interrupts::PIC
+} // namespace Arch::x86_64::PIC

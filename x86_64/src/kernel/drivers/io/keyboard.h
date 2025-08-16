@@ -2,8 +2,6 @@
 
 #pragma once
 
-#include <kernel/interrupts/idt.h>
-
 #include <utils/types.h>
 
 #define INPUT_BUFFER_SIZE    10

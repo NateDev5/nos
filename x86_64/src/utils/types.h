@@ -1,7 +1,7 @@
 #pragma once
 
 #include <cstdint>
-#define NULL 0
+#define NULL    0
 #define NULLPTR nullptr
 #define IN
 #define OUT

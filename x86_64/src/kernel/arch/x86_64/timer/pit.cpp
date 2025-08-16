@@ -1,15 +1,11 @@
-#include <kernel/drivers/hardware/pit.h>
-#include <kernel/drivers/video/vga.h>
-
+#include <kernel/arch/x86_64/timer/pit.h>
 #include <kernel/library/debug.h>
 #include <kernel/library/log.h>
-
-#include <kernel/interrupts/pic.h>
 
 #include <utils/asm.h>
 #include <utils/math.h>
 
-namespace Drivers::PIT {
+namespace Arch::x86_64::PIT {
 void init() {
     // CNTR = 0, RW = 3, Mode = 2, BCD = 0
     // In binary : 0|011|001|0 or 0x32
@@ -32,7 +28,7 @@ void sleep(IN uint32_t milliseconds) {
     while (cur_milliseconds > 0)
         hlt();
 }
-} // namespace Drivers::PIT
+} // namespace Arch::x86_64::PIT
 
 /*
 void IRQ0_timer_handler(IN Interrupts::IDT::InterruptFrame *frame) {

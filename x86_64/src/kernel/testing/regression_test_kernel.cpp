@@ -3,7 +3,7 @@
 #include <kernel/library/arrayutils.h>
 #include <kernel/library/assert.h>
 #include <kernel/library/debug.h>
-//#include <kernel/library/list.h>
+// #include <kernel/library/list.h>
 #include <kernel/library/string.h>
 
 #include <kernel/drivers/video/vga.h>

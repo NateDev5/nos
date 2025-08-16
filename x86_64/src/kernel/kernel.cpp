@@ -1,18 +1,18 @@
-#include "kernel/library/panic.h"
-#include "utils/asm.h"
+#include <kernel/library/panic.h>
 #include <kernel/testing/regression_test_kernel.h>
 
-#include <kernel/drivers/hardware/pit.h>
 #include <kernel/drivers/io/keyboard.h>
 #include <kernel/drivers/serial/uart.h>
-
-#include <kernel/interrupts/idt.h>
 
 #include <kernel/library/debug.h>
 #include <kernel/library/log.h>
 #include <kernel/library/string.h>
 
 #include <boot/limine/limine_misc.h>
+
+#include <kernel/arch/x86_64/gdt.h>
+#include <kernel/arch/x86_64/interrupts/idt.h>
+#include <kernel/arch/x86_64/timer/pit.h>
 
 // #include <kernel/terminal.h>
 
@@ -27,6 +27,8 @@ extern "C" void kmain() {
         Kernel::panic("Failed to get a framebuffer");
 
     // limine_framebuffer *framebuffer = framebuffer_request.response->framebuffers[0];
+    
+    Arch::x86_64::GDT::setup();
 
     // testing
     // Testing::test_kernel();
@@ -34,9 +36,14 @@ extern "C" void kmain() {
     // setup
     // Drivers::Keyboard::init(); // before setting up interrupts
 
-    Drivers::PIT::init();
-    Interrupts::IDT::setup();
+    // Arch::x86_64::PIT::init();
+    Arch::x86_64::IDT::setup();
 
+    // uint32_t test = 10;
+    // uint32_t test2 = 0;
+    // test = test / test2;
+    
+    //DEBUG_PRINT("%i", result)
     // welcome
     // Library::fprintln("Welcome to NOS!", Drivers::VGA::CYAN);
 
@@ -44,6 +51,7 @@ extern "C" void kmain() {
     // Kernel::Terminal::run();
     // Drivers::VGA::offsetScreen();
 
-    while (true)
-        ;
+    while (true) {
+
+    }
 }

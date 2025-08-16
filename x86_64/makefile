@@ -40,7 +40,7 @@ else
 endif
 
 # Flags
-QEMU_FLAGS			= -no-reboot
+QEMU_FLAGS			= -M q35 -no-reboot
 QEMU_FLAG_DBG_INT	= -d int,cpu_reset
 QEMU_FLAG_SERIAL	= -serial stdio
 QEMU_FLAG_MONITOR	= -monitor stdio
@@ -86,8 +86,8 @@ monitor:
 gdb:
 	$(MAKE) DEBUG=1
 	@echo -e "\n>>> Debugging using QEMU/GDB (Debug + Serial)"
-	$(QEMU) $(QEMU_FLAGS) $(QEMU_FLAG_SERIAL) -cdrom $(OS_OUT) -s -S &
-	$(GDB) -q -iex "set auto-load safe-path /"
+	$(QEMU) $(QEMU_FLAGS) $(QEMU_FLAG_SERIAL) -cdrom $(OS_OUT) -s -S & > qemu.log
+	$(GDB) -tui -q -iex "set auto-load safe-path /"
 
 int:
 	$(MAKE) DEBUG=1

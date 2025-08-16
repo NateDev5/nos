@@ -2,9 +2,6 @@
 #include <kernel/drivers/io/keymap.h>
 #include <kernel/drivers/video/vga.h>
 
-#include <kernel/interrupts/idt.h>
-#include <kernel/interrupts/pic.h>
-
 #include <kernel/library/debug.h>
 #include <kernel/library/log.h>
 

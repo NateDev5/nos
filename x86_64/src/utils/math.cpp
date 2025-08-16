@@ -18,7 +18,7 @@ CHAR_PTR itoa(IN int64_t value, OUT CHAR_PTR outStr, IN uint8_t base) {
         *ptr++ = '-';
     }
 
-    if(base == 16) {
+    if (base == 16) {
         *ptr++ = '0';
         *ptr++ = 'x';
     }
