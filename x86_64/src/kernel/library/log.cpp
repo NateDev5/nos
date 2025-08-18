@@ -23,14 +23,14 @@ void vfprintf(IN CONST_CHAR_PTR format, IN uint8_t color, IN va_list args) {
 
             // char
             if (format[pos] == 'c') {
-                // int32_t _char = va_arg(args, int32_t);
+                // int64_t _char = va_arg(args, int64_t);
                 // Drivers::VGA::f_put_char((int8_t)_char, color);
                 continue;
             }
 
             // int
             if (format[pos] == 'i') {
-                // int32_t value = va_arg(args, int32_t);
+                // int64_t value = va_arg(args, int64_t);
                 // char    temp_str[11]; // int32_max 4,...,...,... , 10 characters +
                 // 1 null
                 // Math::itoa(value, temp_str, 10);
@@ -40,7 +40,7 @@ void vfprintf(IN CONST_CHAR_PTR format, IN uint8_t color, IN va_list args) {
 
             // binary
             if (format[pos] == 'b') {
-                // int32_t value = va_arg(args, int32_t);
+                // int64_t value = va_arg(args, int64_t);
                 // char    temp_str[STR_MAX_LEN];
                 // Math::itoa(value, temp_str, 2);
                 // Drivers::VGA::f_put_str(temp_str, color);
@@ -49,10 +49,20 @@ void vfprintf(IN CONST_CHAR_PTR format, IN uint8_t color, IN va_list args) {
 
             // hex
             if (format[pos] == 'h') {
-                // int32_t value = va_arg(args, int32_t);
+                // int64_t value = va_arg(args, int64_t);
                 // char    temp_str[STR_MAX_LEN];
                 // Math::itoa(value, temp_str, 16);
                 // Drivers::VGA::f_put_str(temp_str, color);
+                continue;
+            }
+
+
+            // hex caps
+            if(format[pos] == 'H') {
+                //int64_t value = va_arg(args, int64_t);
+                //char temp_str[STR_MAX_LEN];
+                //Math::itoa(value, temp_str, 16, true, true);
+                //putstr(temp_str);
                 continue;
             }
         }

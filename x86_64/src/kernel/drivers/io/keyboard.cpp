@@ -5,6 +5,8 @@
 #include <kernel/library/debug.h>
 #include <kernel/library/log.h>
 
+#include <kernel/arch/x86_64/interrupts/idt.h>
+
 #include <kernel/devices/io/ps2.h>
 
 #include <utils/asm.h>
@@ -22,6 +24,7 @@ bool next_interrupt_extended_code = false;
 
 void init() {
     Devices::PS2::init();
+    Arch::x86_64::IDT::set_irq_handler(1, (PTR)process_scancode);
     DEBUG_PRINT("(OK) Keyboard initialized");
 }
 
@@ -101,10 +104,3 @@ void process_scancode() {
     next_interrupt_extended_code = false;
 }
 } // namespace Drivers::Keyboard
-
-/*
-void IRQ1_keyboard_handler(IN Interrupts::IDT::InterruptFrame *frame) {
-    Drivers::Keyboard::process_scancode();
-    Interrupts::PIC::send_EOI(1);
-}
-*/

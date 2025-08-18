@@ -27,31 +27,25 @@ extern "C" void kmain() {
         Kernel::panic("Failed to get a framebuffer");
 
     // limine_framebuffer *framebuffer = framebuffer_request.response->framebuffers[0];
-    
+
     Arch::x86_64::GDT::setup();
 
-    // testing
-    // Testing::test_kernel();
-
-    // setup
-    // Drivers::Keyboard::init(); // before setting up interrupts
-
-    // Arch::x86_64::PIT::init();
-    Arch::x86_64::IDT::setup();
-
-    // uint32_t test = 10;
-    // uint32_t test2 = 0;
-    // test = test / test2;
+    Drivers::Keyboard::init(); // before setting up interrupts
     
-    //DEBUG_PRINT("%i", result)
-    // welcome
-    // Library::fprintln("Welcome to NOS!", Drivers::VGA::CYAN);
+    Arch::x86_64::PIT::init();
+    Arch::x86_64::IDT::setup();
+    
+    // testing
+    Testing::test_kernel();
+
+    // DEBUG_PRINT("%i", result)
+    //  welcome
+    //  Library::fprintln("Welcome to NOS!", Drivers::VGA::CYAN);
 
     // terminal
     // Kernel::Terminal::run();
     // Drivers::VGA::offsetScreen();
 
     while (true) {
-
     }
 }

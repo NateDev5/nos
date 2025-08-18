@@ -29,14 +29,14 @@ void vprintf(IN CONST_CHAR_PTR format, IN va_list args) {
 
             // char
             if (format[pos] == 'c') {
-                int32_t _char = va_arg(args, int32_t);
+                int64_t _char = va_arg(args, int64_t);
                 putchar(_char);
                 continue;
             }
 
             // int
             if (format[pos] == 'i') {
-                int32_t value = va_arg(args, int32_t);
+                int64_t value = va_arg(args, int64_t);
                 char    temp_str[STR_MAX_LEN];
                 Math::itoa(value, temp_str, 10);
                 putstr(temp_str);
@@ -45,7 +45,7 @@ void vprintf(IN CONST_CHAR_PTR format, IN va_list args) {
 
             // binary
             if (format[pos] == 'b') {
-                int32_t value = va_arg(args, int32_t);
+                int64_t value = va_arg(args, int64_t);
                 char    temp_str[STR_MAX_LEN];
                 Math::itoa(value, temp_str, 2);
                 putstr(temp_str);
@@ -54,9 +54,18 @@ void vprintf(IN CONST_CHAR_PTR format, IN va_list args) {
 
             // hex
             if (format[pos] == 'h') {
-                int32_t value = va_arg(args, int32_t);
+                int64_t value = va_arg(args, int64_t);
                 char    temp_str[STR_MAX_LEN];
                 Math::itoa(value, temp_str, 16);
+                putstr(temp_str);
+                continue;
+            }
+
+            // hex caps
+            if(format[pos] == 'H') {
+                int64_t value = va_arg(args, int64_t);
+                char temp_str[STR_MAX_LEN];
+                Math::itoa(value, temp_str, 16, true, true);
                 putstr(temp_str);
                 continue;
             }

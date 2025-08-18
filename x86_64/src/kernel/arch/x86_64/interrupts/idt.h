@@ -25,22 +25,9 @@ struct IDTR {
 } __attribute__((packed)); // packed is needed
 
 void setup();
-void set_entry(IN uint8_t vector, IN PTR handler, IN uint8_t attributes);
-void set_irq_handler(IN PTR handler);
-
-struct InterruptFrame {
-    uint64_t error_code;
-
-    uint64_t rip;
-    uint64_t cs;
-    uint64_t rflags;
-    uint64_t rsp;
-    uint64_t ss;
-};
+void set_entry(IN uint8_t vector, IN uint64_t handler_addr, IN uint8_t attributes);
+void set_irq_handler(IN uint8_t irq, IN PTR handler);
 
 } // namespace Arch::x86_64::IDT
 
-extern "C" void handle_irq(IN Arch::x86_64::IDT::InterruptFrame *interrupt_frame);
-
-extern "C" void handle_exception(IN Arch::x86_64::IDT::InterruptFrame *interrupt_frame);
-
+extern "C" void handle_irq(IN uint64_t irq);

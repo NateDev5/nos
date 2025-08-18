@@ -9,7 +9,7 @@
 namespace Kernel {
 void panic(IN CONST_CHAR_PTR msg) {
     DEBUG_PRINT("(PANIC) %s", msg);
-    error_screen(msg);
+    // error_screen(msg);
 
     cli();
     while (true)

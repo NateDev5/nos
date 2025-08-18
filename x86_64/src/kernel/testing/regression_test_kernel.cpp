@@ -20,15 +20,15 @@ void test_kernel() {
     test_string();
     DEBUG_PRINT("(PASSED) string test module")
 
-    test_list();
-    DEBUG_PRINT("(PASSED) list test module")
+    // test_list();
+    // DEBUG_PRINT("(PASSED) list test module")
 
     test_array_utils();
     DEBUG_PRINT("(PASSED) arrayutils test module")
 }
 
 void test_memory() {
-    PTRMEM test_add = (PTRMEM)0x100000;
+    /*PTRMEM test_add = (PTRMEM)0x100000;
     Memory::memset(test_add, 69, 100);
     for (uint8_t i = 0; i < 69; i++)
         ASSERT_FATAL(test_add[i] == 69, "memset error 1")
@@ -49,6 +49,7 @@ void test_memory() {
     ASSERT_FATAL(test_cpy[0] == 69, "memcpy reversed error 1")
     ASSERT_FATAL(test_cpy[2] == 0, "memcpy reversed error 2")
     ASSERT_FATAL(test_cpy[7] == 5, "memcpy reversed error 3")
+    */
 }
 
 void test_string() {

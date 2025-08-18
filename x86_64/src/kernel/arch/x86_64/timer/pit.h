@@ -55,6 +55,7 @@ namespace Arch::x86_64::PIT {
 ///
 void init();
 void sleep(IN uint32_t milliseconds);
+void timer_handler();
 } // namespace Arch::x86_64::PIT
 
 //__attribute__((interrupt)) void IRQ0_timer_handler(IN Interrupts::IDT::InterruptFrame *frame);

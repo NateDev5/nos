@@ -34,10 +34,9 @@ GCC_FLAGS			=  -ffreestanding \
 					   -fdata-sections \
 					   -Werror \
 					   -Wall \
-					   -Wno-div-by-zero \
 					   -DLIMINE_API_REVISION=3 \
 					   -mcmodel=kernel \
-					   #-m64 \
+					   -m64 \
 					   -march=x86-64 \
 					   -mno-red-zone \
 					   -mno-mmx \

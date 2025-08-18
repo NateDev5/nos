@@ -1,6 +1,7 @@
 #include <kernel/arch/x86_64/timer/pit.h>
 #include <kernel/library/debug.h>
 #include <kernel/library/log.h>
+#include <kernel/arch/x86_64/interrupts/idt.h>
 
 #include <utils/asm.h>
 #include <utils/math.h>
@@ -17,6 +18,8 @@ void init() {
     outb(PIT_CHANNEL_0, divisor & 0xFF);
     outb(PIT_CHANNEL_0, divisor >> 8);
 
+    IDT::set_irq_handler(0, (PTR)timer_handler);
+
     DEBUG_PRINT("(OK) PIT initialized");
 }
 
@@ -28,13 +31,9 @@ void sleep(IN uint32_t milliseconds) {
     while (cur_milliseconds > 0)
         hlt();
 }
-} // namespace Arch::x86_64::PIT
 
-/*
-void IRQ0_timer_handler(IN Interrupts::IDT::InterruptFrame *frame) {
-    if (Drivers::PIT::cur_milliseconds > 0)
-        Drivers::PIT::cur_milliseconds--;
-
-    Interrupts::PIC::send_EOI(0);
+void timer_handler () {
+    if(cur_milliseconds > 0)
+        cur_milliseconds--;
 }
-*/
+}
