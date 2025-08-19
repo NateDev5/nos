@@ -62,9 +62,9 @@ void vprintf(IN CONST_CHAR_PTR format, IN va_list args) {
             }
 
             // hex caps
-            if(format[pos] == 'H') {
+            if (format[pos] == 'H') {
                 int64_t value = va_arg(args, int64_t);
-                char temp_str[STR_MAX_LEN];
+                char    temp_str[STR_MAX_LEN];
                 Math::itoa(value, temp_str, 16, true, true);
                 putstr(temp_str);
                 continue;

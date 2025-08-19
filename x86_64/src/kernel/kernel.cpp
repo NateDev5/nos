@@ -3,9 +3,11 @@
 
 #include <kernel/drivers/io/keyboard.h>
 #include <kernel/drivers/serial/uart.h>
+#include <kernel/drivers/video/video.h>
 
 #include <kernel/library/debug.h>
 #include <kernel/library/log.h>
+#include <kernel/library/sleep.h>
 #include <kernel/library/string.h>
 
 #include <boot/limine/limine_misc.h>
@@ -23,21 +25,17 @@ extern "C" void kmain() {
     if (LIMINE_BASE_REVISION_SUPPORTED == false)
         Kernel::panic("Limine base revision not supported");
 
-    if (framebuffer_request.response == NULLPTR || framebuffer_request.response->framebuffer_count < 1)
-        Kernel::panic("Failed to get a framebuffer");
-
-    // limine_framebuffer *framebuffer = framebuffer_request.response->framebuffers[0];
-
     Arch::x86_64::GDT::setup();
 
     Drivers::Keyboard::init(); // before setting up interrupts
-    
+
     Arch::x86_64::PIT::init();
     Arch::x86_64::IDT::setup();
-    
+
     // testing
     Testing::test_kernel();
 
+    Drivers::Video::init();
     // DEBUG_PRINT("%i", result)
     //  welcome
     //  Library::fprintln("Welcome to NOS!", Drivers::VGA::CYAN);
@@ -45,6 +43,14 @@ extern "C" void kmain() {
     // terminal
     // Kernel::Terminal::run();
     // Drivers::VGA::offsetScreen();
+
+    for (uint64_t x = 0; x < Drivers::Video::width(); x++) {
+        for (uint64_t y = 0; y < Drivers::Video::height(); y++) {
+            Drivers::Video::put_pixel(x, y, 0xFFFFFFFF);
+            // Library::sleep(1);
+        }
+        Library::sleep(1);
+    }
 
     while (true) {
     }

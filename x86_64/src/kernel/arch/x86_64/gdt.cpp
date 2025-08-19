@@ -11,7 +11,7 @@ static GDT_ENTRY gdt[GDT_SIZE];
 GDTR             gdtr;
 void             setup() {
     cli();
-    set_gdt_entry(0, 0, 0, 0, 0);      // null descriptor
+    set_gdt_entry(0, 0, 0, 0, 0);            // null descriptor
     set_gdt_entry(1, 0, 0xFFFF, 0x9A, 0xAF); // kernel code segment
     set_gdt_entry(2, 0, 0xFFFF, 0x92, 0xCF); // kernel data segment
     set_gdt_entry(3, 0, 0xFFFF, 0xFA, 0xAF); // user code segment

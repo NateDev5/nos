@@ -56,13 +56,12 @@ void vfprintf(IN CONST_CHAR_PTR format, IN uint8_t color, IN va_list args) {
                 continue;
             }
 
-
             // hex caps
-            if(format[pos] == 'H') {
-                //int64_t value = va_arg(args, int64_t);
-                //char temp_str[STR_MAX_LEN];
-                //Math::itoa(value, temp_str, 16, true, true);
-                //putstr(temp_str);
+            if (format[pos] == 'H') {
+                // int64_t value = va_arg(args, int64_t);
+                // char temp_str[STR_MAX_LEN];
+                // Math::itoa(value, temp_str, 16, true, true);
+                // putstr(temp_str);
                 continue;
             }
         }

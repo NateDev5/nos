@@ -30,7 +30,7 @@ CHAR_PTR itoa(IN int64_t value, OUT CHAR_PTR outStr, IN uint8_t base, IN bool ca
 
     CONST_CHAR_PTR buffer      = "zyxwvutsrqponmlkjihgfedcba9876543210123456789abcdefghijklmnopqrstuvwxyz";
     CONST_CHAR_PTR buffer_caps = "ZYXWVUTSRQPONMLKJIHGFEDCBA9876543210123456789ABCDEFGHIJKLMNOPQRSTUBWXYZ";
-    
+
     uint64_t num_of_chars = 0;
 
     // The actual conversion.

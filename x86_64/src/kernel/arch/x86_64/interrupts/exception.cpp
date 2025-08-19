@@ -4,8 +4,7 @@
 
 #include <utils/asm.h>
 
-#define PRINT_EXCEPTION(format, ...) \
-    DEBUG_PRINT(format, ##__VA_ARGS__) 
+#define PRINT_EXCEPTION(format, ...) DEBUG_PRINT(format, ##__VA_ARGS__)
 
 namespace Arch::x86_64::IDT::Exceptions {
 CONST_CHAR_PTR exception_names[22] = {

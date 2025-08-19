@@ -1,7 +1,7 @@
+#include <kernel/arch/x86_64/interrupts/idt.h>
 #include <kernel/arch/x86_64/timer/pit.h>
 #include <kernel/library/debug.h>
 #include <kernel/library/log.h>
-#include <kernel/arch/x86_64/interrupts/idt.h>
 
 #include <utils/asm.h>
 #include <utils/math.h>
@@ -23,17 +23,17 @@ void init() {
     DEBUG_PRINT("(OK) PIT initialized");
 }
 
-static uint32_t cur_milliseconds;
+static uint64_t cur_milliseconds;
 
-void sleep(IN uint32_t milliseconds) {
+void sleep(IN uint64_t milliseconds) {
     cur_milliseconds = milliseconds;
 
     while (cur_milliseconds > 0)
         hlt();
 }
 
-void timer_handler () {
-    if(cur_milliseconds > 0)
+void timer_handler() {
+    if (cur_milliseconds > 0)
         cur_milliseconds--;
 }
-}
+} // namespace Arch::x86_64::PIT

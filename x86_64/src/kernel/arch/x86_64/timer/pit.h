@@ -54,7 +54,7 @@ namespace Arch::x86_64::PIT {
 /// Sets the mod and the inteval at which an interrupt is triggered
 ///
 void init();
-void sleep(IN uint32_t milliseconds);
+void sleep(IN uint64_t milliseconds);
 void timer_handler();
 } // namespace Arch::x86_64::PIT
 
