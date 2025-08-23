@@ -1,12 +1,14 @@
 #include <kernel/terminal/shell.h>
 #include <kernel/terminal/term.h>
 
+#include <kernel/drivers/video/framebuffer.h>
+
 #include <kernel/library/log.h>
 
 namespace Kernel::Shell {
 void run_shell() {
     Kernel::Terminal::clear();
-    Library::println("Welcome to the NOS shell\n");
+    Library::println("Welcome to the NOS shell");
     new_entry();
 
     while (true) {
@@ -18,9 +20,9 @@ void run_shell() {
 void handle_keypress(IN Drivers::Keyboard::KeypressInfo keypress) {
     if (keypress.flags & Drivers::Keyboard::KEYDOWN && keypress.scancode != SCANCODE_INVALID) {
         if ((keypress.flags & Drivers::Keyboard::EXTENDED) == 0) {
-            DEBUG_PRINT("%h, %h", keypress.unicode, '\n')
             switch (keypress.unicode) {
             case '\n': {
+                Library::printc('\n');
                 new_entry();
                 break;
             }
@@ -35,5 +37,5 @@ void handle_keypress(IN Drivers::Keyboard::KeypressInfo keypress) {
     }
 }
 
-void new_entry() { Library::print("\n> "); }
+void new_entry() { Library::print("> "); }
 } // namespace Kernel::Shell

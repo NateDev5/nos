@@ -41,15 +41,10 @@ extern "C" void kmain() {
     // testing
     Testing::test_kernel();
 
-    Drivers::Video::Framebuffer::draw_pixel({0, 0}, 0xFFFFFFFF);
-    Drivers::Video::Framebuffer::draw_pixel({1, 0}, 0xFFFFFFFF);
-    Drivers::Video::Framebuffer::draw_pixel({2, 0}, 0xFFFFFFFF);
-    Drivers::Video::Framebuffer::draw_pixel({3, 0}, 0xFFFFFFFF);
-
     // shell
     Library::println("Starting shell...");
     Library::sleep(1000);
-    Kernel::Shell::run_shell(); 
+    // Kernel::Shell::run_shell(); 
     while (true) {
     }
 }

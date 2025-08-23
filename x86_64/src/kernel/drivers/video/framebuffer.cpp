@@ -1,3 +1,4 @@
+#include "utils/types.h"
 #include <kernel/drivers/video/framebuffer.h>
 
 #include <kernel/library/log.h>
@@ -85,10 +86,15 @@ void draw_char(IN Point point, IN char _char, IN uint32_t color) {
 }
 
 void scroll_up () {
-    uint64_t size = (fb_info.width * fb_info.height) / (fb_info.bpp / 8);
-    uint8_t temp_buffer[size];
+    // uint64_t size = (fb_info.width * fb_info.height) / (fb_info.bpp / 8);
 
-    Memory::memcpy((PTRMEM)fb_info.address + (fb_info.width / 4), (PTRMEM)&temp_buffer[0], size - (fb_info.width / 4));
+    // Memory::memcpy((PTRMEM)fb_info.address, (PTRMEM)&temp_buffer[0], size);
+
+    // for(uint64_t i = 0; i < (fb_info.width * 4); i++)
+        // temp_buffer[i] = 0;
+
+    // Memory::memcpy((PTRMEM)fb_info.address + (fb_info.width * 4), (PTRMEM)fb_info.address, size - (fb_info.width * 4), true);
+    // Memory::memcpy((PTRMEM)fb_info.address + (fb_info.width / 4) * 8, (PTRMEM)&temp_buffer[0], 1);
 
     // Memory::memcpy((PTRMEM)&temp_buffer[0], (PTRMEM)fb_info.address, 10);
 }
