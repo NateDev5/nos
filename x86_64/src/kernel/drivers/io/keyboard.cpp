@@ -33,7 +33,7 @@ static constexpr char character_map[][KEYCODE_MAP_LEN] = {
      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 
      // other
-     0 /* back space */, ' ' /* space */, 0 /* tab */, 0, 0, 0, 0, 0 /* enter */, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+     '\b' /* back space */, ' ' /* space */, '\t' /* tab */, 0, 0, 0, 0, 0, 0, 0, 0, 0, '\n' /* enter */, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
     {0,
      // a-z
      'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z',
@@ -48,7 +48,7 @@ static constexpr char character_map[][KEYCODE_MAP_LEN] = {
      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 
      // other
-     0 /* back space */, ' ' /* space */, 0 /* tab */, 0, 0, 0, 0, 0 /* enter */, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
+     '\b' /* back space */, ' ' /* space */, '\t' /* tab */, 0, 0, 0, 0, 0, 0, 0, 0, 0, '\n' /* enter */, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
 };
 
 KeypressInfo input_buffer[INPUT_BUFFER_SIZE];

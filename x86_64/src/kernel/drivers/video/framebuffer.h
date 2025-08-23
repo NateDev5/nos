@@ -24,6 +24,9 @@ struct FramebufferInfo {
     uint16_t pixel_width;
 
     uint64_t address;
+
+    uint64_t font_width;
+    uint64_t font_height;
 };
 
 struct Point {
@@ -35,6 +38,7 @@ void init();
 
 void draw_pixel(IN Point point, IN uint32_t color);
 void draw_char (IN Point point, IN char _char, IN uint32_t color);
+void scroll_up();
 void clear();
 
 uint64_t width();

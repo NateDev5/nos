@@ -35,8 +35,9 @@ void print_char(IN char _char) {
     }
 
     if (info.y >= info.height) {
+        Drivers::Video::Framebuffer::scroll_up();
         info.x = 0;
-        info.y = 0;
+        info.y -= 5;
     }
 }
 

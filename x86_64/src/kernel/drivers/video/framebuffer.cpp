@@ -42,6 +42,9 @@ void init() {
     fb_info.pixel_width = fb_info.bpp / 8 / sizeof(uint32_t);
     fb_info.address = (uint64_t)framebuffer->address;
 
+    fb_info.font_width = 8;
+    fb_info.font_height = 8;
+
     DEBUG_PRINT("\nFramebuffer info:")
     DEBUG_PRINT("   - Size: %ix%i", fb_info.width, fb_info.height)
     DEBUG_PRINT("   - Addr: %H", (uint64_t *)fb_info.address)
@@ -63,8 +66,8 @@ void draw_pixel(IN Point point, IN uint32_t color) {
 }
 
 void draw_char(IN Point point, IN char _char, IN uint32_t color) {
-    point.x *= 8;
-    point.y *= 8;
+    point.x *= fb_info.font_width;
+    point.y *= fb_info.font_height;
     if(point.x > width() || point.y > height()) {
         DEBUG_PRINT("(ERROR) Trying to draw character out of bounds (x: %i, y: %i)", point.x, point.y)
         return;
@@ -72,13 +75,22 @@ void draw_char(IN Point point, IN char _char, IN uint32_t color) {
 
     uint8_t* glyph = font8x8_basic[(uint8_t)_char];
 
-    for(uint8_t row = 0; row < 8; row++) {
-        for(uint8_t col = 0; col < 8; col++) {
+    for(uint8_t row = 0; row < fb_info.font_width; row++) {
+        for(uint8_t col = 0; col < fb_info.font_height; col++) {
             uint8_t bit = glyph[row] & 1 << col;
             // * 8 since font is 8 pixel by 8 
             if(bit) draw_pixel({col + point.x, row + point.y}, color);
         }
     }
+}
+
+void scroll_up () {
+    uint64_t size = (fb_info.width * fb_info.height) / (fb_info.bpp / 8);
+    uint8_t temp_buffer[size];
+
+    Memory::memcpy((PTRMEM)fb_info.address + (fb_info.width / 4), (PTRMEM)&temp_buffer[0], size - (fb_info.width / 4));
+
+    // Memory::memcpy((PTRMEM)&temp_buffer[0], (PTRMEM)fb_info.address, 10);
 }
 
 void clear () {
