@@ -13,6 +13,43 @@
 #include <utils/math.h>
 
 namespace Drivers::Keyboard {
+static constexpr char character_map_caps[] = {
+    0, 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z',
+};
+
+static constexpr char character_map[][KEYCODE_MAP_LEN] = {
+    {0,
+     // a-z
+     'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z',
+
+     // 0-9
+     '0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
+
+     // special characters
+     '`', '-', '=', '[', ']', '\\', ';', '\'', ',', '.', '/',
+
+     // f keys
+     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+
+     // other
+     0 /* back space */, ' ' /* space */, 0 /* tab */, 0, 0, 0, 0, 0 /* enter */, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+    {0,
+     // a-z
+     'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z',
+
+     // 0-9
+     ')', '!', '@', '#', '$', '%', '^', '&', '*', '(',
+
+     // special characters
+     '~', '_', '+', '{', '}', '|',  ':', '"',  '<', '>', '?',
+
+     // f keys
+     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+
+     // other
+     0 /* back space */, ' ' /* space */, 0 /* tab */, 0, 0, 0, 0, 0 /* enter */, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
+};
+
 KeypressInfo input_buffer[INPUT_BUFFER_SIZE];
 uint8_t      buffer_pos  = 0;
 uint8_t      buffer_tail = 0;
@@ -53,6 +90,18 @@ uint8_t get_keycode(IN uint8_t scancode, IN bool extended) {
     }
 
     return KEYCODE_INVALID;
+}
+
+char get_unicode(IN uint8_t keycode, IN uint8_t flags) {
+    if (keycode != KEYCODE_INVALID) {
+        if (flags & CAPS && keycode >= KEYCODE_A && keycode <= KEYCODE_Z)
+            return character_map_caps[keycode];
+
+        uint8_t tableIndex = flags & SHIFT ? 1 : 0;
+        return character_map[tableIndex][keycode];
+    }
+
+    return 0;
 }
 
 void process_scancode() {
@@ -96,9 +145,12 @@ void process_scancode() {
 
     input_buffer[buffer_pos].scancode = scancode;
     input_buffer[buffer_pos].flags    = flags;
-    input_buffer[buffer_pos].keycode  = get_keycode(scancode, next_interrupt_extended_code);
 
-    buffer_pos = (buffer_pos + 1) % INPUT_BUFFER_SIZE;
+    uint8_t keycode = get_keycode(scancode, next_interrupt_extended_code);
+    input_buffer[buffer_pos].keycode  = keycode;
+    input_buffer[buffer_pos].unicode = get_unicode(keycode, flags);
+
+        buffer_pos = (buffer_pos + 1) % INPUT_BUFFER_SIZE;
 
     next_interrupt_break_code    = false;
     next_interrupt_extended_code = false;

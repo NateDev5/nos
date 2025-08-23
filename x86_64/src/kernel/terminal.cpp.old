@@ -15,6 +15,7 @@
 #include <kernel/memory/mem.h>
 
 namespace Kernel::Terminal {
+
 static constexpr char character_map_caps[] = {
     0, 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z',
 };

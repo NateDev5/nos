@@ -27,6 +27,7 @@ typedef struct KeypressInfo {
     uint8_t keycode;
     // EXTENDED, CAPS, SHIFT, CTRL, ALT, PRESSED
     uint8_t flags;
+    char unicode;
 
 } KeypressInfo;
 
@@ -34,6 +35,7 @@ enum KeypressInfoFlags { KEYDOWN = 0x1, ALT = 0x2, CTRL = 0x4, SHIFT = 0x8, CAPS
 
 void    init();
 uint8_t get_keycode(IN uint8_t scancode, IN bool extended);
+char get_unicode(IN uint8_t keycode, IN uint8_t flags);
 void    process_scancode();
 
 KeypressInfo read_key();

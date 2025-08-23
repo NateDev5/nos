@@ -2,7 +2,7 @@
 
 #include <utils/types.h>
 
-namespace Drivers::Video {
+namespace Drivers::Video::Framebuffer {
 struct FramebufferInfo {
     uint64_t width;
     uint64_t height;
@@ -24,9 +24,15 @@ struct FramebufferInfo {
     uint64_t address;
 };
 
+struct Point {
+    uint32_t x;
+    uint32_t y;
+};
+
 void init();
 
-void put_pixel(IN uint64_t x, IN uint64_t y, IN uint32_t color);
+void draw_pixel(IN Point point, IN uint32_t color);
+void draw_char (IN Point point, IN char _char, IN uint32_t color);
 
 uint64_t width();
 uint64_t height();
