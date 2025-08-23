@@ -1,11 +1,14 @@
 #include <kernel/arch/x86_64/interrupts/exception.h>
 
-#include <kernel/library/debug.h>
+#include <kernel/library/log.h>
 
 #include <utils/asm.h>
 
-#define PRINT_EXCEPTION(format, ...) DEBUG_PRINT(format, ##__VA_ARGS__)
-
+#define PRINT_EXCEPTION(format, ...) \
+{\
+DEBUG_PRINT(format, ##__VA_ARGS__) \
+Library::printf_ln(format, ##__VA_ARGS__);\
+}
 namespace Arch::x86_64::IDT::Exceptions {
 CONST_CHAR_PTR exception_names[22] = {
     "Divide error",
@@ -41,7 +44,7 @@ void handle_exception(IN Arch::x86_64::IDT::Exceptions::InterruptFrame *interrup
     else
         PRINT_EXCEPTION("Unknown exception occured: Vector=%i", interrupt_frame->vector)
 
-    PRINT_EXCEPTION("Error code: %i\n", interrupt_frame->error_code)
+    PRINT_EXCEPTION("Error code: %i (%b)\n", interrupt_frame->error_code, interrupt_frame->error_code)
     PRINT_EXCEPTION("RAX=%H, RBX=%H, RCX=%H", interrupt_frame->rax, interrupt_frame->rbx, interrupt_frame->rcx)
     PRINT_EXCEPTION("RDX=%H, RDI=%H, RSI=%H", interrupt_frame->rdx, interrupt_frame->rdi, interrupt_frame->rsi)
     PRINT_EXCEPTION("RBP=%H\n", interrupt_frame->rbp)
@@ -52,6 +55,7 @@ void handle_exception(IN Arch::x86_64::IDT::Exceptions::InterruptFrame *interrup
     PRINT_EXCEPTION("CS =%H, SS =%H, RFLAGS=%H", interrupt_frame->cs, interrupt_frame->ss, interrupt_frame->rflags)
     PRINT_EXCEPTION("-------------------------")
 
+    cli();
     while (true)
         hlt();
 }

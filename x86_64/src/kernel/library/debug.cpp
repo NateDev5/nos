@@ -7,11 +7,11 @@
 #include <utils/math.h>
 
 namespace Debug {
-void putchar(IN char _char) { outb(COM_PORT_1, _char); }
+void print_char(IN char _char) { outb(COM_PORT_1, _char); }
 
-void putstr(IN CONST_CHAR_PTR _str) {
+void print_str(IN CONST_CHAR_PTR _str) {
     for (uint32_t pos = 0; _str[pos] != '\0'; pos++)
-        putchar(_str[pos]);
+        print_char(_str[pos]);
 };
 
 void vprintf(IN CONST_CHAR_PTR format, IN va_list args) {
@@ -20,58 +20,48 @@ void vprintf(IN CONST_CHAR_PTR format, IN va_list args) {
         if (format[pos] == '%' && (pos + 1) < format_len) {
             pos++;
 
-            // string
-            if (format[pos] == 's') {
+            switch (format[pos]) {
+            case 's': {
                 CHAR_PTR string = va_arg(args, CHAR_PTR);
-                putstr(string);
+                print_str(string);
                 continue;
             }
-
-            // char
-            if (format[pos] == 'c') {
+            case 'c': {
                 int64_t _char = va_arg(args, int64_t);
-                putchar(_char);
+                print_char(_char);
                 continue;
             }
-
-            // int
-            if (format[pos] == 'i') {
+            case 'i': {
                 int64_t value = va_arg(args, int64_t);
                 char    temp_str[STR_MAX_LEN];
                 Math::itoa(value, temp_str, 10);
-                putstr(temp_str);
+                print_str(temp_str);
                 continue;
             }
-
-            // binary
-            if (format[pos] == 'b') {
+            case 'b': {
                 int64_t value = va_arg(args, int64_t);
                 char    temp_str[STR_MAX_LEN];
                 Math::itoa(value, temp_str, 2);
-                putstr(temp_str);
+                print_str(temp_str);
                 continue;
             }
-
-            // hex
-            if (format[pos] == 'h') {
+            case 'h': {
                 int64_t value = va_arg(args, int64_t);
                 char    temp_str[STR_MAX_LEN];
                 Math::itoa(value, temp_str, 16);
-                putstr(temp_str);
+                print_str(temp_str);
                 continue;
             }
-
-            // hex caps
-            if (format[pos] == 'H') {
+            case 'H': {
                 int64_t value = va_arg(args, int64_t);
                 char    temp_str[STR_MAX_LEN];
                 Math::itoa(value, temp_str, 16, true, true);
-                putstr(temp_str);
-                continue;
+                print_str(temp_str); continue;
+            }
             }
         }
 
-        putchar(format[pos]);
+        print_char(format[pos]);
     }
 }
 
@@ -86,7 +76,7 @@ void fprintln(IN CONST_CHAR_PTR format, ...) {
     va_list args;
     va_start(args, format);
     vprintf(format, args);
-    putchar('\n');
+    print_char('\n');
     va_end(args);
 }
 } // namespace Debug

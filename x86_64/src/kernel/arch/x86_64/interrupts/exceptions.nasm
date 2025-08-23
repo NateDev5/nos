@@ -4,9 +4,7 @@
 ALIGN 16
 exception_stub_%+%1:
     push %1 ; push vector
-    enter_isr
-    call handle_exception
-    leave_isr
+    jmp exception_stub_common
 %endmacro
 
 %macro exception_stub 1
@@ -14,14 +12,17 @@ ALIGN 16
 exception_stub_%+%1:
     push 0 ; push zero because no error code
     push %1 ; push vector
+    jmp exception_stub_common
+%endmacro
+
+extern handle_exception
+
+exception_stub_common:
     enter_isr
     call handle_exception
     leave_isr
-%endmacro
 
 global exception_stub_0
-
-extern handle_exception
 
 exception_stub 0
 exception_stub 1

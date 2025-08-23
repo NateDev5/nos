@@ -2,7 +2,6 @@
 
 #include <kernel/library/arrayutils.h>
 #include <kernel/library/assert.h>
-#include <kernel/library/debug.h>
 // #include <kernel/library/list.h>
 #include <kernel/library/string.h>
 
@@ -15,16 +14,16 @@
 namespace Testing {
 void test_kernel() {
     test_memory();
-    DEBUG_PRINT("(PASSED) memory test module")
+    KLOG("(PASSED) memory test module")
 
     test_string();
-    DEBUG_PRINT("(PASSED) string test module")
+    KLOG("(PASSED) string test module")
 
     // test_list();
     // DEBUG_PRINT("(PASSED) list test module")
 
     test_array_utils();
-    DEBUG_PRINT("(PASSED) arrayutils test module")
+    KLOG("(PASSED) arrayutils test module")
 }
 
 void test_memory() {

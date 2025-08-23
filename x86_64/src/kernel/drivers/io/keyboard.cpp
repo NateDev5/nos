@@ -2,7 +2,6 @@
 #include <kernel/drivers/io/keymap.h>
 #include <kernel/drivers/video/vga.h>
 
-#include <kernel/library/debug.h>
 #include <kernel/library/log.h>
 
 #include <kernel/arch/x86_64/interrupts/idt.h>
@@ -13,6 +12,8 @@
 #include <utils/math.h>
 
 namespace Drivers::Keyboard {
+
+
 static constexpr char character_map_caps[] = {
     0, 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z',
 };
@@ -62,7 +63,7 @@ bool next_interrupt_extended_code = false;
 void init() {
     Devices::PS2::init();
     Arch::x86_64::IDT::set_irq_handler(1, (PTR)process_scancode);
-    DEBUG_PRINT("(OK) Keyboard initialized");
+    KLOG("(OK) Keyboard initialized");
 }
 
 KeypressInfo read_key() {

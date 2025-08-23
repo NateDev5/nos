@@ -1,7 +1,9 @@
 #include <kernel/drivers/video/framebuffer.h>
 
-#include <kernel/library/debug.h>
+#include <kernel/library/log.h>
 #include <kernel/library/panic.h>
+
+#include <kernel/memory/mem.h>
 
 #include <deps/font8x8.h>
 
@@ -38,7 +40,6 @@ void init() {
     fb_info.bpp   = framebuffer->bpp;
 
     fb_info.pixel_width = fb_info.bpp / 8 / sizeof(uint32_t);
-
     fb_info.address = (uint64_t)framebuffer->address;
 
     DEBUG_PRINT("\nFramebuffer info:")
@@ -78,6 +79,11 @@ void draw_char(IN Point point, IN char _char, IN uint32_t color) {
             if(bit) draw_pixel({col + point.x, row + point.y}, color);
         }
     }
+}
+
+void clear () {
+    uint64_t size = (fb_info.width * fb_info.height) / (fb_info.bpp / 8);
+    Memory::memset((PTRMEM)fb_info.address, 0, size);
 }
 
 uint64_t width() { return fb_info.width / fb_info.pixel_width; }

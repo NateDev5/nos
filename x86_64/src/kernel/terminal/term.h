@@ -11,7 +11,8 @@ struct TerminalInfo {
     uint32_t y;
 };
 
-void run_kterm();
+void init();
 void print_char (IN char _char);
 void print(IN CONST_CHAR_PTR str);
+void clear ();
 }

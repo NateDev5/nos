@@ -1,6 +1,6 @@
 #include <kernel/arch/x86_64/interrupts/idt.h>
 #include <kernel/arch/x86_64/timer/pit.h>
-#include <kernel/library/debug.h>
+
 #include <kernel/library/log.h>
 
 #include <utils/asm.h>
@@ -20,7 +20,7 @@ void init() {
 
     IDT::set_irq_handler(0, (PTR)timer_handler);
 
-    DEBUG_PRINT("(OK) PIT initialized");
+    KLOG("(OK) PIT initialized");
 }
 
 static uint64_t cur_milliseconds;

@@ -2,7 +2,7 @@
 #include <kernel/arch/x86_64/interrupts/pic.h>
 
 #include <kernel/library/assert.h>
-#include <kernel/library/debug.h>
+#include <kernel/library/log.h>
 
 #include <utils/asm.h>
 
@@ -33,7 +33,7 @@ void setup() {
     __asm__ volatile("lidt %0" ::"m"(idtr));
     sti();
 
-    DEBUG_PRINT("(OK) IDT Initialized")
+    KLOG("(OK) IDT Initialized")
 }
 
 void set_entry(IN uint8_t vector, IN uint64_t handler_addr, IN uint8_t attributes) {

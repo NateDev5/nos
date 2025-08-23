@@ -16,7 +16,8 @@
 #include <kernel/arch/x86_64/interrupts/idt.h>
 #include <kernel/arch/x86_64/timer/pit.h>
 
-#include <kernel/terminal/kterm.h>
+#include <kernel/terminal/term.h>
+#include <kernel/terminal/shell.h>
 
 extern "C" void kmain() {
     // for debugging
@@ -28,7 +29,7 @@ extern "C" void kmain() {
     Arch::x86_64::GDT::setup();
 
     Drivers::Video::Framebuffer::init();
-    Kernel::Terminal::run_kterm();
+    Kernel::Terminal::init();
 
     // input
     Drivers::Keyboard::init(); // before setting up interrupts
@@ -39,9 +40,16 @@ extern "C" void kmain() {
 
     // testing
     Testing::test_kernel();
-    
+
+    Drivers::Video::Framebuffer::draw_pixel({0, 0}, 0xFFFFFFFF);
+    Drivers::Video::Framebuffer::draw_pixel({1, 0}, 0xFFFFFFFF);
+    Drivers::Video::Framebuffer::draw_pixel({2, 0}, 0xFFFFFFFF);
+    Drivers::Video::Framebuffer::draw_pixel({3, 0}, 0xFFFFFFFF);
+
+    // shell
+    Library::println("Starting shell...");
+    Library::sleep(1000);
+    Kernel::Shell::run_shell(); 
     while (true) {
-        Kernel::Terminal::print("N");
-        Library::sleep(1);
     }
 }
