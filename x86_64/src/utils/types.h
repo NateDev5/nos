@@ -11,6 +11,11 @@
 
 #define STR_MAX_LEN 512
 
+typedef uint8_t         u8;
+typedef uint16_t        u16;
+typedef uint32_t        u32;
+typedef uint64_t        u64;
+//
 typedef uint64_t       *PTRMEM;
 typedef const uint64_t *PTRMEM_CONST;
 typedef void           *PTR;

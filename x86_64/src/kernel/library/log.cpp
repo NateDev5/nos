@@ -62,6 +62,7 @@ void vprintf(IN CONST_CHAR_PTR format, IN va_list args) {
         printc(format[pos]);
     }
 }
+
 void printf(IN CONST_CHAR_PTR format, IN...) {
     va_list args;
     va_start(args, format);
