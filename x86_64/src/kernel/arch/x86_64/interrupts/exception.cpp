@@ -4,11 +4,11 @@
 
 #include <utils/asm.h>
 
-#define PRINT_EXCEPTION(format, ...) \
-{\
-DEBUG_PRINT(format, ##__VA_ARGS__) \
-}
-// Library::printf_ln(format, ##__VA_ARGS__);
+#define PRINT_EXCEPTION(format, ...)                                                                                                                           \
+    {                                                                                                                                                          \
+        DEBUG_PRINT(format, ##__VA_ARGS__)                                                                                                                     \
+        Library::printf_ln(format, ##__VA_ARGS__);                                                                                                             \
+    }
 
 namespace Arch::x86_64::IDT::Exceptions {
 CONST_CHAR_PTR exception_names[22] = {
@@ -35,7 +35,19 @@ CONST_CHAR_PTR exception_names[22] = {
     "Virtualization exception",
     "Control protection exception",
 };
+
+void handle_pagefault(IN uint64_t error_code) {
+    // cr2 register holds the address causing the page fault
+    uint64_t cr2_value;
+    asm volatile("mov %%cr2, %0" : "=r"(cr2_value));
+
+    PRINT_EXCEPTION("(%s) %s", (error_code & 2) ? "WRITE" : "READ", (error_code & 1) ? "PAGE PROTECTION VIOLATION" : "NON PRESENT PAGE")
+    PRINT_EXCEPTION("Usermode?: %s", (error_code & 4) ? "Yes" : "No")
+    PRINT_EXCEPTION("Error code (binary): %b", error_code)
+
+    PRINT_EXCEPTION("Malicious address: %H", cr2_value)
 }
+} // namespace Arch::x86_64::IDT::Exceptions
 
 void handle_exception(IN Arch::x86_64::IDT::Exceptions::InterruptFrame *interrupt_frame) {
     PRINT_EXCEPTION("-------------------------")
@@ -45,7 +57,11 @@ void handle_exception(IN Arch::x86_64::IDT::Exceptions::InterruptFrame *interrup
     else
         PRINT_EXCEPTION("Unknown exception occured: Vector=%i", interrupt_frame->vector)
 
-    PRINT_EXCEPTION("Error code: %i (%b)\n", interrupt_frame->error_code, interrupt_frame->error_code)
+    if (interrupt_frame->vector != PAGE_FAULT)
+        PRINT_EXCEPTION("Error code: %i (%b)\n", interrupt_frame->error_code, interrupt_frame->error_code)
+    else
+        Arch::x86_64::IDT::Exceptions::handle_pagefault(interrupt_frame->error_code);
+
     PRINT_EXCEPTION("RAX=%H, RBX=%H, RCX=%H", interrupt_frame->rax, interrupt_frame->rbx, interrupt_frame->rcx)
     PRINT_EXCEPTION("RDX=%H, RDI=%H, RSI=%H", interrupt_frame->rdx, interrupt_frame->rdi, interrupt_frame->rsi)
     PRINT_EXCEPTION("RBP=%H\n", interrupt_frame->rbp)

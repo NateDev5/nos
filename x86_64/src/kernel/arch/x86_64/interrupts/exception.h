@@ -2,7 +2,10 @@
 
 #include <utils/types.h>
 
+#define PAGE_FAULT 14
+
 namespace Arch::x86_64::IDT::Exceptions {
+
 struct InterruptFrame {
     uint64_t r15;
     uint64_t r14;
@@ -30,6 +33,8 @@ struct InterruptFrame {
     uint64_t rsp;
     uint64_t ss;
 };
+
+void handle_pagefault (IN uint64_t error_code); 
 } // namespace Arch::x86_64::IDT::Exceptions
 
 extern "C" void handle_exception(IN Arch::x86_64::IDT::Exceptions::InterruptFrame *interrupt_frame);

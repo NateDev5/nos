@@ -43,8 +43,11 @@ extern "C" void kmain() {
 
     // shell
     Library::println("Starting shell...");
+    // for(uint64_t i =0; i < 100000; i++)
+        // Library::printc('N');
     Library::sleep(1000);
-    // Kernel::Shell::run_shell(); 
+    Kernel::Shell::run_shell(); 
+
     while (true) {
     }
 }

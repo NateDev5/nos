@@ -11,6 +11,10 @@
 
 #define DEBUG_PRINT(msg, ...) Debug::fprintln(msg, ##__VA_ARGS__); 
 
+#define TODO(todo) Debug::fprintln("TODO in (%s:%s): %s", __FILE__, __func__, todo);
+
+#define TEMP Debug::fprintln("TEMP function: %s:%s", __FILE__, __func__);
+
 namespace Debug {
 void print_char(IN char _char);
 void print_str(IN CONST_CHAR_PTR _str);
