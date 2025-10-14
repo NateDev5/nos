@@ -93,7 +93,7 @@ void draw_char(IN Point point, IN char _char, IN uint32_t color) {
 
 void clear () {
     uint64_t size = (fb_info.raw_width * fb_info.raw_height) * 4; // multiply by 4 because each color is 4 bytes and memset does byte by byte
-    Memory::memset(fb_info.ptr, 99, size);
+    Memory::memset(fb_info.ptr, 0, size);
 }
 
 uint64_t width () {

@@ -28,6 +28,17 @@ void memcpy(IN PTR base_address, IN PTR target_address, IN uint64_t size, IN boo
     ASSERT(base_address != NULL, "base memory address is null")
     ASSERT(target_address != NULL, "target memory address is null")
 
+    uint8_t* base_address_ptr = (uint8_t*)base_address;
+    uint8_t* target_address_ptr = (uint8_t*)target_address;
+
+    if(reversed) {
+        for (uint64_t i = size; i != 0; i--)
+            target_address_ptr[i] = base_address_ptr[i];
+    }
+    else {
+        for(uint64_t i = 0; i < size; i++)
+            target_address_ptr[i] = base_address_ptr[i];
+    }
     /*
     if (reversed) {
         for (uint64_t i = size; i != 0; i--)

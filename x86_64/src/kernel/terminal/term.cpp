@@ -77,10 +77,8 @@ void render_term(IN bool redraw) {
 }
 
 void scroll_up () {
-    for(uint32_t y = 1; y < TEMP_TERM_HEIGHT - 1; y++) {
-        // term_buffer_grid[y-1] = term_buffer_grid[y];
-        Memory::memcpy((PTRMEM)&term_buffer_grid[y], (PTRMEM)&term_buffer_grid[y-1], (sizeof(TerminalCell) * TEMP_TERM_WIDTH) - 1);
-    }
+    Memory::memcpy(term_buffer_grid[1], term_buffer_grid, (TEMP_TERM_WIDTH * (TEMP_TERM_HEIGHT - 1) * sizeof(TerminalCell)));
+    Memory::memset(term_buffer_grid[TEMP_TERM_HEIGHT - 1], 0, TEMP_TERM_WIDTH * sizeof(TerminalCell));
     render_term(true);
 }
 

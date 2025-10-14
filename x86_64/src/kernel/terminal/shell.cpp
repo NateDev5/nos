@@ -69,9 +69,7 @@ void test_cmd() { TEMP Library::println("Hello world!"); }
 void new_entry() {
     buffer_index = 0;
 
-    TODO("Use memset, it was bugged at the time")
-    for (uint64_t i = 0; i < KERNEL_SHELL_BUFFER_SIZE; i++)
-        buffer[i] = 0;
+    Memory::memset(buffer, 0, KERNEL_SHELL_BUFFER_SIZE);
 
     Library::print("> ");
 }
