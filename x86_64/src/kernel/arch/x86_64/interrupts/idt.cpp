@@ -1,3 +1,4 @@
+#include "kernel/arch/x86_64/interrupts/exception.h"
 #include <kernel/arch/x86_64/interrupts/idt.h>
 #include <kernel/arch/x86_64/interrupts/pic.h>
 
@@ -53,18 +54,18 @@ void set_irq_handler(IN uint8_t irq, IN PTR handler) {
 }
 } // namespace Arch::x86_64::IDT
 
-void handle_irq(IN uint64_t irq) {
-    PTR irq_handler = Arch::x86_64::IDT::irq_handlers[irq];
+void handle_irq(IN uint64_t irq_num) {
+    PTR irq_handler = Arch::x86_64::IDT::irq_handlers[irq_num];
 
     if (irq_handler == NULLPTR) {
-        DEBUG_PRINT("IRQ%i triggered but has no handler", irq)
-        Arch::x86_64::PIC::send_EOI(irq);
+        DEBUG_PRINT("IRQ%i triggered but has no handler", irq_num)
+        Arch::x86_64::PIC::send_EOI(irq_num);
         return;
     }
 
     ((void (*)())irq_handler)(); // call the handler
 
-    Arch::x86_64::PIC::send_EOI(irq);
+    Arch::x86_64::PIC::send_EOI(irq_num);
 }
 
 void handle_unset (IN uint64_t vector) {

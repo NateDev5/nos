@@ -26,7 +26,7 @@ struct FramebufferInfo {
 
     uint16_t pixel_width;
 
-    uint64_t address;
+    uint32_t* ptr;
 
     uint64_t font_width;
     uint64_t font_height;

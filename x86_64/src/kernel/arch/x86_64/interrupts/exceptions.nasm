@@ -1,3 +1,4 @@
+
 %include "kernel/arch/x86_64/interrupts/interrupt_macros.nasm"
 
 %macro exception_stub_with_code 1

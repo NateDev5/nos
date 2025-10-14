@@ -3,6 +3,7 @@
 
 #include <kernel/library/log.h>
 #include <kernel/library/panic.h>
+#include <kernel/library/debug.h>
 
 #include <kernel/memory/mem.h>
 
@@ -41,7 +42,7 @@ void init() {
     fb_info.bpp   = framebuffer->bpp;
 
     fb_info.pixel_width = fb_info.bpp / 8 / sizeof(uint32_t);
-    fb_info.address = (uint64_t)framebuffer->address;
+    fb_info.ptr = (uint32_t*)framebuffer->address;
 
     fb_info.width = fb_info.raw_width / fb_info.pixel_width;
     fb_info.height = fb_info.raw_height / fb_info.pixel_width;
@@ -51,8 +52,9 @@ void init() {
 
     DEBUG_PRINT("\nFramebuffer info:")
     DEBUG_PRINT("   - Size: %ix%i", fb_info.raw_width, fb_info.raw_height)
-    DEBUG_PRINT("   - Addr: %H", (uint64_t *)fb_info.address)
+    DEBUG_PRINT("   - Addr: %H", fb_info.ptr)
     DEBUG_PRINT("   - Pitch: %i", fb_info.pitch)
+    DEBUG_PRINT("   - Memory model: %i", framebuffer->memory_model)
     DEBUG_PRINT("   - Bits per pixel: %i", fb_info.bpp)
     DEBUG_PRINT("   - Pixel width: %i", fb_info.pixel_width)
     DEBUG_PRINT("   - Color model: %h", framebuffer->memory_model)
@@ -64,9 +66,9 @@ void draw_pixel(IN Point point, IN uint32_t color) {
         return;
     }
 
-    uint32_t *fb        = (uint32_t *)fb_info.address;
+    // uint32_t *fb        = (uint32_t *)fb_info.address;
     uint32_t  pixel_loc = (point.x * fb_info.pixel_width) + (point.y * fb_info.pitch);
-    fb[pixel_loc]       = color;
+    fb_info.ptr[pixel_loc]       = color;
 }
 
 void draw_char(IN Point point, IN char _char, IN uint32_t color) {
@@ -90,9 +92,8 @@ void draw_char(IN Point point, IN char _char, IN uint32_t color) {
 }
 
 void clear () {
-    uint64_t size = (fb_info.raw_width * fb_info.raw_height) / 4;
-    DEBUG_PRINT("%i", size)
-    // Memory::memset((PTRMEM)fb_info.address, 0, 360'000);
+    uint64_t size = (fb_info.raw_width * fb_info.raw_height) * 4; // multiply by 4 because each color is 4 bytes and memset does byte by byte
+    Memory::memset(fb_info.ptr, 99, size);
 }
 
 uint64_t width () {

@@ -1,3 +1,5 @@
+%include "kernel/arch/x86_64/interrupts/interrupt_macros.nasm"
+
 global IRQ_stub_0
 
 extern handle_irq
@@ -5,10 +7,17 @@ extern handle_irq
 %macro IRQ_stub 1
 ALIGN 16
 IRQ_stub_%+%1:
+    push rdi
     mov rdi, %1
-    call handle_irq
-    iretq
+    jmp IRQ_common
 %endmacro
+
+IRQ_common:
+    save_gp_regs_irq
+    call handle_irq
+    pop_gp_regs_irq
+    pop rdi
+    iretq
 
 IRQ_stub 0
 IRQ_stub 1

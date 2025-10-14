@@ -61,12 +61,12 @@ void modify_cell(IN uint32_t x, IN uint32_t y, IN char unicode) {
     render_term();
 }
 
-void render_term() {
+void render_term(IN bool redraw) {
     for (uint32_t y = 0; y < TEMP_TERM_HEIGHT; y++) {
-        if (term_buffer_lines[y] == DIRTY) {
+        if (term_buffer_lines[y] == DIRTY || redraw) {
             for (uint32_t x = 0; x < TEMP_TERM_WIDTH; x++) {
                 TerminalCell *cell = &term_buffer_grid[y][x];
-                if (cell->dirty) {
+                if (cell->dirty || redraw) {
                     Drivers::Video::Framebuffer::draw_char({x, y}, cell->unicode, 0xFFFFFFFF);
                     cell->dirty = NOT_DIRTY;
                 }
@@ -77,18 +77,16 @@ void render_term() {
 }
 
 void scroll_up () {
-    for(uint32_t y = 1; y < TEMP_TERM_HEIGHT; y++) {
-        Memory::memcpy((PTRMEM)&term_buffer_grid[y - 1], (PTRMEM)&term_buffer_grid[y], TEMP_TERM_WIDTH, true);
-        term_buffer_lines[y] = DIRTY;
-        // term_buffer_grid[y - 1] = term_buffer_grid[y];
+    for(uint32_t y = 1; y < TEMP_TERM_HEIGHT - 1; y++) {
+        // term_buffer_grid[y-1] = term_buffer_grid[y];
+        Memory::memcpy((PTRMEM)&term_buffer_grid[y], (PTRMEM)&term_buffer_grid[y-1], (sizeof(TerminalCell) * TEMP_TERM_WIDTH) - 1);
     }
-    render_term();
+    render_term(true);
 }
 
 void clear() {
     Drivers::Video::Framebuffer::clear();
 
-    TODO("Use memset was broken at the time")
     for (uint32_t y = 0; y < TEMP_TERM_HEIGHT; y++) {
         for (uint32_t x = 0; x < TEMP_TERM_WIDTH; x++) {
             term_buffer_grid[y][x] = {0, NOT_DIRTY};

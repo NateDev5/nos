@@ -27,7 +27,7 @@ void init();
 void print_char (IN char _char);
 void print(IN CONST_CHAR_PTR str);
 void modify_cell (IN uint32_t x, IN uint32_t y, IN char unicode);
-void render_term();
+void render_term(IN bool redraw = false);
 void scroll_up();
 void clear ();
 }
