@@ -8,7 +8,9 @@
 #include <kernel/library/debug.h>
 #include <kernel/library/log.h>
 #include <kernel/library/string.h>
+
 #include <kernel/memory/mem.h>
+#include <kernel/memory/pmm.h>
 
 namespace Kernel::Shell {
 
@@ -62,9 +64,9 @@ void handle_command() {
         test_cmd();
     else if (Library::strcmp(buffer, "clear") == 0)
         Kernel::Terminal::clear();
+    else if (Library::strcmp(buffer, "palloc") == 0)
+        palloc_cmd();
 }
-
-void test_cmd() { TEMP Library::println("Hello world!"); }
 
 void new_entry() {
     buffer_index = 0;
@@ -72,5 +74,13 @@ void new_entry() {
     Memory::memset(buffer, 0, KERNEL_SHELL_BUFFER_SIZE);
 
     Library::print("> ");
+}
+
+void test_cmd() { TEMP Library::println("Hello world!"); }
+
+void palloc_cmd () {
+    TEMP
+
+    Memory::Physical::alloc_page();
 }
 } // namespace Kernel::Shell

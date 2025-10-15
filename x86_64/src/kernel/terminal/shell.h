@@ -13,4 +13,5 @@ void handle_command ();
 void new_entry();
 
 void test_cmd ();
+void palloc_cmd ();
 }

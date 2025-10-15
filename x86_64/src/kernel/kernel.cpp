@@ -19,6 +19,8 @@
 #include <kernel/terminal/term.h>
 #include <kernel/terminal/shell.h>
 
+#include <kernel/memory/pmm.h>
+
 extern "C" void kmain() {
     // for debugging
     Drivers::UART::init_port(COM_PORT_1);
@@ -30,6 +32,9 @@ extern "C" void kmain() {
 
     Drivers::Video::Framebuffer::init();
     Kernel::Terminal::init();
+
+    // memory
+    Memory::Physical::init();
 
     // input
     Drivers::Keyboard::init(); // before setting up interrupts
@@ -43,9 +48,7 @@ extern "C" void kmain() {
 
     // shell
     Library::println("Starting shell...");
-    // for(uint64_t i =0; i < 100000; i++)
-        // Library::printc('N');
-    Library::sleep(1000);
+    Library::sleep(100);
     Kernel::Shell::run_shell(); 
 
     while (true) {
