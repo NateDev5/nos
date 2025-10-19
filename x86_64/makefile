@@ -1,4 +1,5 @@
 DEBUG ?= 0
+TESTING ?= 0
 
 # Info
 OS_NAME				= nos
@@ -40,7 +41,7 @@ else
 endif
 
 # Flags
-QEMU_FLAGS			= -M q35 -no-reboot
+QEMU_FLAGS			= -M q35 -m 8G -no-reboot
 QEMU_FLAG_DBG_INT	= -d int,cpu_reset
 QEMU_FLAG_SERIAL	= -serial stdio
 QEMU_FLAG_MONITOR	= -monitor stdio
@@ -62,7 +63,7 @@ $(ISO_FOLDER):
 	cp -v $(LIMINE_CONF) $(LIMINE_BIOS_SYS) $(LIMINE_BIOS_CD) $@/boot/limine
 
 $(OS_OUT): $(LIMINE_FOLDER) $(ISO_FOLDER)
-	$(MAKE) kernel DEBUG=$(DEBUG)
+	$(MAKE) kernel DEBUG=$(DEBUG) TESTING=$(TESTING)
 	@echo -e "\n>>> Creating final os binaries <<<\n"
 	cp -v $(KERNEL) $(ISO_FOLDER)/boot
 	$(XORRISO) $(XORRISO_FLAGS) $(ISO_FOLDER) -o $@
@@ -74,7 +75,7 @@ kernel:
 
 ifeq ($(DEBUG),1)
 run: 
-	$(MAKE) DEBUG=1
+	$(MAKE) DEBUG=1 TESTING=$(TESTING)
 	@echo -e "\n>>> Running using QEMU (Debug + Serial) <<<\n"
 	$(QEMU) $(QEMU_FLAGS) $(QEMU_FLAG_SERIAL) -cdrom $(OS_OUT)
 
@@ -102,7 +103,7 @@ run:
 endif
 
 dbg:
-	$(MAKE) run DEBUG=1
+	$(MAKE) run DEBUG=1 TESTING=1
 	
 clean:
 	rm -rf $(BUILD_FOLDER) $(ISO_FOLDER)

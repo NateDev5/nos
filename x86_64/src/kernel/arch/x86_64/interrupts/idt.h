@@ -31,4 +31,4 @@ void set_irq_handler(IN uint8_t irq, IN PTR handler);
 } // namespace Arch::x86_64::IDT
 
 extern "C" void handle_irq(IN uint64_t irq_num);
-extern "C" void handle_unset (IN uint64_t vector);
+extern "C" void handle_unset(IN uint64_t vector);

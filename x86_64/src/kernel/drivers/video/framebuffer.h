@@ -2,8 +2,6 @@
 
 #include <utils/types.h>
 
-#define WHITE 0xFFFFFFFF
-
 namespace Drivers::Video::Framebuffer {
 struct FramebufferInfo {
     uint64_t raw_width;
@@ -26,7 +24,7 @@ struct FramebufferInfo {
 
     uint16_t pixel_width;
 
-    uint32_t* ptr;
+    uint32_t *ptr;
 
     uint64_t font_width;
     uint64_t font_height;
@@ -39,9 +37,9 @@ struct Point {
 
 void init();
 
-void draw_pixel(IN Point point, IN uint32_t color);
-void draw_char (IN Point point, IN char _char, IN uint32_t color);
-void clear();
-uint64_t width ();
-uint64_t height ();
-} // namespace Drivers::Video
+void     draw_pixel(IN Point point, IN uint32_t color);
+void     draw_char(IN Point point, IN char _char, IN uint32_t forecolor, IN uint32_t backcolor);
+void     clear();
+uint64_t width();
+uint64_t height();
+} // namespace Drivers::Video::Framebuffer

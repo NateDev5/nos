@@ -22,7 +22,7 @@ void setup() {
     idtr.limit = sizeof(IDT_ENTRY) * 256 - 1;
     idtr.base  = (uint64_t)&idt[0];
 
-    for(uint8_t vector = 0; vector < 255; vector++)
+    for (uint8_t vector = 0; vector < 255; vector++)
         set_entry(vector, (uint64_t)unset_stub_0 + vector * 16, INTERRUPT_GATE);
 
     for (uint8_t vector = 0; vector < 32; vector++)
@@ -49,7 +49,7 @@ void set_entry(IN uint8_t vector, IN uint64_t handler_addr, IN uint8_t attribute
 }
 
 void set_irq_handler(IN uint8_t irq, IN PTR handler) {
-    ASSERT_FATAL(irq < 16, "irq parameter needs to be between 0-15")
+    KASSERT_FATAL(irq < 16, "irq parameter needs to be between 0-15")
     irq_handlers[irq] = handler;
 }
 } // namespace Arch::x86_64::IDT
@@ -68,6 +68,4 @@ void handle_irq(IN uint64_t irq_num) {
     Arch::x86_64::PIC::send_EOI(irq_num);
 }
 
-void handle_unset (IN uint64_t vector) {
-    DEBUG_PRINT("Interrupt triggered without propper handler (Vector=%i)", vector)
-}
+void handle_unset(IN uint64_t vector) { DEBUG_PRINT("Interrupt triggered without propper handler (Vector=%i)", vector) }

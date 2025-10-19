@@ -6,9 +6,9 @@
 
 #include <stdarg.h>
 
-#define KLOG(msg, ...) \
-DEBUG_PRINT(msg, ##__VA_ARGS__) \
-Library::printf_ln(msg, ##__VA_ARGS__);
+#define KLOG(msg, ...)                                                                                                                                         \
+    DEBUG_PRINT(msg, ##__VA_ARGS__)                                                                                                                            \
+    Library::printf_ln(msg, ##__VA_ARGS__);
 
 namespace Library {
 /*

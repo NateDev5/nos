@@ -8,8 +8,8 @@
 
 namespace Library {
 template <typename T> uint32_t remove_at(IN_OUT T *array, IN uint32_t array_len, IN uint32_t array_pos, IN uint32_t index) {
-    ASSERT_RETURN(array != NULL, "array is null", array_pos)
-    ASSERT_RETURN(index < array_pos, "index out of bounds", array_pos)
+    KASSERT_RETURN(array != NULL, "array is null", array_pos)
+    KASSERT_RETURN(index < array_pos, "index out of bounds", array_pos)
 
     if (index == array_len - 1) {
         array[index] = NULL;
@@ -29,10 +29,10 @@ template <typename T> uint32_t remove_at(IN_OUT T *array, IN uint32_t array_len,
 }
 
 template <typename T> uint32_t add_at(IN_OUT T *array, IN uint32_t array_len, IN uint32_t array_pos, IN uint32_t index, IN T to_add) {
-    ASSERT_RETURN(array != NULL, "array is null", array_pos)
-    ASSERT_RETURN(to_add != NULL, "to_add is null", array_pos)
-    ASSERT_RETURN(index <= array_pos, "index out of bounds 1", array_pos)
-    ASSERT_RETURN(array_pos + 1 <= array_len, "index out of bounds 2", array_pos)
+    KASSERT_RETURN(array != NULL, "array is null", array_pos)
+    KASSERT_RETURN(to_add != NULL, "to_add is null", array_pos)
+    KASSERT_RETURN(index <= array_pos, "index out of bounds 1", array_pos)
+    KASSERT_RETURN(array_pos + 1 <= array_len, "index out of bounds 2", array_pos)
 
     if (index != array_pos) {
         for (uint32_t i = array_pos; i > index - 1; i--)

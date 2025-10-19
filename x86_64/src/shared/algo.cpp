@@ -1,8 +1,6 @@
-#include <utils/math.h>
+#include <shared/algo.h>
 
-#include <kernel/library/string.h>
-
-namespace Math {
+namespace Shared {
 // from https://wiki.osdev.org/Printing_To_Screen
 CHAR_PTR itoa(IN int64_t value, OUT CHAR_PTR outStr, IN uint8_t base, IN bool caps, IN bool include_zeros) {
     CHAR_PTR rc;
@@ -58,5 +56,5 @@ CHAR_PTR itoa(IN int64_t value, OUT CHAR_PTR outStr, IN uint8_t base, IN bool ca
     }
 
     return rc;
-}
 } // namespace Math
+} // namespace Shared

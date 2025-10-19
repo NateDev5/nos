@@ -10,7 +10,7 @@ void init() {
     outb(PS2_COMMAND_REGISTER, PS2_SELFTEST_SEND);
     io_wait();
     uint8_t self_test_result = inb(PS2_DATA_PORT);
-    ASSERT(self_test_result == PS2_SELFTEST_RECEIVE, "PS2 Controller self test failed");
+    KASSERT(self_test_result == PS2_SELFTEST_RECEIVE, "PS2 Controller self test failed");
 
     // tell the controller the next byte written to data port is the keyboard
     // command byte

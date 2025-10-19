@@ -1,22 +1,23 @@
 #include <kernel/library/debug.h>
-#include <kernel/library/string.h>
+
+#include <shared/algo.h>
+#include <shared/string.h>
 
 #include <kernel/drivers/serial/uart.h>
 
 #include <utils/asm.h>
-#include <utils/math.h>
 
 namespace Debug {
 void print_char(IN char _char) { outb(COM_PORT_1, _char); }
 
 void print_str(IN CONST_CHAR_PTR _str) {
-    for (uint32_t pos = 0; _str[pos] != '\0'; pos++)
+    for (uint64_t pos = 0; _str[pos] != '\0'; pos++)
         print_char(_str[pos]);
 };
 
 void vprintf(IN CONST_CHAR_PTR format, IN va_list args) {
-    uint32_t format_len = Library::strlen(format);
-    for (uint32_t pos = 0; format[pos] != '\0'; pos++) {
+    uint64_t format_len = Shared::strlen(format);
+    for (uint64_t pos = 0; format[pos] != '\0'; pos++) {
         if (format[pos] == '%' && (pos + 1) < format_len) {
             pos++;
 
@@ -34,29 +35,30 @@ void vprintf(IN CONST_CHAR_PTR format, IN va_list args) {
             case 'i': {
                 int64_t value = va_arg(args, int64_t);
                 char    temp_str[STR_MAX_LEN];
-                Math::itoa(value, temp_str, 10);
+                Shared::itoa(value, temp_str, 10);
                 print_str(temp_str);
                 continue;
             }
             case 'b': {
                 int64_t value = va_arg(args, int64_t);
                 char    temp_str[STR_MAX_LEN];
-                Math::itoa(value, temp_str, 2);
+                Shared::itoa(value, temp_str, 2);
                 print_str(temp_str);
                 continue;
             }
             case 'h': {
                 int64_t value = va_arg(args, int64_t);
                 char    temp_str[STR_MAX_LEN];
-                Math::itoa(value, temp_str, 16);
+                Shared::itoa(value, temp_str, 16);
                 print_str(temp_str);
                 continue;
             }
             case 'H': {
                 int64_t value = va_arg(args, int64_t);
                 char    temp_str[STR_MAX_LEN];
-                Math::itoa(value, temp_str, 16, true, true);
-                print_str(temp_str); continue;
+                Shared::itoa(value, temp_str, 16, true, true);
+                print_str(temp_str);
+                continue;
             }
             }
         }

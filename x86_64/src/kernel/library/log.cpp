@@ -1,20 +1,20 @@
 #include <kernel/library/assert.h>
 #include <kernel/library/log.h>
 #include <kernel/library/panic.h>
-#include <kernel/library/string.h>
 
 #include <kernel/drivers/video/framebuffer.h>
 
 #include <kernel/terminal/term.h>
 
-#include <utils/math.h>
+#include <shared/algo.h>
+#include <shared/string.h>
 
 namespace Library {
 void vprintf(IN CONST_CHAR_PTR format, IN va_list args) {
-    ASSERT(format != NULL, "format is null")
+    KASSERT(format != NULL, "format is null")
 
-    uint32_t format_len = strlen(format);
-    for (uint32_t pos = 0; pos < format_len; pos++) {
+    uint64_t format_len = Shared::strlen(format);
+    for (uint64_t pos = 0; pos < format_len; pos++) {
         if (format[pos] == '%' && (pos + 1) < format_len) {
             pos++;
 
@@ -32,28 +32,28 @@ void vprintf(IN CONST_CHAR_PTR format, IN va_list args) {
             case 'i': {
                 int64_t value = va_arg(args, int64_t);
                 char    temp_str[STR_MAX_LEN];
-                Math::itoa(value, temp_str, 10);
+                Shared::itoa(value, temp_str, 10);
                 print(temp_str);
                 continue;
             }
             case 'b': {
                 int64_t value = va_arg(args, int64_t);
                 char    temp_str[STR_MAX_LEN];
-                Math::itoa(value, temp_str, 2);
+                Shared::itoa(value, temp_str, 2);
                 print(temp_str);
                 continue;
             }
             case 'h': {
                 int64_t value = va_arg(args, int64_t);
                 char    temp_str[STR_MAX_LEN];
-                Math::itoa(value, temp_str, 16);
+                Shared::itoa(value, temp_str, 16);
                 print(temp_str);
                 continue;
             }
             case 'H': {
                 int64_t value = va_arg(args, int64_t);
                 char    temp_str[STR_MAX_LEN];
-                Math::itoa(value, temp_str, 16, true, true);
+                Shared::itoa(value, temp_str, 16, true, true);
                 print(temp_str);
                 continue;
             }

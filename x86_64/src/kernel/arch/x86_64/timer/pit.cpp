@@ -4,7 +4,6 @@
 #include <kernel/library/log.h>
 
 #include <utils/asm.h>
-#include <utils/math.h>
 
 namespace Arch::x86_64::PIT {
 void init() {

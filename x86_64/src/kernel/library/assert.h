@@ -1,21 +1,31 @@
 #pragma once
 
 #include <kernel/library/debug.h>
+#include <kernel/library/log.h>
 #include <kernel/library/panic.h>
+
 #include <utils/types.h>
 
-#define ASSERT(expression, msg)                                                                                                                                \
+#define KASSERT(expression, msg)                                                                                                                               \
     if (!(expression)) {                                                                                                                                       \
         DEBUG_ERR(msg)                                                                                                                                         \
         return;                                                                                                                                                \
     }
 
-#define ASSERT_RETURN(expression, msg, ret)                                                                                                                    \
+#define KASSERT_RETURN(expression, msg, ret)                                                                                                                   \
     if (!(expression)) {                                                                                                                                       \
         DEBUG_ERR(msg)                                                                                                                                         \
         return ret;                                                                                                                                            \
     }
 
-#define ASSERT_FATAL(expression, msg)                                                                                                                          \
+#define KASSERT_FATAL(expression, msg)                                                                                                                         \
     if (!(expression))                                                                                                                                         \
         Kernel::panic(msg);
+
+#define KASSERT_RETURN_UNSAFE(expression, msg, ret)                                                                                                            \
+    UNSAFE("This function uses a direct kernel function which is unsafe for shared/usermode libraries")                                                        \
+    KASSERT_RETURN(expression, msg, ret)
+
+#define KASSERT_UNSAFE(expression, msg)                                                                                                                        \
+    UNSAFE("This function uses a direct kernel function which is unsafe for shared/usermode libraries")                                                        \
+    KASSERT(expression, msg)

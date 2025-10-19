@@ -1,4 +1,5 @@
 DEBUG				?= 0
+TESTING ?= 0
 
 # Executables
 GCC					= g++
@@ -47,6 +48,8 @@ GCC_FLAGS			=  -ffreestanding \
 
 GCC_FLAGS_DBG		=  -g -D__DEBUG__
 
+GCC_FLAGS_TESTING	=  -D__TESTING__
+
 GCC_FLAGS_GDB		=  -D__GDB__
 
 LD_FLAGS			=  -T $(LINKER_FILE) \
@@ -82,6 +85,10 @@ OTHER_OBJ			:= $(filter-out $(KERNEL_OBJ), $(CPP_OBJ)) $(NASM_OBJ)
 
 ifeq ($(DEBUG), 1)
 	GCC_FLAGS += $(GCC_FLAGS_DBG)
+endif
+
+ifeq ($(TESTING), 1)
+	GCC_FLAGS += $(GCC_FLAGS_TESTING)
 endif
 
 .PHONY: all clean format debug

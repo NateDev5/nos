@@ -5,7 +5,7 @@
 #include <kernel/library/log.h>
 #include <kernel/library/panic.h>
 
-#include <kernel/memory/mem.h>
+#include <shared/mem.h>
 
 #include <deps/font8x8.h>
 
@@ -16,13 +16,13 @@ namespace Drivers::Video::Framebuffer {
 __attribute__((used, section(".limine_requests"))) volatile limine_framebuffer_request framebuffer_request = {.id       = LIMINE_FRAMEBUFFER_REQUEST,
                                                                                                               .revision = 0,
                                                                                                               .response = nullptr};
-FramebufferInfo fb_info;
+FramebufferInfo                                                                        fb_info;
 
 void init() {
     if (framebuffer_request.response == NULLPTR || framebuffer_request.response->framebuffer_count < 1)
         Kernel::panic("No usable framebuffer found");
 
-    limine_framebuffer* framebuffer = framebuffer_request.response->framebuffers[0];
+    limine_framebuffer *framebuffer = framebuffer_request.response->framebuffers[0];
 
     fb_info.raw_width  = framebuffer->width;
     fb_info.raw_height = framebuffer->height;
@@ -69,7 +69,7 @@ void draw_pixel(IN Point point, IN uint32_t color) {
     fb_info.ptr[pixel_loc] = color;
 }
 
-void draw_char(IN Point point, IN char _char, IN uint32_t color) {
+void draw_char(IN Point point, IN char _char, IN uint32_t forecolor, IN uint32_t backcolor) {
     point.x *= fb_info.font_width;
     point.y *= fb_info.font_height;
     if (point.x > fb_info.width || point.y > fb_info.height) {
@@ -84,14 +84,14 @@ void draw_char(IN Point point, IN char _char, IN uint32_t color) {
             uint8_t bit = glyph[row] & 1 << col;
             // * 8 since font is 8 pixel by 8
             // if(bit) draw_pixel({col + point.x, row + point.y}, color);
-            draw_pixel({col + point.x, row + point.y}, bit ? color : 0);
+            draw_pixel({col + point.x, row + point.y}, bit ? forecolor : backcolor);
         }
     }
 }
 
 void clear() {
     uint64_t size = (fb_info.raw_width * fb_info.raw_height) * 4; // multiply by 4 because each color is 4 bytes and memset does byte by byte
-    Memory::memset(fb_info.ptr, 0, size);
+    Shared::memset(fb_info.ptr, 0, size);
 }
 
 uint64_t width() { return fb_info.width; }

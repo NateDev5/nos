@@ -9,10 +9,8 @@
 #include <kernel/devices/io/ps2.h>
 
 #include <utils/asm.h>
-#include <utils/math.h>
 
 namespace Drivers::Keyboard {
-
 
 static constexpr char character_map_caps[] = {
     0, 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z',
@@ -147,11 +145,11 @@ void process_scancode() {
     input_buffer[buffer_pos].scancode = scancode;
     input_buffer[buffer_pos].flags    = flags;
 
-    uint8_t keycode = get_keycode(scancode, next_interrupt_extended_code);
-    input_buffer[buffer_pos].keycode  = keycode;
+    uint8_t keycode                  = get_keycode(scancode, next_interrupt_extended_code);
+    input_buffer[buffer_pos].keycode = keycode;
     input_buffer[buffer_pos].unicode = get_unicode(keycode, flags);
 
-        buffer_pos = (buffer_pos + 1) % INPUT_BUFFER_SIZE;
+    buffer_pos = (buffer_pos + 1) % INPUT_BUFFER_SIZE;
 
     next_interrupt_break_code    = false;
     next_interrupt_extended_code = false;

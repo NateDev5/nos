@@ -7,7 +7,7 @@
 
 #include <utils/types.h>
 
-#define PAGE_SIZE 4096 // 4kb
+#define PAGE_SIZE         4096 // 4kb
 
 #define MAX_INITIAL_PAGES 65562 // uint16_t max
 
@@ -18,6 +18,6 @@ struct PMMData {
 };
 
 void init();
-PTR alloc_page ();
+PTR  alloc_page();
 void free_page();
-}
+} // namespace Memory::Physical

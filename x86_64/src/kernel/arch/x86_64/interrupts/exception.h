@@ -34,7 +34,7 @@ struct InterruptFrame {
     uint64_t ss;
 };
 
-void handle_pagefault (IN uint64_t error_code); 
+void handle_pagefault(IN uint64_t error_code);
 } // namespace Arch::x86_64::IDT::Exceptions
 
 extern "C" void handle_exception(IN Arch::x86_64::IDT::Exceptions::InterruptFrame *interrupt_frame);

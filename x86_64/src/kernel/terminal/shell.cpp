@@ -7,10 +7,10 @@
 
 #include <kernel/library/debug.h>
 #include <kernel/library/log.h>
-#include <kernel/library/string.h>
-
-#include <kernel/memory/mem.h>
 #include <kernel/memory/pmm.h>
+
+#include <shared/mem.h>
+#include <shared/string.h>
 
 namespace Kernel::Shell {
 
@@ -59,28 +59,27 @@ void handle_keypress(IN Drivers::Keyboard::KeypressInfo keypress) {
 
 void handle_command() {
     TEMP
-
-    if (Library::strcmp(buffer, "test") == 0)
-        test_cmd();
-    else if (Library::strcmp(buffer, "clear") == 0)
-        Kernel::Terminal::clear();
-    else if (Library::strcmp(buffer, "palloc") == 0)
-        palloc_cmd();
+        if (IS_CMD(buffer, "test")) test_cmd();
+    else if (IS_CMD(buffer, "clear")) Kernel::Terminal::clear();
+    else if (IS_CMD(buffer, "palloc")) palloc_cmd();
+    else if (IS_CMD(buffer, "ansi")) ansi_test_cmd();
 }
 
 void new_entry() {
     buffer_index = 0;
 
-    Memory::memset(buffer, 0, KERNEL_SHELL_BUFFER_SIZE);
+    Shared::memset(buffer, 0, KERNEL_SHELL_BUFFER_SIZE);
 
     Library::print("> ");
 }
 
 void test_cmd() { TEMP Library::println("Hello world!"); }
 
-void palloc_cmd () {
+void palloc_cmd() {
     TEMP
 
     Memory::Physical::alloc_page();
 }
+
+void ansi_test_cmd() { TEMP KLOG("\033[0;31;45mHello\033[0m"); }
 } // namespace Kernel::Shell
