@@ -34,7 +34,7 @@ void setup() {
     __asm__ volatile("lidt %0" ::"m"(idtr));
     sti();
 
-    KLOG("(OK) IDT Initialized")
+    KINFO("IDT Initialized")
 }
 
 void set_entry(IN uint8_t vector, IN uint64_t handler_addr, IN uint8_t attributes) {
@@ -58,7 +58,7 @@ void handle_irq(IN uint64_t irq_num) {
     PTR irq_handler = Arch::x86_64::IDT::irq_handlers[irq_num];
 
     if (irq_handler == NULLPTR) {
-        DEBUG_PRINT("IRQ%i triggered but has no handler", irq_num)
+        DEBUG_WARN("IRQ%i triggered but has no handler", irq_num)
         Arch::x86_64::PIC::send_EOI(irq_num);
         return;
     }
@@ -68,4 +68,4 @@ void handle_irq(IN uint64_t irq_num) {
     Arch::x86_64::PIC::send_EOI(irq_num);
 }
 
-void handle_unset(IN uint64_t vector) { DEBUG_PRINT("Interrupt triggered without propper handler (Vector=%i)", vector) }
+void handle_unset(IN uint64_t vector) { DEBUG_WARN("Interrupt triggered without propper handler (Vector=%i)", vector) }

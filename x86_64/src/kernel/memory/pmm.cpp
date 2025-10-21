@@ -22,13 +22,13 @@ void init() {
     if (memmap_request.response == NULLPTR)
         Kernel::panic("Memory map not found");
 
-    KLOG("Memory map:")
+    KINFO("Memory map:")
     limine_memmap_response *memmap = memmap_request.response;
     CONST_CHAR_PTR          alias  = 0;
     for (uint64_t i = 0; i < memmap->entry_count; i++) {
         limine_memmap_entry *entry           = memmap->entries[i];
         uint64_t             humanized_value = Shared::Humanize::bytes(entry->length, alias);
-        KLOG("Base: %H, Length: %i %s (%i), Type: %i", entry->base, humanized_value, alias, entry->length, entry->type);
+        KINFO("Base: %H, Length: %i %s (%i), Type: %i", entry->base, humanized_value, alias, entry->length, entry->type);
     }
 
     // pmm_data.hhdm_offset = hhdm_request.response->offset;
@@ -48,7 +48,7 @@ PTR alloc_page() {
     }
     uint64_t page_addr = ((page_index * 64) + 8) * PAGE_SIZE;
     Shared::memset((PTR)page_addr, 0, PAGE_SIZE);
-    KLOG("Page address: %H", page_addr);
+    KINFO("Page address: %H", page_addr);
     return (PTR)page_addr;
 }
 

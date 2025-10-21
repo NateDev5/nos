@@ -61,7 +61,7 @@ bool next_interrupt_extended_code = false;
 void init() {
     Devices::PS2::init();
     Arch::x86_64::IDT::set_irq_handler(1, (PTR)process_scancode);
-    KLOG("(OK) Keyboard initialized");
+    KINFO("Keyboard initialized");
 }
 
 KeypressInfo read_key() {

@@ -19,7 +19,7 @@ void init() {
 
     IDT::set_irq_handler(0, (PTR)timer_handler);
 
-    KLOG("(OK) PIT initialized");
+    KINFO("PIT initialized");
 }
 
 static uint64_t cur_milliseconds;

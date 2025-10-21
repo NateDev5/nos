@@ -45,48 +45,81 @@ void init() {
     fb_info.width  = fb_info.raw_width / fb_info.pixel_width;
     fb_info.height = fb_info.raw_height / fb_info.pixel_width;
 
-    fb_info.font_width  = 8;
-    fb_info.font_height = 8;
+    fb_info.char_padding = {0, 2};
 
-    DEBUG_PRINT("\nFramebuffer info:")
-    DEBUG_PRINT("   - Size: %ix%i", fb_info.raw_width, fb_info.raw_height)
-    DEBUG_PRINT("   - Addr: %H", fb_info.ptr)
-    DEBUG_PRINT("   - Pitch: %i", fb_info.pitch)
-    DEBUG_PRINT("   - Memory model: %i", framebuffer->memory_model)
-    DEBUG_PRINT("   - Bits per pixel: %i", fb_info.bpp)
-    DEBUG_PRINT("   - Pixel width: %i", fb_info.pixel_width)
-    DEBUG_PRINT("   - Color model: %h", framebuffer->memory_model)
+    fb_info.font_size_raw = {8, 8};
+    fb_info.font_size = {
+        fb_info.font_size_raw.x + (fb_info.char_padding.x * 2),
+        fb_info.font_size_raw.y + (fb_info.char_padding.y * 2)
+    };
+
+    DEBUG_INFO("Framebuffer info:")
+    DEBUG_INFO("   - Size: %ix%i", fb_info.raw_width, fb_info.raw_height)
+    DEBUG_INFO("   - Addr: %H", fb_info.ptr)
+    DEBUG_INFO("   - Pitch: %i", fb_info.pitch)
+    DEBUG_INFO("   - Memory model: %i", framebuffer->memory_model)
+    DEBUG_INFO("   - Bits per pixel: %i", fb_info.bpp)
+    DEBUG_INFO("   - Pixel width: %i", fb_info.pixel_width)
+    DEBUG_INFO("   - Color model: %h", framebuffer->memory_model)
 }
 
-void draw_pixel(IN Point point, IN uint32_t color) {
-    if (point.x >= fb_info.width || point.y >= fb_info.height) {
-        DEBUG_PRINT("(ERROR) Trying to plot pixel out of bounds (x: %i, y: %i)", point.x, point.y)
+void draw_pixel(IN Shared::Point pos, IN uint32_t color) {
+    if (pos.x >= fb_info.width || pos.y >= fb_info.height) {
+        DEBUG_WARN("Trying to plot pixel out of bounds (x: %i, y: %i)", pos.x, pos.y)
         return;
     }
 
     // uint32_t *fb        = (uint32_t *)fb_info.address;
-    uint32_t pixel_loc     = (point.x * fb_info.pixel_width) + (point.y * fb_info.pitch);
+    uint32_t pixel_loc     = (pos.x * fb_info.pixel_width) + (pos.y * fb_info.pitch);
     fb_info.ptr[pixel_loc] = color;
 }
 
-void draw_char(IN Point point, IN char _char, IN uint32_t forecolor, IN uint32_t backcolor) {
-    point.x *= fb_info.font_width;
-    point.y *= fb_info.font_height;
-    if (point.x > fb_info.width || point.y > fb_info.height) {
-        DEBUG_PRINT("(ERROR) Trying to draw character out of bounds (x: %i, y: %i)", point.x, point.y)
+void draw_char_no_padding(IN Shared::Point pos, IN char _char, IN uint32_t forecolor, IN uint32_t backcolor) {
+    pos.x *= fb_info.font_size_raw.x;
+    pos.y *= fb_info.font_size_raw.y;
+    if (pos.x > fb_info.width || pos.y > fb_info.height) {
+        DEBUG_WARN("Trying to draw character out of bounds (x: %i, y: %i)", pos.x, pos.y)
         return;
     }
 
     uint8_t *glyph = font8x8_basic[(uint8_t)_char];
 
-    for (uint8_t row = 0; row < fb_info.font_width; row++) {
-        for (uint8_t col = 0; col < fb_info.font_height; col++) {
+    for (uint8_t row = 0; row < fb_info.font_size_raw.x; row++) {
+        for (uint8_t col = 0; col < fb_info.font_size_raw.y; col++) {
             uint8_t bit = glyph[row] & 1 << col;
             // * 8 since font is 8 pixel by 8
-            // if(bit) draw_pixel({col + point.x, row + point.y}, color);
-            draw_pixel({col + point.x, row + point.y}, bit ? forecolor : backcolor);
+            draw_pixel({col + pos.x, row + pos.y}, bit ? forecolor : backcolor);
         }
     }
+}
+
+void draw_char (IN Shared::Point pos, IN char _char, IN uint32_t forecolor, IN uint32_t backcolor) {
+    pos.x *= fb_info.font_size.x;
+    pos.y *= fb_info.font_size.y;
+    if(pos.x > fb_info.width || pos.y > fb_info.height) {
+        DEBUG_WARN("Trying to draw character out of bounds (x: %i, y: %i)", pos.x, pos.y);
+        return;
+    }
+
+    uint8_t* glyph = font8x8_basic[(uint8_t)_char];
+
+    // could make this faster by writing the bit from the font while drawing the rectangle
+    // but works for now
+    draw_rectangle(pos, fb_info.font_size, backcolor);
+
+    for (uint8_t row = 0; row < fb_info.font_size_raw.x; row++) {
+        for (uint8_t col = 0; col < fb_info.font_size_raw.y; col++) {
+            uint8_t bit = glyph[row] & 1 << col;
+            // * 8 since font is 8 pixel by 8
+            draw_pixel({col + pos.x + fb_info.char_padding.x, row + pos.y + fb_info.char_padding.y}, bit ? forecolor : backcolor);
+        }
+    }
+}
+
+void draw_rectangle(IN Shared::Point pos, IN Shared::Point size, IN uint32_t color) {
+    for(uint64_t x = 0; x < size.x; x++)
+        for(uint64_t y = 0; y < size.y; y++)
+            draw_pixel({x + pos.x, y + pos.y}, color);
 }
 
 void clear() {
@@ -97,4 +130,6 @@ void clear() {
 uint64_t width() { return fb_info.width; }
 
 uint64_t height() { return fb_info.height; }
+
+Shared::Point font_size () { return fb_info.font_size; }
 } // namespace Drivers::Video::Framebuffer

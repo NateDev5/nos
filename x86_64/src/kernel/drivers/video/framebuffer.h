@@ -2,6 +2,8 @@
 
 #include <utils/types.h>
 
+#include <shared/utils.h>
+
 namespace Drivers::Video::Framebuffer {
 struct FramebufferInfo {
     uint64_t raw_width;
@@ -26,20 +28,20 @@ struct FramebufferInfo {
 
     uint32_t *ptr;
 
-    uint64_t font_width;
-    uint64_t font_height;
-};
+    Shared::Size font_size;
+    Shared::Size font_size_raw;
 
-struct Point {
-    uint32_t x;
-    uint32_t y;
+    Shared::Point char_padding;
 };
 
 void init();
 
-void     draw_pixel(IN Point point, IN uint32_t color);
-void     draw_char(IN Point point, IN char _char, IN uint32_t forecolor, IN uint32_t backcolor);
+void     draw_pixel(IN Shared::Point pos, IN uint32_t color);
+void     draw_char_no_padding(IN Shared::Point pos, IN char _char, IN uint32_t forecolor, IN uint32_t backcolor);
+void     draw_char(IN Shared::Point pos, IN char _char, IN uint32_t forecolor, IN uint32_t backcolor);
+void     draw_rectangle(IN Shared::Point pos, IN Shared::Point size, IN uint32_t color);
 void     clear();
 uint64_t width();
 uint64_t height();
+Shared::Point font_size();
 } // namespace Drivers::Video::Framebuffer

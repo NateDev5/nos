@@ -2,6 +2,8 @@
 
 #include <utils/types.h>
 
+#include <shared/utils.h>
+
 // hard coded
 #define TEMP_TERM_WIDTH  160
 #define TEMP_TERM_HEIGHT 100

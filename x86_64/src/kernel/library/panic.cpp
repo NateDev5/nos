@@ -8,7 +8,7 @@
 
 namespace Kernel {
 void panic(IN CONST_CHAR_PTR msg) {
-    DEBUG_PRINT("(PANIC) %s", msg);
+    DEBUG_FATAL("(PANIC) %s", msg);
     Library::printf_ln("(!!!) Kernel Panic: %s", msg);
 
     cli();

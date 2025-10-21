@@ -22,7 +22,7 @@ void             setup() {
 
     load_gdt(&gdtr);
 
-    DEBUG_RAW("(OK) GDT initialized")
+    DEBUG_INFO_RAW("GDT initialized")
 }
 
 void set_gdt_entry(IN uint8_t index, IN uint32_t base, IN uint16_t limit, IN uint8_t access, IN uint8_t flags) {

@@ -4,6 +4,12 @@
 
 #define PAGE_FAULT 14
 
+#define PRINT_EXCEPTION(format, ...)                                                                                                                           \
+    {                                                                                                                                                          \
+        DEBUG_FATAL(format, ##__VA_ARGS__)                                                                                                                     \
+        Library::printf_ln(format, ##__VA_ARGS__);                                                                                                             \
+    }
+
 namespace Arch::x86_64::IDT::Exceptions {
 
 struct InterruptFrame {

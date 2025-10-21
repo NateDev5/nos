@@ -17,8 +17,9 @@ TerminalInfo info;
 void init() {
     TODO("Add ANSI support")
     TODO("Render characters more efficently")
-    info.width  = Drivers::Video::Framebuffer::width() / 8;  // width in characters
-    info.height = Drivers::Video::Framebuffer::height() / 8; // height in characters
+    Shared::Point font_size = Drivers::Video::Framebuffer::font_size();
+    info.width  = Drivers::Video::Framebuffer::width() / font_size.x;  // width in characters
+    info.height = Drivers::Video::Framebuffer::height() / font_size.y; // height in characters
 
     Shared::memset(info.ansi_arguments, 0, ANSI_MAX_ARGS);
     info.ansi_argument_ptr  = 0;
@@ -27,10 +28,10 @@ void init() {
     info.forecolor = DEFAULT;
     info.backcolor = BLACK;
 
-    KLOG("Terminal info:")
-    KLOG("   - Width: %i", info.width)
-    KLOG("   - Height: %i", info.height)
-    KLOG("   - Max characters: %i\n", info.width * info.height)
+    KINFO("Terminal info:")
+    KINFO("   - Width: %i", info.width)
+    KINFO("   - Height: %i", info.height)
+    KINFO("   - Max characters: %i\n", info.width * info.height)
 }
 
 void print_char(IN char _char) {
@@ -137,7 +138,7 @@ void clear() {
 
     for (uint32_t y = 0; y < TEMP_TERM_HEIGHT; y++) {
         for (uint32_t x = 0; x < TEMP_TERM_WIDTH; x++) {
-            term_buffer_grid[y][x] = {0, NOT_DIRTY};
+            term_buffer_grid[y][x] = {0, DEFAULT, BLACK, NOT_DIRTY};
         }
         term_buffer_lines[y] = NOT_DIRTY;
     }
@@ -147,8 +148,9 @@ void clear() {
 }
 
 void apply_ansi_style() {
-    TODO("Make this better, not my best code")
-    TODO("Support RGB")
+    // Make this better, not my best code
+    // Support RGB
+
     /*
     AnsiCmd cmd;
     switch (info.ansi_arguments[0][0]) {
@@ -193,7 +195,7 @@ void apply_ansi_style() {
 }
 
 void parse_and_apply_color(IN CHAR_PTR arg) {
-    TODO("Fix this horrible code (This was just temporary for a working prototype)")
+    // Fix this horrible code (This was just temporary for a working prototype)
     uint32_t* color_ptr = nullptr;
     switch (arg[0]) {
     case '3':

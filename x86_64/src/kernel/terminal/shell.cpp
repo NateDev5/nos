@@ -58,11 +58,16 @@ void handle_keypress(IN Drivers::Keyboard::KeypressInfo keypress) {
 }
 
 void handle_command() {
-    TEMP
-        if (IS_CMD(buffer, "test")) test_cmd();
-    else if (IS_CMD(buffer, "clear")) Kernel::Terminal::clear();
-    else if (IS_CMD(buffer, "palloc")) palloc_cmd();
-    else if (IS_CMD(buffer, "ansi")) ansi_test_cmd();
+    if (IS_CMD(buffer, "test"))
+        test_cmd();
+    else if (IS_CMD(buffer, "clear"))
+        Kernel::Terminal::clear();
+    else if (IS_CMD(buffer, "palloc"))
+        palloc_cmd();
+    else if (IS_CMD(buffer, "ansi"))
+        ansi_test_cmd();
+    else if (IS_CMD(buffer, "rect"))
+        rect_cmd();
 }
 
 void new_entry() {
@@ -82,4 +87,10 @@ void palloc_cmd() {
 }
 
 void ansi_test_cmd() { TEMP KLOG("\033[0;31;45mHello\033[0m"); }
+
+void rect_cmd() {
+    TEMP
+
+        Drivers::Video::Framebuffer::draw_rectangle({0, 0}, {100, 100}, MAGENTA);
+}
 } // namespace Kernel::Shell
