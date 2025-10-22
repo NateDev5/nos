@@ -15,18 +15,17 @@ static uint8_t      term_buffer_lines[TEMP_TERM_HEIGHT];
 TerminalInfo info;
 
 void init() {
-    TODO("Add ANSI support")
-    TODO("Render characters more efficently")
+    clear();
     Shared::Point font_size = Drivers::Video::Framebuffer::font_size();
-    info.width  = Drivers::Video::Framebuffer::width() / font_size.x;  // width in characters
-    info.height = Drivers::Video::Framebuffer::height() / font_size.y; // height in characters
+    info.width              = Drivers::Video::Framebuffer::width() / font_size.x;  // width in characters
+    info.height             = Drivers::Video::Framebuffer::height() / font_size.y; // height in characters
 
     Shared::memset(info.ansi_arguments, 0, ANSI_MAX_ARGS);
     info.ansi_argument_ptr  = 0;
     info.argument_digit_ptr = 0;
 
-    info.forecolor = DEFAULT;
-    info.backcolor = BLACK;
+    info.forecolor = DEFAULT_FORE;
+    info.backcolor = DEFAULT_BACK;
 
     KINFO("Terminal info:")
     KINFO("   - Width: %i", info.width)
@@ -66,7 +65,7 @@ void print_char(IN char _char) {
             info.parsing_argument  = true;
             info.ansi_sequence     = true;
             info.ansi_argument_ptr = 0;
-            Shared::memset(info.ansi_arguments, 0, ANSI_MAX_ARGS);
+            Shared::memset(info.ansi_arguments, 0, sizeof(info.ansi_arguments));
             return;
         }
         break;
@@ -134,11 +133,11 @@ void scroll_up() {
 }
 
 void clear() {
-    Drivers::Video::Framebuffer::clear();
+    Drivers::Video::Framebuffer::clear(DEFAULT_BACK);
 
     for (uint32_t y = 0; y < TEMP_TERM_HEIGHT; y++) {
         for (uint32_t x = 0; x < TEMP_TERM_WIDTH; x++) {
-            term_buffer_grid[y][x] = {0, DEFAULT, BLACK, NOT_DIRTY};
+            term_buffer_grid[y][x] = {0, DEFAULT_FORE, DEFAULT_BACK, NOT_DIRTY};
         }
         term_buffer_lines[y] = NOT_DIRTY;
     }
@@ -148,12 +147,9 @@ void clear() {
 }
 
 void apply_ansi_style() {
-    // Make this better, not my best code
-    // Support RGB
-
-    /*
-    AnsiCmd cmd;
-    switch (info.ansi_arguments[0][0]) {
+    uint64_t arg_index = 0;
+    AnsiCmd  cmd       = Reset;
+    switch (info.ansi_arguments[arg_index][0]) {
     case '0':
         cmd = Reset;
         break;
@@ -164,10 +160,16 @@ void apply_ansi_style() {
         cmd = Dim;
         break;
     case '3':
-        cmd = Italic;
+        if (info.ansi_arguments[arg_index][1] == '8')
+            cmd = Foreground;
+        else
+            cmd = Italic;
         break;
     case '4':
-        cmd = Underline;
+        if (info.ansi_arguments[arg_index][1] == '8')
+            cmd = Background;
+        else
+            cmd = Underline;
         break;
     case '5':
         cmd = Blinking;
@@ -182,27 +184,65 @@ void apply_ansi_style() {
         cmd = Strikethrough;
         break;
     }
-    */
 
-    if (info.ansi_argument_ptr == 0) {
-        info.forecolor = DEFAULT;
-        info.backcolor = BLACK;
+    if (cmd == Foreground || cmd == Background) {
+        if (info.ansi_arguments[++arg_index][0] != '2' || info.ansi_argument_ptr != 4)
+            return;
+        apply_ansi_rgb_color(cmd);
+
         return;
     }
 
-    for (uint8_t i = 0; i < info.ansi_argument_ptr; i++)
-        parse_and_apply_color(info.ansi_arguments[i + 1]);
+    if (info.ansi_argument_ptr == 0) {
+        info.forecolor = DEFAULT_FORE;
+        info.backcolor = DEFAULT_BACK;
+        return;
+    }
+
+    if (cmd == Reset)
+        for (uint8_t i = 0; i < info.ansi_argument_ptr; i++)
+            apply_ansi_preset_color(info.ansi_arguments[i + 1]);
 }
 
-void parse_and_apply_color(IN CHAR_PTR arg) {
-    // Fix this horrible code (This was just temporary for a working prototype)
-    uint32_t* color_ptr = nullptr;
-    switch (arg[0]) {
-    case '3':
+void apply_ansi_rgb_color(IN AnsiCmd cmd) {
+    uint32_t *color_ptr = nullptr;
+    switch (cmd) {
+    case Foreground:
         color_ptr = &info.forecolor;
         break;
-    case '4':
+    case Background:
         color_ptr = &info.backcolor;
+        break;
+    default:
+        return;
+    }
+
+    uint32_t color = 0;
+
+    for (uint8_t i = 2; i < info.ansi_argument_ptr + 1; i++) {
+        int64_t parsed = Shared::parse_int(info.ansi_arguments[i]);
+        if (parsed < 0 || parsed > 255)
+            return;
+
+        // in the future, check for the color model and use the shift mask for each color
+        uint64_t to_shift = info.ansi_argument_ptr - i;
+        color |= parsed << to_shift * 8;
+    }
+
+    *color_ptr = color;
+}
+
+void apply_ansi_preset_color(IN CHAR_PTR arg) {
+    uint32_t *color_ptr   = nullptr;
+    uint32_t  default_col = 0;
+    switch (arg[0]) {
+    case '3':
+        color_ptr   = &info.forecolor;
+        default_col = DEFAULT_FORE;
+        break;
+    case '4':
+        color_ptr   = &info.backcolor;
+        default_col = DEFAULT_BACK;
         break;
     }
 
@@ -232,7 +272,7 @@ void parse_and_apply_color(IN CHAR_PTR arg) {
         *color_ptr = WHITE;
         break;
     case '9':
-        *color_ptr = DEFAULT;
+        *color_ptr = default_col;
         break;
     }
 }

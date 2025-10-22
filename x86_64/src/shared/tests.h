@@ -42,6 +42,8 @@ TEST(string, strcpy, {
 
 TEST(math, abs, EXPECT_EQ(Shared::abs(-50), 50))
 
+TEST(math, pow, EXPECT_EQ2(Shared::pow(23, 4), 279841, Shared::pow(10, 5), 100000))
+
 TEST(humanize, bytes, {
     CONST_CHAR_PTR alias;
     uint64_t       value = 50000;
@@ -62,6 +64,12 @@ TEST(memory, memcpy, {
     EXPECT_EQ2(test_arr2[0], 0, test_arr2[1], 0);
 })
 
+TEST(parse, parse_int, {
+    int64_t res1 = Shared::parse_int("255");
+    int64_t res2 = Shared::parse_int("-255");
+    EXPECT_EQ2(res1, 255, res2, -255);
+})
+
 TEST(parse, is_numeric, {
     bool first_res = Shared::is_numeric('A');
     bool second_res = Shared::is_numeric('6');
@@ -76,11 +84,14 @@ TEST_GROUP(shared_lib, {
     USE_TEST(string, strcpy)
 
     USE_TEST(math, abs)
+    USE_TEST(math, pow)
+
     USE_TEST(humanize, bytes)
 
     USE_TEST(memory, memset)
     USE_TEST(memory, memcpy)
 
+    USE_TEST(parse, parse_int)
     USE_TEST(parse, is_numeric)
 })
 

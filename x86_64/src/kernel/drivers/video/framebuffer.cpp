@@ -122,9 +122,9 @@ void draw_rectangle(IN Shared::Point pos, IN Shared::Point size, IN uint32_t col
             draw_pixel({x + pos.x, y + pos.y}, color);
 }
 
-void clear() {
-    uint64_t size = (fb_info.raw_width * fb_info.raw_height) * 4; // multiply by 4 because each color is 4 bytes and memset does byte by byte
-    Shared::memset(fb_info.ptr, 0, size);
+void clear(IN uint32_t color) {
+    uint64_t size = (fb_info.raw_width * fb_info.raw_height);// * 4; // multiply by 4 because each color is 4 bytes and memset does byte by byte
+    Shared::memset32(fb_info.ptr, color, size);
 }
 
 uint64_t width() { return fb_info.width; }

@@ -14,7 +14,7 @@
 #define ANSI_ESCAPE      27
 #define ANSI_CSI         '['
 
-#define ANSI_MAX_ARGS    3
+#define ANSI_MAX_ARGS    5
 
 #define BLUE             0x001D56BF
 #define BLACK            0x0
@@ -24,8 +24,8 @@
 #define MAGENTA          0x00BF1DB7
 #define CYAN             0x001DBFB2
 #define WHITE            0xFFFFFFFF
-#define DEFAULT          WHITE
-
+#define DEFAULT_FORE     WHITE
+#define DEFAULT_BACK     0x20202020
 namespace Kernel::Terminal {
 struct TerminalInfo {
     uint32_t width;
@@ -47,13 +47,13 @@ struct TerminalInfo {
 };
 
 struct TerminalCell {
-    char    unicode;
+    char     unicode;
     uint32_t forecolor;
     uint32_t backcolor;
-    uint8_t dirty;
+    uint8_t  dirty;
 };
 
-enum AnsiCmd { Reset, Bold, Dim, Italic, Underline, Blinking, Inverse, Hidden, Strikethrough };
+enum AnsiCmd { Reset, Bold, Dim, Italic, Underline, Blinking, Inverse, Hidden, Strikethrough, Foreground, Background };
 
 void init();
 void print_char(IN char _char);
@@ -62,6 +62,8 @@ void modify_cell(IN uint32_t x, IN uint32_t y, IN char unicode);
 void render_term(IN bool redraw = false);
 void scroll_up();
 void clear();
+
 void apply_ansi_style();
-void parse_and_apply_color (IN CHAR_PTR arg);
+void apply_ansi_rgb_color(IN AnsiCmd cmd);
+void apply_ansi_preset_color(IN CHAR_PTR str);
 } // namespace Kernel::Terminal

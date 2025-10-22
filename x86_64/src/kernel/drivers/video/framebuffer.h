@@ -40,7 +40,7 @@ void     draw_pixel(IN Shared::Point pos, IN uint32_t color);
 void     draw_char_no_padding(IN Shared::Point pos, IN char _char, IN uint32_t forecolor, IN uint32_t backcolor);
 void     draw_char(IN Shared::Point pos, IN char _char, IN uint32_t forecolor, IN uint32_t backcolor);
 void     draw_rectangle(IN Shared::Point pos, IN Shared::Point size, IN uint32_t color);
-void     clear();
+void     clear(IN uint32_t color);
 uint64_t width();
 uint64_t height();
 Shared::Point font_size();
