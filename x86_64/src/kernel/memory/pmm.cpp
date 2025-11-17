@@ -11,46 +11,68 @@
 
 namespace Memory::Physical {
 
-__attribute__((used,
-               section(".limine_requests"))) volatile limine_memmap_request memmap_request = {.id = LIMINE_MEMMAP_REQUEST, .revision = 0, .response = nullptr};
+__attribute__((used, section(".limine_requests"))) volatile limine_hhdm_request hhdm_request = {.id = LIMINE_HHDM_REQUEST, .revision = 0, .response = nullptr};
 
-static uint64_t mem_bitmap[MAX_INITIAL_PAGES];
+// static uint64_t mem_bitmap[MAX_INITIAL_PAGES];
 
 PMMData pmm_data;
 
-void init() {
-    if (memmap_request.response == NULLPTR)
-        Kernel::panic("Memory map not found");
+/*
+CONST_CHAR_PTR memmap_entry_types[9] = {
+        "\033[0;32mUsable\033[0m",
+        "\033[0;31mReserved\033[0m",
+        "\033[0;32mACPI Reclaimable\033[0m",
+        "ACPI Nvs",
+        "\033[0;31mBad Memory\033[0m",
+        "\033[0;32mBootloader Reclaimable\033[0m",
+        "Executable And Modules",
+        "Framebuffer",
+        "ACPI Tables"
+};
+*/
 
-    KINFO("Memory map:")
-    limine_memmap_response *memmap = memmap_request.response;
-    CONST_CHAR_PTR          alias  = 0;
-    for (uint64_t i = 0; i < memmap->entry_count; i++) {
-        limine_memmap_entry *entry           = memmap->entries[i];
-        uint64_t             humanized_value = Shared::Humanize::bytes(entry->length, alias);
-        KINFO("Base: %H, Length: %i %s (%i), Type: %i", entry->base, humanized_value, alias, entry->length, entry->type);
+void init() {
+    if (hhdm_request.response == nullptr)
+        Kernel::panic("HHDM not found");
+
+    /*
+KINFO("Memory map:")
+limine_memmap_response *memmap = memmap_request.response;
+CONST_CHAR_PTR          alias  = 0;
+for (uint64_t i = 0; i < memmap->entry_count; i++) {
+    limine_memmap_entry *entry           = memmap->entries[i];
+    uint64_t             humanized_value = Shared::Humanize::bytes(entry->length, alias);
+    KINFO("Base: %H, Length: %i %s (%i), Type: %s", entry->base, humanized_value, alias, entry->length, memmap_entry_types[entry->type]);
+            if(pmm_data.test_offset == 0 && entry->type == LIMINE_MEMMAP_USABLE)
+                    pmm_data.test_offset = entry->base;
     }
+    */
 
     // pmm_data.hhdm_offset = hhdm_request.response->offset;
     // KLOG("HHDM offset is: %H", pmm_data.hhdm_offset);
 
-    // pmm_data.last_bitmap_index = 0;
+    pmm_data.hhdm_offset       = hhdm_request.response->offset;
+    pmm_data.last_bitmap_index = 0;
 }
 
 PTR alloc_page() {
-    uint64_t page_index = pmm_data.last_bitmap_index;
-    for (; page_index < MAX_INITIAL_PAGES; page_index++) {
-        uint64_t cur_page = mem_bitmap[page_index];
-        if ((cur_page & 1) == 0) {
-            mem_bitmap[page_index] |= 1;
-            break;
-        }
-    }
-    uint64_t page_addr = ((page_index * 64) + 8) * PAGE_SIZE;
+	/*
+	while(pmm_data.last_bitmap_index < MAX_INITIAL_PAGES) {
+		uint64_t cur_bitmap = mem_bitmap[pmm_data.last_bitmap_index];
+
+		if(cur_bitmap == 0) {
+		}
+	}
+
+	KINFO("Page index: %i, Bit index: %i, Bitmap: %b", page_index, bit_index, mem_bitmap[page_index]);
+
+    uint64_t page_addr = (((page_index * bit_index) + 8) * PAGE_SIZE) + pmm_data.hhdm_offset;
     Shared::memset((PTR)page_addr, 0, PAGE_SIZE);
     KINFO("Page address: %H", page_addr);
     return (PTR)page_addr;
-}
+*/
+	return 0;
+	}
 
 void free_page() {}
 } // namespace Memory::Physical

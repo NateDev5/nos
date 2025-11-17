@@ -1,3 +1,4 @@
+#include "kernel/arch/x86_64/time/time.h"
 #include <utils/types.h>
 
 #include <kernel/terminal/shell.h>
@@ -68,6 +69,8 @@ void handle_command() {
         ansi_test_cmd();
     else if (IS_CMD(buffer, "rect"))
         rect_cmd();
+    else if (IS_CMD(buffer, "time"))
+		time_cmd();
 }
 
 void new_entry() {
@@ -81,27 +84,34 @@ void new_entry() {
 void test_cmd() { TEMP Library::println("Hello world!"); }
 
 void palloc_cmd() {
-    TEMP
+    TEMP;
 
     Memory::Physical::alloc_page();
 }
 
-void ansi_test_cmd() { TEMP 
-    KLOG("\033[0;31;45mHello\033[0m");
+void ansi_test_cmd() {
+    TEMP KLOG("\033[0;31;45mHello\033[0m");
     KLOG("\033[38;2;255;177;4m\033[48;2;153;178;222mWorld\033[0m");
     KLOG("\033[32148h9h;324;t23mShould not work")
     KLOG("\033[243422;31mShould not work")
     KLOG("\033[38;8;243;4;4mShould not work\033[0m")
-    
-    for(uint8_t i = 255; i != 0; i--)
+
+    for (uint8_t i = 255; i != 0; i--)
         Library::printf("\033[38;2;%i;0;0mR\033[38;2;0;%i;0mG\033[38;2;0;0;%imB ", i, i, i);
-    
+
     KLOG("\033[0m")
 }
 
 void rect_cmd() {
-    TEMP
+    TEMP;
 
-        Drivers::Video::Framebuffer::draw_rectangle({0, 0}, {100, 100}, MAGENTA);
+    Drivers::Video::Framebuffer::draw_rectangle({0, 0}, {100, 100}, MAGENTA);
+}
+
+void time_cmd() { 
+	TEMP; 
+
+	uint64_t time = Arch::x86_64::Time::get_timestamp_counter();
+	Library::printf("Time since CPU reset: %i\n", time);
 }
 } // namespace Kernel::Shell

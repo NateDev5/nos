@@ -19,7 +19,7 @@ __attribute__((used, section(".limine_requests"))) volatile limine_framebuffer_r
 FramebufferInfo                                                                        fb_info;
 
 void init() {
-    if (framebuffer_request.response == NULLPTR || framebuffer_request.response->framebuffer_count < 1)
+    if (framebuffer_request.response == nullptr || framebuffer_request.response->framebuffer_count < 1)
         Kernel::panic("No usable framebuffer found");
 
     limine_framebuffer *framebuffer = framebuffer_request.response->framebuffers[0];

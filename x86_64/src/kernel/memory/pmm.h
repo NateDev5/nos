@@ -13,8 +13,9 @@
 
 namespace Memory::Physical {
 struct PMMData {
-    uint64_t hhdm_offset;
+	uint64_t hhdm_offset;
     uint64_t last_bitmap_index;
+	uint64_t last_bit_index;
 };
 
 void init();

@@ -10,10 +10,13 @@
 #include <shared/parse.h>
 
 namespace Shared::Tests {
+
+#ifdef __TESTING__
 static CONST_CHAR_PTR test_str1 = "Test1";
 static CONST_CHAR_PTR test_str2 = "Test2";
 static uint8_t test_arr1[2] = {67, 67};
 static uint8_t test_arr2[2] = {67, 67};
+#endif
 
 TEST(string, strlen, {
     uint64_t len = Shared::strlen(test_str1);
@@ -49,7 +52,7 @@ TEST(humanize, bytes, {
     uint64_t       value = 50000;
 
     value = Shared::Humanize::bytes(value, alias);
-    int8_t equal = Shared::strcmp(alias, "KB");
+    int8_t equal = Shared::strcmp(alias, "KiB");
 
     EXPECT_EQ2(value, 48, equal, 0)
 })

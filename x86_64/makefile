@@ -87,7 +87,7 @@ monitor:
 gdb:
 	$(MAKE) DEBUG=1
 	@echo -e "\n>>> Debugging using QEMU/GDB (Debug + Serial)"
-	$(QEMU) $(QEMU_FLAGS) $(QEMU_FLAG_SERIAL) -cdrom $(OS_OUT) -s -S & > qemu.log
+	$(QEMU) $(QEMU_FLAGS) -cdrom $(OS_OUT) -s -S & > qemu.log
 	$(GDB) -tui -q -iex "set auto-load safe-path /"
 
 int:

@@ -57,7 +57,7 @@ void set_irq_handler(IN uint8_t irq, IN PTR handler) {
 void handle_irq(IN uint64_t irq_num) {
     PTR irq_handler = Arch::x86_64::IDT::irq_handlers[irq_num];
 
-    if (irq_handler == NULLPTR) {
+    if (irq_handler == nullptr) {
         DEBUG_WARN("IRQ%i triggered but has no handler", irq_num)
         Arch::x86_64::PIC::send_EOI(irq_num);
         return;

@@ -4,32 +4,36 @@
 
 #include <kernel/library/log.h>
 
+#include <kernel/arch/x86_64/time/time.h>
+
 #include <stdarg.h>
 
 #ifdef __DEBUG__
 
+#define GET_TIME Arch::x86_64::Time::get_timestamp_counter()
+
 #define DEBUG_INFO(msg, ...)                                                                                                                                   \
-    Debug::printf("\033[0;34m[ INFO ]\033[0m ");                                                                                                               \
+    Debug::printf("(%i) \033[0;34m[ INFO ]\033[0m ", GET_TIME);                                                                                                \
     Debug::fprintln(msg, ##__VA_ARGS__);
 
 #define DEBUG_DEBUG(msg, ...)                                                                                                                                  \
-    Debug::printf("\033[0;32m[ DEBUG ]\033[0m ");                                                                                                              \
+    Debug::printf("(%i) \033[0;32m[ DEBUG ]\033[0m ", GET_TIME);                                                                                               \
     Debug::fprintln(msg, ##__VA_ARGS__);
 
 #define DEBUG_WARN(msg, ...)                                                                                                                                   \
-    Debug::printf("\033[0;33m[ WARNING ]\033[0m ");                                                                                                            \
+    Debug::printf("(%i) \033[0;33m[ WARNING ]\033[0m ", GET_TIME);                                                                                             \
     Debug::fprintln(msg, ##__VA_ARGS__);
 
 #define DEBUG_ERROR(msg, ...)                                                                                                                                  \
-    Debug::printf("\033[0;31m[ ERROR ] (%s:%s)\033[0m ", __FILE__, __func__);                                                                                  \
+    Debug::printf("(%i) \033[0;31m[ ERROR ] (%s:%s)\033[0m ", GET_TIME, __FILE__, __func__);                                                                   \
     Debug::fprintln(msg, ##__VA_ARGS__);
 
 #define DEBUG_FATAL(msg, ...)                                                                                                                                  \
-    Debug::printf("\033[0;91m[ FATAL ] (%s:%s)\033[0m ", __FILE__, __func__);                                                                                  \
+    Debug::printf("(%i) \033[0;91m[ FATAL ]\033[0m ", GET_TIME);                                                                                               \
     Debug::fprintln(msg, ##__VA_ARGS__);
 
 #define DEBUG_CUSTOM(context, ansi_color, msg, ...)                                                                                                            \
-    Debug::printf("%s[ %s ]\033[0m ", ansi_color, context);                                                                                                    \
+    Debug::printf("(%i) %s[ %s ]\033[0m ", GET_TIME, ansi_color, context);                                                                                     \
     Debug::fprintln(msg, ##__VA_ARGS__);
 
 #define DEBUG_LOG(msg, ...) Debug::fprintln(msg, ##__VA_ARGS__);
@@ -38,8 +42,8 @@
     Debug::print_str(msg);                                                                                                                                     \
     Debug::print_char('\n');
 
-#define DEBUG_INFO_RAW(msg) \
-    Debug::print_str("\033[0;34m[ INFO ]\033[0m "); \
+#define DEBUG_INFO_RAW(msg)                                                                                                                                    \
+    Debug::print_str("\033[0;34m[ INFO (RAW) ]\033[0m ");                                                                                                      \
     DEBUG_RAW(msg)
 
 #define TODO(todo)  Debug::fprintln("\033[0;36m[ TODO ] (%s:%s)\033[0m: %s", __FILE__, __func__, todo);

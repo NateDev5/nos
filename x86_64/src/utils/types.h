@@ -1,8 +1,8 @@
 #pragma once
 
+#include <cstddef>
 #include <cstdint>
-#define NULL    0
-#define NULLPTR nullptr
+
 #define IN
 #define OUT
 #define IN_OUT
@@ -11,6 +11,8 @@
 
 #define STR_MAX_LEN 512
 
+typedef std::size_t     size_t;
+//
 typedef uint8_t         u8;
 typedef uint16_t        u16;
 typedef uint32_t        u32;

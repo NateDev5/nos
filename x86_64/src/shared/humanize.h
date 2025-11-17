@@ -2,12 +2,12 @@
 
 #include <utils/types.h>
 
-#define KB_BOUNDS 0x400
-#define MB_BOUNDS 0x100000
-#define GB_BOUNDS 0x40000000
-#define TB_BOUNDS 0x10000000000
-#define PB_BOUNDS 0x4000000000000
-#define EB_BOUNDS 0x100000000000000
+#define KiB_BOUNDS 0x400
+#define MiB_BOUNDS 0x100000
+#define GiB_BOUNDS 0x40000000
+#define TiB_BOUNDS 0x10000000000
+#define PiB_BOUNDS 0x4000000000000
+#define EiB_BOUNDS 0x100000000000000
 
 #define IN_RANGE(value, min, max) value >= min && value < max
 

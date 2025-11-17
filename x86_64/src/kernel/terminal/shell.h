@@ -18,4 +18,5 @@ void test_cmd();
 void palloc_cmd();
 void ansi_test_cmd();
 void rect_cmd();
+void time_cmd();
 } // namespace Kernel::Shell

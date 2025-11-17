@@ -6,7 +6,7 @@
 
 namespace Shared {
 int64_t parse_int(IN CONST_CHAR_PTR str) {
-    ASSERT_RETURN(str != NULLPTR, "Input string is null", 0);
+    ASSERT_RETURN(str != nullptr, "Input string is null", 0);
 
     int64_t  result  = 0;
     uint64_t str_ptr = 0;

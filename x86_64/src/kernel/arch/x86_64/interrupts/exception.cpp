@@ -33,7 +33,7 @@ CONST_CHAR_PTR exception_names[22] = {
 void handle_pagefault(IN uint64_t error_code) {
     // cr2 register holds the address causing the page fault
     uint64_t cr2_value;
-    asm volatile("mov %%cr2, %0" : "=r"(cr2_value));
+    __asm__ volatile("mov %%cr2, %0" : "=r"(cr2_value));
 
     PRINT_EXCEPTION("(%s) %s", (error_code & 2) ? "WRITE" : "READ", (error_code & 1) ? "PAGE PROTECTION VIOLATION" : "NON PRESENT PAGE")
     PRINT_EXCEPTION("Usermode?: %s", (error_code & 4) ? "Yes" : "No")
