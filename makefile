@@ -1,112 +1,108 @@
 DEBUG ?= 0
 TESTING ?= 0
 
-# Info
-OS_NAME				= nos
-ARCH				= x86_64
-BOOTLOADER			= limine
+OS_NAME := nos
+ARCH := x86_64
+BOOTLOADER := limine
 
-# Executables
-MAKE				= make
-QEMU				= qemu-system-$(ARCH)
-GDB					= gdb
-GIT					= git
-XORRISO				= xorriso
+QEMU ?= qemu-system-$(ARCH)
+GDB ?= gdb
+XORRISO ?= xorriso
 
-# Folders
-BOOT_FOLDER			= boot
-SRC_FOLDER			= src
-SRC_BOOT_FOLDER		= $(SRC_FOLDER)/boot
-BUILD_FOLDER		= bin
-ISO_FOLDER			= iso
+BOOT_DIR := boot
+SRC_DIR := src
+BUILD_DIR := bin
+ISO_DIR := iso
+ISO_BOOT_DIR := $(ISO_DIR)/boot/limine
 
-# Files
-KERNEL				= $(BUILD_FOLDER)/kernel.elf
+KERNEL := $(BUILD_DIR)/kernel.elf
+ISO_KERNEL := $(ISO_DIR)/boot/kernel.elf
 
-# Bootloader
-LIMINE_REPO			= https://github.com/limine-bootloader/limine.git
-LIMINE_VERSION		= v9.x-binary
-LIMINE_FOLDER		= limine_bin
-LIMINE_CONF			= $(BOOT_FOLDER)/limine/limine.conf
-LIMINE_BIOS_SYS		= $(LIMINE_FOLDER)/limine-bios.sys
-LIMINE_BIOS_CD		= $(LIMINE_FOLDER)/limine-bios-cd.bin
-LIMINE_HEADER		= $(LIMINE_FOLDER)/limine.h
-LIMINE_EXECUTABLE	= $(LIMINE_FOLDER)/limine
+LIMINE_DIR := limine
+LIMINE_CONF := $(BOOT_DIR)/limine/limine.conf
+LIMINE_BIOS_SYS := $(LIMINE_DIR)/limine-bios.sys
+LIMINE_BIOS_CD := $(LIMINE_DIR)/limine-bios-cd.bin
+LIMINE_EXECUTABLE := $(LIMINE_DIR)/limine
 
-# Output files
 ifeq ($(DEBUG),1)
-	OS_OUT			:= $(BUILD_FOLDER)/$(OS_NAME)_$(ARCH)_$(BOOTLOADER)_debug.iso
+OS_OUT := $(BUILD_DIR)/$(OS_NAME)_$(ARCH)_$(BOOTLOADER)_debug.iso
+QEMU_RUN_FLAGS := -serial stdio
+RUN_LABEL := Debug + Serial
 else
-	OS_OUT			:= $(BUILD_FOLDER)/$(OS_NAME)_$(ARCH)_$(BOOTLOADER)_release.iso
+OS_OUT := $(BUILD_DIR)/$(OS_NAME)_$(ARCH)_$(BOOTLOADER)_release.iso
+QEMU_RUN_FLAGS :=
+RUN_LABEL := Release
 endif
 
-# Flags
-QEMU_FLAGS			= -M q35 -m 8G -no-reboot
-QEMU_FLAG_DBG_INT	= -d int,cpu_reset
-QEMU_FLAG_SERIAL	= -serial stdio
-QEMU_FLAG_MONITOR	= -monitor stdio
+QEMU_FLAGS := -M q35 -m 8G -no-reboot
+QEMU_DBG_INT_FLAGS := -d int,cpu_reset
+QEMU_MONITOR_FLAGS := -monitor stdio
+XORRISO_FLAGS := -as mkisofs -R -r -J \
+	-b boot/limine/limine-bios-cd.bin \
+	-no-emul-boot -boot-load-size 4 -boot-info-table
 
-XORRISO_FLAGS		= -as mkisofs -R -r -J -b boot/limine/limine-bios-cd.bin -no-emul-boot -boot-load-size 4 -boot-info-table
-
-.PHONY: all kernel run dbg monitor gdb clean clean-all
+.PHONY: all kernel run dbg monitor gdb int clean clean-all limine
 
 all: $(OS_OUT)
 
-$(LIMINE_FOLDER):
-	@echo -e "\n>>> Cloning and building limine binaries <<<\n"
-	$(GIT) clone $(LIMINE_REPO) --branch=$(LIMINE_VERSION) --depth=1 $(LIMINE_FOLDER)
-	$(MAKE) -C $(LIMINE_FOLDER)
-	cp -rv $(LIMINE_HEADER) $(SRC_BOOT_FOLDER)/limine
+limine: $(LIMINE_EXECUTABLE)
 
-$(ISO_FOLDER):
-	mkdir -pv $@/boot/limine
-	cp -v $(LIMINE_CONF) $(LIMINE_BIOS_SYS) $(LIMINE_BIOS_CD) $@/boot/limine
+$(LIMINE_EXECUTABLE): $(LIMINE_DIR)/Makefile
+	@printf '\n>>> Building Limine from submodule <<<\n\n'
+	$(MAKE) -C $(LIMINE_DIR)
 
-$(OS_OUT): $(LIMINE_FOLDER) $(ISO_FOLDER)
-	$(MAKE) kernel DEBUG=$(DEBUG) TESTING=$(TESTING)
-	@echo -e "\n>>> Creating final os binaries <<<\n"
-	cp -v $(KERNEL) $(ISO_FOLDER)/boot
-	$(XORRISO) $(XORRISO_FLAGS) $(ISO_FOLDER) -o $@
+$(ISO_BOOT_DIR):
+	mkdir -p $@
+
+$(ISO_BOOT_DIR)/limine.conf: $(LIMINE_CONF) | $(ISO_BOOT_DIR)
+	cp -v $< $@
+
+$(ISO_BOOT_DIR)/limine-bios.sys: $(LIMINE_BIOS_SYS) | $(ISO_BOOT_DIR)
+	cp -v $< $@
+
+$(ISO_BOOT_DIR)/limine-bios-cd.bin: $(LIMINE_BIOS_CD) | $(ISO_BOOT_DIR)
+	cp -v $< $@
+
+$(ISO_KERNEL): kernel
+	mkdir -p $(dir $@)
+	cp -v $(KERNEL) $@
+
+$(OS_OUT): $(LIMINE_EXECUTABLE) $(ISO_KERNEL) $(ISO_BOOT_DIR)/limine.conf $(ISO_BOOT_DIR)/limine-bios.sys $(ISO_BOOT_DIR)/limine-bios-cd.bin
+	@printf '\n>>> Creating final OS image <<<\n\n'
+	mkdir -p $(dir $@)
+	$(XORRISO) $(XORRISO_FLAGS) $(ISO_DIR) -o $@
 	$(LIMINE_EXECUTABLE) bios-install $@
 
 kernel:
-	@echo -e "\n>>> Building kernel <<<\n"
-	$(MAKE) -C $(SRC_FOLDER)
+	@printf '\n>>> Building kernel <<<\n\n'
+	$(MAKE) -C $(SRC_DIR) DEBUG=$(DEBUG) TESTING=$(TESTING)
 
-ifeq ($(DEBUG),1)
-run: 
-	$(MAKE) DEBUG=1 TESTING=$(TESTING)
-	@echo -e "\n>>> Running using QEMU (Debug + Serial) <<<\n"
-	$(QEMU) $(QEMU_FLAGS) $(QEMU_FLAG_SERIAL) -cdrom $(OS_OUT)
-
-monitor:
-	$(MAKE) DEBUG=1
-	@echo -e "\n>>> Running using QEMU (Debug + Monitor) <<<\n"
-	$(QEMU) $(QEMU_FLAGS) $(QEMU_FLAG_MONITOR) -cdrom $(OS_OUT)
-
-gdb:
-	$(MAKE) DEBUG=1
-	@echo -e "\n>>> Debugging using QEMU/GDB (Debug + Serial)"
-	$(QEMU) $(QEMU_FLAGS) -cdrom $(OS_OUT) -s -S & > qemu.log
-	$(GDB) -tui -q -iex "set auto-load safe-path /"
-
-int:
-	$(MAKE) DEBUG=1
-	@echo -e "\n>>> Running using QEMU (Debug + Interrupts)"
-	$(QEMU) $(QEMU_FLAGS) $(QEMU_FLAG_DBG_INT) -cdrom $(OS_OUT)
-
-else
 run:
-	$(MAKE) DEBUG=0
-	@echo -e "\n>>> Running using QEMU (Release) <<\n"
-	$(QEMU) $(QEMU_FLAGS) -cdrom $(OS_OUT)
-endif
+	$(MAKE) DEBUG=$(DEBUG) TESTING=$(TESTING)
+	@printf '\n>>> Running using QEMU ($(RUN_LABEL)) <<<\n\n'
+	$(QEMU) $(QEMU_FLAGS) $(QEMU_RUN_FLAGS) -cdrom $(OS_OUT)
 
 dbg:
 	$(MAKE) run DEBUG=1 TESTING=1
-	
-clean:
-	rm -rf $(BUILD_FOLDER) $(ISO_FOLDER)
 
-clean-all:
-	rm -rf $(BUILD_FOLDER) $(LIMINE_FOLDER) $(ISO_FOLDER)
+monitor:
+	$(MAKE) DEBUG=1 TESTING=$(TESTING)
+	@printf '\n>>> Running using QEMU (Debug + Monitor) <<<\n\n'
+	$(QEMU) $(QEMU_FLAGS) $(QEMU_MONITOR_FLAGS) -cdrom $(BUILD_DIR)/$(OS_NAME)_$(ARCH)_$(BOOTLOADER)_debug.iso
+
+gdb:
+	$(MAKE) DEBUG=1 TESTING=$(TESTING)
+	@printf '\n>>> Debugging using QEMU/GDB (Debug + Serial) <<<\n\n'
+	$(QEMU) $(QEMU_FLAGS) -cdrom $(BUILD_DIR)/$(OS_NAME)_$(ARCH)_$(BOOTLOADER)_debug.iso -s -S > qemu.log 2>&1 &
+	$(GDB) -tui -q -iex "set auto-load safe-path /"
+
+int:
+	$(MAKE) DEBUG=1 TESTING=$(TESTING)
+	@printf '\n>>> Running using QEMU (Debug + Interrupts) <<<\n\n'
+	$(QEMU) $(QEMU_FLAGS) $(QEMU_DBG_INT_FLAGS) -cdrom $(BUILD_DIR)/$(OS_NAME)_$(ARCH)_$(BOOTLOADER)_debug.iso
+
+clean:
+	rm -rf $(BUILD_DIR) $(ISO_DIR)
+
+clean-all: clean
+	$(MAKE) -C $(LIMINE_DIR) clean

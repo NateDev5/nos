@@ -1,5 +1,7 @@
 build/
 bin/
 iso/
-limine_bin/
 .cache/
+compile_command.json
+.codex/
+.agent/
