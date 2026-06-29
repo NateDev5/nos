@@ -1,5 +1,0 @@
-First sector -> Bootsector
-
-First 2-12 sectors -> Second stage of bootloader
-
-Sectors 12-128 -> Kernel
