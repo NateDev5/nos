@@ -1,4 +1,3 @@
-#include "kernel/arch/x86_64/interrupts/exception.h"
 #include <kernel/arch/x86_64/interrupts/idt.h>
 #include <kernel/arch/x86_64/interrupts/pic.h>
 
@@ -32,7 +31,7 @@ void setup() {
         set_entry(vector + 32, (uint64_t)IRQ_stub_0 + vector * 16, INTERRUPT_GATE);
 
     __asm__ volatile("lidt %0" ::"m"(idtr));
-    sti();
+    //sti();
 
     KINFO("IDT Initialized")
 }

@@ -13,7 +13,7 @@
 
 namespace Drivers::Video::Framebuffer {
 
-__attribute__((used, section(".limine_requests"))) volatile limine_framebuffer_request framebuffer_request = {.id       = LIMINE_FRAMEBUFFER_REQUEST,
+__attribute__((used, section(".limine_requests"))) volatile limine_framebuffer_request framebuffer_request = {.id       = LIMINE_FRAMEBUFFER_REQUEST_ID,
                                                                                                               .revision = 0,
                                                                                                               .response = nullptr};
 FramebufferInfo                                                                        fb_info;

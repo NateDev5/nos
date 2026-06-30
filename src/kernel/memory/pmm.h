@@ -7,15 +7,17 @@
 
 #include <utils/types.h>
 
-#define PAGE_SIZE         4096 // 4kb
+#define PAGE_SIZE              4096 // 4kb
 
-#define MAX_INITIAL_PAGES 65562 // uint16_t max
+#define MAX_INITIAL_PAGES      65562 // uint16_t max
+#define PAGES_PER_BITMAP_ENTRY 64
+#define BITMAP_SIZE            MAX_INITIAL_PAGES / PAGES_PER_BITMAP_ENTRY
+#define BITMAP_START_ADDRESS   0x1000 // where the first page is located
 
 namespace Memory::Physical {
 struct PMMData {
-	uint64_t hhdm_offset;
     uint64_t last_bitmap_index;
-	uint64_t last_bit_index;
+    uint64_t last_bit_index;
 };
 
 void init();

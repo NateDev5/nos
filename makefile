@@ -34,7 +34,7 @@ QEMU_RUN_FLAGS :=
 RUN_LABEL := Release
 endif
 
-QEMU_FLAGS := -M q35 -m 8G -no-reboot
+QEMU_FLAGS := -M q35 -m 2G -no-reboot
 QEMU_DBG_INT_FLAGS := -d int,cpu_reset
 QEMU_MONITOR_FLAGS := -monitor stdio
 XORRISO_FLAGS := -as mkisofs -R -r -J \

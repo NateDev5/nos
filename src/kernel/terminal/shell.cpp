@@ -86,7 +86,7 @@ void test_cmd() { TEMP Library::println("Hello world!"); }
 void palloc_cmd() {
     TEMP;
 
-    Memory::Physical::alloc_page();
+	Library::printf("%h", Memory::Physical::alloc_page());
 }
 
 void ansi_test_cmd() {

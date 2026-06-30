@@ -15,6 +15,7 @@ SRC_DIR := .
 # -Werror
 # -fno-stack-protector (stack overflows wont be found and it might find bugs if enabled)
 CXX_FLAGS := -ffreestanding \
+	-std=c++20 \
 	-fno-pic \
 	-fno-pie \
 	-fno-exceptions \
@@ -25,7 +26,7 @@ CXX_FLAGS := -ffreestanding \
 	-fdata-sections \
 	-Werror \
 	-Wall \
-	-DLIMINE_API_REVISION=3 \
+	-DLIMINE_API_REVISION=5 \
 	-mcmodel=kernel \
 	-m64 \
 	-march=x86-64 \

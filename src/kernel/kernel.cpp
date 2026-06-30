@@ -18,7 +18,7 @@
 #include <kernel/terminal/term.h>
 
 #include <kernel/testing/tests.h>
-
+#include <utils/asm.h>
 #include <kernel/memory/pmm.h>
 
 #include <shared/tests.h>
@@ -27,33 +27,35 @@ extern "C" void kmain() {
     // for debugging
     Drivers::UART::init_port(COM_PORT_1);
 
-    if (LIMINE_BASE_REVISION_SUPPORTED == false)
+    if (LIMINE_BASE_REVISION_SUPPORTED(limine_base_revision) == false)
         Kernel::panic("Limine base revision not supported");
 
     Arch::x86_64::GDT::setup();
 
-    Drivers::Video::Framebuffer::init();
+    // interrupts
+    Arch::x86_64::IDT::setup();
+    Arch::x86_64::PIT::init();
+	sti();
+    
+	Drivers::Video::Framebuffer::init();
     Kernel::Terminal::init();
-
-    // memory
-    Memory::Physical::init();
 
     // input
     Drivers::Keyboard::init(); // before setting up interrupts
 
-    // interrupts
-    Arch::x86_64::PIT::init();
-    Arch::x86_64::IDT::setup();
 
-    // testing
+	// memory
+    Memory::Physical::init();
+    
+	// testing
 #ifdef __TESTING__
     Kernel::Tests::test_group_kernel();
     Shared::Tests::test_group_shared_lib();
 #endif
     // shell
     Library::println("Starting shell...");
-    Library::sleep(100);
-    Kernel::Shell::run_shell();
+	Library::sleep(100);
+	Kernel::Shell::run_shell();
 
     while (true) {
     }

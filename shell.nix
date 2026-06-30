@@ -1,21 +1,25 @@
-let
-  nixpkgs = import <nixpkgs> { };
-in
-with nixpkgs;
-nixpkgs.multiStdenv.mkDerivation {
-  name = "nos-env";
-  buildInputs = [
-    clang
-    bochs
-    glibc_multi
-    libgcc
-    nasm
-    gnumake
-    qemu
-    bear
-    tinyxxd
-    python313
-    gdb
-    libisoburn
-  ];
-}
+{
+  pkgs ? import <nixpkgs> { },
+}:
+
+pkgs.mkShell.override
+  {
+    stdenv = pkgs.multiStdenv;
+  }
+  {
+    packages = with pkgs; [
+      clang
+	  clang-tools
+      bochs
+      glibc_multi
+      libgcc
+      nasm
+      gnumake
+      qemu
+      bear
+      tinyxxd
+      python313
+      gdb
+      libisoburn
+    ];
+  }

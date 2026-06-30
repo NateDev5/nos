@@ -1,4 +1,5 @@
 ata0-master: type=cdrom, path="bin/nos_x86_64_limine_debug.iso", status=inserted
-
 boot: cdrom
+
+sound: driver=dummy
 
