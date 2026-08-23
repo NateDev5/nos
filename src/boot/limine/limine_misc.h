@@ -2,7 +2,7 @@
 #include <boot/limine/limine.h>
 
 namespace {
-__attribute__((used, section(".limine_requests"))) volatile uint64_t limine_base_revision[] = LIMINE_BASE_REVISION(6);
+__attribute__((used, section(".limine_requests"))) volatile uint64_t limine_base_revision[] = LIMINE_BASE_REVISION(4);
 }
 
 namespace {
