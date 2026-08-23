@@ -2,6 +2,5 @@ build/
 bin/
 iso/
 .cache/
-compile_command.json
-.codex/
-.agent/
+compile_commands.json
+bochs.log
