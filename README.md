@@ -30,13 +30,15 @@ A small x86-64 operating system
 - Testing library for unit testing using macros
 - Can test using methods like EXPECT_EQ or a function that returns a bool
 - Supports grouping tests
+
 ![tests](screenshots/tests.png)
 ![tests2](screenshots/tests2.png)
 
 ### Terminal & Shell
 - Small terminal emulator that supports ANSI color codes
 - Kernel Shell:
-  - Commands: test, palloc, ansi_test, time, rect 
+  - Commands: test, palloc, ansi_test, time, rect
+ 
 ![ansi](screenshots/ansi.png)
 
 ## Platforms
