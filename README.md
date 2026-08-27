@@ -9,14 +9,14 @@
 |__/  \__/ \______/  \______/
 ```
 
-# nos
+# nos (nate operating system)
 A small x86-64 operating system
 
 ## Features
 
 ### Boot
 - Uses limine as bootloader
-- GDT, IDT, PIT
+- GDT (Global Descriptor Table), IDT (Interupt Descriptor Table), PIT (Programmable Interupt Timer)
 ### Memory
 - Bitmap allocator for managing physical pages
 ### Drivers
@@ -24,10 +24,10 @@ A small x86-64 operating system
 - PS2 Keyboard
 - UART
 ### Library
-- Small freestanding shared lib
+- Small freestanding lib with things like strings, algo and tests
 
 ### Testing
-- Testing library for unit testing using macros
+- Testing framework for unit testing using macros
 - Can test using methods like EXPECT_EQ or a function that returns a bool
 - Supports grouping tests
 
