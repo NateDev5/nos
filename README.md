@@ -16,7 +16,6 @@ A small x86-64 operating system
 
 ### Boot
 - Uses limine as bootloader
-- GDT (Global Descriptor Table), IDT (Interupt Descriptor Table), PIT (Programmable Interupt Timer)
 ### Memory
 - Bitmap allocator for managing physical pages
 ### Drivers
