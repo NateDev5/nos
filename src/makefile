@@ -1,7 +1,7 @@
 DEBUG ?= 0
 TESTING ?= 0
 
-CXX ?= g++
+C_COMPILER ?= clang
 LD ?= ld
 NASM ?= nasm
 OBJCOPY ?= objcopy
@@ -14,8 +14,8 @@ SRC_DIR := .
 # -mgeneral-regs-only 
 # -Werror
 # -fno-stack-protector (stack overflows wont be found and it might find bugs if enabled)
-CXX_FLAGS := -ffreestanding \
-	-std=c++20 \
+C_COMPILER_FLAGS := -ffreestanding \
+	-std=c++17 \
 	-fno-pic \
 	-fno-pie \
 	-fno-exceptions \
@@ -30,6 +30,7 @@ CXX_FLAGS := -ffreestanding \
 	-mcmodel=kernel \
 	-m64 \
 	-march=x86-64 \
+	-target x86_64-elf \
 	-mno-red-zone \
 	-mno-mmx \
 	-mno-sse \
@@ -39,8 +40,8 @@ CXX_FLAGS := -ffreestanding \
 	-MMD \
 	-MP
 
-CXX_FLAGS_DEBUG := -g -D__DEBUG__
-CXX_FLAGS_TESTING := -D__TESTING__
+C_COMPILER_FLAGS_DEBUG := -g -D__DEBUG__
+C_COMPILER_FLAGS_TESTING := -D__TESTING__
 
 LD_FLAGS := -T $(LINKER_FILE) \
 	-m elf_x86_64 \
@@ -68,11 +69,11 @@ KERNEL_OBJ := $(BUILD_DIR)/kernel/kernel.o
 OTHER_OBJ := $(filter-out $(KERNEL_OBJ),$(CPP_OBJ)) $(NASM_OBJ)
 
 ifeq ($(DEBUG), 1)
-CXX_FLAGS += $(CXX_FLAGS_DEBUG)
+C_COMPILER_FLAGS += $(C_COMPILER_FLAGS_DEBUG)
 endif
 
 ifeq ($(TESTING), 1)
-CXX_FLAGS += $(CXX_FLAGS_TESTING)
+C_COMPILER_FLAGS += $(C_COMPILER_FLAGS_TESTING)
 endif
 
 .PHONY: all clean format debug
@@ -81,7 +82,7 @@ all: $(KERNEL_BIN)
 
 $(BUILD_DIR)/%.o: %.cpp
 	mkdir -p $(dir $@)
-	$(CXX) $(CXX_FLAGS) -I$(SRC_DIR) -c $< -o $@
+	$(C_COMPILER) $(C_COMPILER_FLAGS) -I$(SRC_DIR) -c $< -o $@
 
 $(BUILD_DIR)/%.o: %.nasm
 	mkdir -p $(dir $@)

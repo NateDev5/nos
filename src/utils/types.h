@@ -1,7 +1,7 @@
 #pragma once
 
-#include <cstddef>
-#include <cstdint>
+#include <stddef.h>
+#include <stdint.h>
 
 #define IN
 #define OUT
@@ -11,7 +11,7 @@
 
 #define STR_MAX_LEN 512
 
-typedef std::size_t     size_t;
+typedef size_t     size_t;
 //
 typedef uint8_t         u8;
 typedef uint16_t        u16;

@@ -1,8 +1,11 @@
 #include <kernel/arch/x86_64/interrupts/idt.h>
 #include <kernel/arch/x86_64/interrupts/pic.h>
+#include <kernel/arch/x86_64/interrupts/lapic.h>
 
 #include <kernel/library/assert.h>
 #include <kernel/library/log.h>
+
+#include <shared/mem.h>
 
 #include <utils/asm.h>
 
@@ -17,21 +20,29 @@ PTR       irq_handlers[16];
 void setup() {
     PIC::remap();
 
-    IDTR idtr;
+	// fix for making interrupts work with Limine base revision 5
+	// remove when switching to ioapic
+	// Bug documented in docs/bugs
+	LAPIC::unmask_lint0();
+
+    IDTR idtr  = {0, 0};
     idtr.limit = sizeof(IDT_ENTRY) * 256 - 1;
     idtr.base  = (uint64_t)&idt[0];
 
-    for (uint8_t vector = 0; vector < 255; vector++)
+    for (uint8_t vector = 0; vector < 255; vector++) {
         set_entry(vector, (uint64_t)unset_stub_0 + vector * 16, INTERRUPT_GATE);
+    }
 
-    for (uint8_t vector = 0; vector < 32; vector++)
+    for (uint8_t vector = 0; vector < 32; vector++) {
         set_entry(vector, (uint64_t)exception_stub_0 + vector * 16, INTERRUPT_GATE);
+    }
 
-    for (uint8_t vector = 0; vector < 16; vector++)
+    for (uint8_t vector = 0; vector < 16; vector++) {
         set_entry(vector + 32, (uint64_t)IRQ_stub_0 + vector * 16, INTERRUPT_GATE);
+    }
 
     __asm__ volatile("lidt %0" ::"m"(idtr));
-    //sti();
+    sti();
 
     KINFO("IDT Initialized")
 }

@@ -1,4 +1,3 @@
-#include <cstdint>
 #include <kernel/memory/pmm.h>
 
 #include <kernel/library/debug.h>
@@ -14,6 +13,7 @@ namespace Memory::Physical {
 
 __attribute__((
     used, section(".limine_requests"))) volatile limine_memmap_request memmap_request = {.id = LIMINE_MEMMAP_REQUEST_ID, .revision = 0, .response = nullptr};
+
 
 static uint64_t mem_bitmap[BITMAP_SIZE];
 

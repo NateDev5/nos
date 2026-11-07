@@ -44,14 +44,14 @@ void vprintf(IN CONST_CHAR_PTR format, IN va_list args) {
                 continue;
             }
             case 'h': {
-                int64_t value = va_arg(args, int64_t);
+                uint64_t value = va_arg(args, uint64_t);
                 char    temp_str[STR_MAX_LEN];
                 Shared::itoa(value, temp_str, 16);
                 print(temp_str);
                 continue;
             }
             case 'H': {
-                int64_t value = va_arg(args, int64_t);
+                uint64_t value = va_arg(args, uint64_t);
                 char    temp_str[STR_MAX_LEN];
                 Shared::itoa(value, temp_str, 16, true, true);
                 print(temp_str);

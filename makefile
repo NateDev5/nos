@@ -35,7 +35,7 @@ RUN_LABEL := Release
 endif
 
 QEMU_FLAGS := -M q35 -m 2G -no-reboot
-QEMU_DBG_INT_FLAGS := -d int,cpu_reset
+QEMU_DBG_INT_FLAGS := -d int,cpu_reset -M smm=off
 QEMU_MONITOR_FLAGS := -monitor stdio
 XORRISO_FLAGS := -as mkisofs -R -r -J \
 	-b boot/limine/limine-bios-cd.bin \
@@ -94,6 +94,7 @@ gdb:
 	$(MAKE) DEBUG=1 TESTING=$(TESTING)
 	@printf '\n>>> Debugging using QEMU/GDB (Debug + Serial) <<<\n\n'
 	$(QEMU) $(QEMU_FLAGS) -cdrom $(BUILD_DIR)/$(OS_NAME)_$(ARCH)_$(BOOTLOADER)_debug.iso -s -S > qemu.log 2>&1 &
+	#$(GDB) bin/kernel.elf -ex "target remote localhost:1234"
 	$(GDB) -tui -q -iex "set auto-load safe-path /"
 
 int:

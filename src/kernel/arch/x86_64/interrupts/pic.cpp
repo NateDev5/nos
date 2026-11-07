@@ -25,8 +25,8 @@ void remap() {
     outb(PIC2_DATA, ICW4_8086);
 
     // unmask the PICs so they can be used
-    outb(PIC1_DATA, 0);
-    outb(PIC2_DATA, 0);
+    outb(PIC1_DATA, 0x0);
+    outb(PIC2_DATA, 0x0);
 }
 
 void send_EOI(IN uint8_t irq) {
