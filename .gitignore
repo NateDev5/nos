@@ -4,3 +4,5 @@ iso/
 .cache/
 compile_commands.json
 bochs.log
+qemu.log
+.gdb_history

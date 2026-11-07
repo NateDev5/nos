@@ -15,7 +15,7 @@ SRC_DIR := .
 # -Werror
 # -fno-stack-protector (stack overflows wont be found and it might find bugs if enabled)
 C_COMPILER_FLAGS := -ffreestanding \
-	-std=c++17 \
+	-std=c++20 \
 	-fno-pic \
 	-fno-pie \
 	-fno-exceptions \
